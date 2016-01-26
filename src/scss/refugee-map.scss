@@ -1,0 +1,35 @@
+
+
+.refugee-map {
+	position: relative;
+
+	svg, canvas {
+		position: absolute;
+		top: 0px;
+	}
+}
+
+.refugee-map {
+  background-color: $lucify-dark-blue;
+  color: #cccccc;
+  font-weight: 200;
+  letter-spacing: 0.1px;
+  overflow: hidden;
+}
+
+.refugee-map__loading {
+	font-family: $lucify-header-font;
+	padding: 2rem;
+	font-size: 24px;
+}
+
+
+.refugee-map__overlay-layer {
+	background-color: transparent;
+	position: absolute;
+	top: 0px;
+}
+
+
+
+
