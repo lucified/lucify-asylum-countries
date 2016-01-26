@@ -3,7 +3,7 @@ var should = require('should');
 var _ = require('underscore');
 var moment = require('moment');
 var utils = require('../utils.js');
-var console = require("console-browserify")
+var console = require("console-browserify");
 
 var refugeeConstants = require('./refugee-constants.js');
 
@@ -240,8 +240,6 @@ RefugeeCountsModel.prototype.getGlobalArrivingPerDayCounts = function(stamp) {
   return {
       asylumApplications: this.globalRefugees[yearIndex][monthIndex].arrivingPerDay
   };
-
-  //return this._prepareTotalCount(this.globalRefugees, endStamp, 'totalcount');
 };
 
 
