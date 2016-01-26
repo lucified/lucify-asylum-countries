@@ -21,44 +21,14 @@ var RefugeeMapSegment = React.createClass({
   mixins: [ComponentWidthMixin],
 
 
-    updateForStamp: function(stamp) {
-      this.refs.rmap.updateForStamp(stamp);
-      this.refs.time.updateForStamp(stamp);
+  updateForStamp: function(stamp) {
+    this.refs.rmap.updateForStamp(stamp);
+    this.refs.time.updateForStamp(stamp);
   },
 
 
   interactionsEnabled: function() {
     return !lucifyUtils.isSlowDevice();
-  },
-
-
-  getPeoplePerPointText: function() {
-    if (this.props.peoplePerPoint == 25) {
-      return (
-        <span>
-          Each moving point on the map represents
-          25 people. That corresponds to approximately
-          one busload with every other seat taken.
-        </span>
-      );
-    }
-
-    if (this.props.peoplePerPoint == 50) {
-      return (
-        <span>
-          Each moving point on the map represents
-          50 people. That corresponds to approximately
-          one busload with no empty seats.
-        </span>
-      );
-    }
-
-    return (
-      <span>
-        Each moving point on the map corresponds
-        to {this.props.peoplePerPoint} people.
-      </span>
-    );
   },
 
 
@@ -122,11 +92,6 @@ var RefugeeMapSegment = React.createClass({
                     {' '}<b>European countries</b>{' '}
                     over time.
                   </p>
-
-                  <p className="last">
-                    {this.getPeoplePerPointText()}
-                  </p>
-
                 </div>
               }
               second={

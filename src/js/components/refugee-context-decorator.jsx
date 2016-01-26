@@ -6,8 +6,6 @@ var console = require("console-browserify");
 var Promise = require("bluebird");
 
 var RefugeeCountsModel = require('../model/refugee-counts-model.js');
-var RefugeePointsModel = require('../model/refugee-points-model.js');
-var pointList = require('../model/point-list.js');
 var MapModel = require('../model/map-model.js');
 
 var lucifyUtils = require('lucify-commons/src/js/lucify-utils.jsx');
@@ -35,25 +33,12 @@ var bindToRefugeeMapContext = function(Component) {
       },
 
 
-      getPeoplePerPoint: function() {
-         if (isFinite(this.props.peoplePerPoint)) {
-             return this.props.peoplePerPoint;
-         }
-
-         if (lucifyUtils.isSlowDevice()) {
-            return 50;
-         }
-         return 25;
-      },
-
-
       getInitialState: function() {
          return {
             loaded: false,
             loadProgress: null,
             mapModel: null,
-            refugeeCountsModel: null,
-            refugeePointsModel: null
+            refugeeCountsModel: null
          };
       },
 
@@ -81,13 +66,6 @@ var bindToRefugeeMapContext = function(Component) {
       },
 
 
-      createPointList: function(mapModel) {
-         return pointList.createFullList(
-            mapModel, this.asylumData, this.getPeoplePerPoint(),
-            this.props.randomStartPoint, this.props.smartSpreadEnabled);
-      },
-
-
       progress: function(percent) {
          this.setState({loadProgress: percent});
       },
@@ -95,6 +73,7 @@ var bindToRefugeeMapContext = function(Component) {
 
       initFeatures: function() {
          this.features = topojson.feature(this.topomap, this.topomap.objects.map);
+         this.progress(10);
          window.setTimeout(this.initMapModel, 15);
       },
 
@@ -102,23 +81,13 @@ var bindToRefugeeMapContext = function(Component) {
       initMapModel: function() {
          console.time("init map model");
          this.mapModel = new MapModel(this.features);
-         this.progress(20);
+         this.progress(40);
          console.timeEnd("init map model");
-         window.setTimeout(this.initPointsList, 15);
-      },
-
-
-      initPointsList: function() {
-         console.time("create points list");
-         this.pointList = this.createPointList(this.mapModel);
-         this.progress(85);
-         console.timeEnd("create points list");
          window.setTimeout(this.initModels, 15);
       },
 
 
       initModels: function() {
-         this.refugeePointsModel = new RefugeePointsModel(this.pointList, this.props.randomStartPoint, this.props.smartSpreadEnabled);
          this.refugeeCountsModel = new RefugeeCountsModel(this.asylumData);
          this.progress(95);
          window.setTimeout(this.finishLoading, 15);
@@ -129,23 +98,14 @@ var bindToRefugeeMapContext = function(Component) {
          this.setState({
             asylumData: this.asylumData,
             mapModel: this.mapModel,
-            refugeePointsModel: this.refugeePointsModel,
             refugeeCountsModel: this.refugeeCountsModel,
             loaded: true,
             loadProgress: 100
          });
-
-        // only for debugging
-         window.refugeeCountsModel = this.refugeeCountsModel;
-         window.refugeePointsModel = this.refugeePointsModel;
-         window.mapModel = this.mapModel;
-         window.asylumData = this.asylumData;
       },
 
 
       dataLoaded: function() {
-         this.progress(10);
-
          // This will trigger also the other inits
          //
          // We need to use setTimeout to allow for the
@@ -164,8 +124,7 @@ var bindToRefugeeMapContext = function(Component) {
          return (
            <Component
             {...this.state}
-            {...this.props}
-            peoplePerPoint={this.getPeoplePerPoint()} />
+            {...this.props} />
         );
       }
 
