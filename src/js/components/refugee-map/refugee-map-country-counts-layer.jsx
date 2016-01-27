@@ -27,6 +27,7 @@ var RefugeeMapCountryCountsLayer = React.createClass({
       var items = [];
 
       if (this.props.width > refugeeConstants.labelShowBreakPoint) {
+        // TODO: use range
         var counts = this.props.refugeeCountsModel
           .getDestinationCountsByOriginCountries(this.props.country, this.props.stamp);
 
@@ -43,6 +44,7 @@ var RefugeeMapCountryCountsLayer = React.createClass({
           }
         }.bind(this));
 
+       // TODO: use range
        counts = this.props.refugeeCountsModel
           .getOriginCountsByDestinationCountries(this.props.country, this.props.stamp);
 

@@ -13,6 +13,7 @@ var RefugeeMapCountBar = React.createClass({
 
   updateForStamp: function(stamp) {
       var country = this.props.country;
+      // TODO: use range
       var refugeeCounts = this.props.refugeeCountsModel.getTotalDestinationCounts(country, stamp);
       var asylumBarSize = this.props.scale(refugeeCounts.asylumApplications)
       var coordinates = this.props.projection(this.props.mapModel.getCenterPointOfCountry(country));
@@ -67,6 +68,7 @@ var RefugeeMapCountBarsLayer = React.createClass({
 
   getTotal: function() {
     if (!this._total) {
+      // TODO: use range
       this._total = this.props.refugeeCountsModel
         .getTotalDestinationCounts('DEU', moment().unix()).asylumApplications;
     }

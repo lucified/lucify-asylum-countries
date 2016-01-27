@@ -181,10 +181,12 @@ var RefugeeMapBordersLayer = React.createClass({
     var exponent = 0.5;
 
     if (this.props.country != null) {
+      // TODO: use range
       var originCounts = this.props.refugeeCountsModel
         .getDestinationCountsByOriginCountries(this.props.country, stamp);
       var maxOriginCount = getMaxCount(originCounts);
 
+      // TODO: use range
       var destinationCounts = this.props.refugeeCountsModel
         .getOriginCountsByDestinationCountries(this.props.country, stamp);
       var maxDestinationCount = getMaxCount(destinationCounts);

@@ -63,12 +63,14 @@ var RefugeeHighlightMixin = {
 
 
   getDestinationCountries: function(country) {
+    // TODO: add range
     return this.props.refugeeCountsModel
       .getDestinationCountriesByStamp(country, this.getStamp());
   },
 
 
   getOriginCountries: function(country) {
+    // TODO: add range
     return this.props.refugeeCountsModel
       .getOriginCountriesByStamp(country, this.getStamp());
   },
