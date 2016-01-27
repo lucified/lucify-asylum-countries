@@ -25,6 +25,7 @@ features.forEach(item => {
 
     if (!data[countryCode]) {
         data[countryCode] = {
+            country: countryCode,
             population: population,
             gdp: gdp,
             continent: props.REGION_UN
