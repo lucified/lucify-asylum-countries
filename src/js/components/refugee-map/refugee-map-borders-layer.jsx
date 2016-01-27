@@ -31,7 +31,6 @@ var RefugeeMapBorder = React.createClass({
         .classed('subunit--hovered', nextProps.hovered)
         .classed('subunit--destination', nextProps.destination)
         .classed('subunit--origin', nextProps.origin);
-
     this.updateWithCountDetails(nextProps.countDetails);
   },
 
@@ -150,8 +149,11 @@ var RefugeeMapBordersLayer = React.createClass({
 
   getHighlightParams: function(country) {
     if (!this.props.country) {
-       return {};
-    }
+        return {
+          destination: true,
+          origin: false
+        }
+    };
 
     return {
        hovered: this.props.country == country,
@@ -164,8 +166,12 @@ var RefugeeMapBordersLayer = React.createClass({
    /*
     * Get count data for current
     * this.props.country within this.props.timeRange
+    *
+    * Count data is an object containing:
+    *   originCounts        -- array of counts of by originCountry
+    *   destinationCounts   -- array of counts of by destinationCountry
     */
-  getCountData: function() {
+  getCountrySpecificCountData: function() {
 
     var timeRange = this.props.timeRange;
 
@@ -180,7 +186,7 @@ var RefugeeMapBordersLayer = React.createClass({
 
     if (this.props.country != null) {
       var originCounts = this.props.refugeeCountsModel
-        .getDestinationCountsByOriginCountries(this.props.country, timeRange);
+          .getDestinationCountsByOriginCountries(this.props.country, timeRange);
       var maxOriginCount = getMaxCount(originCounts);
 
       var destinationCounts = this.props.refugeeCountsModel
@@ -193,13 +199,51 @@ var RefugeeMapBordersLayer = React.createClass({
         .exponent(exponent).domain([1, maxDestinationCount]).range([0.075, 0.80]);
 
       countData = {
-        originCounts: originCounts,
+        originCounts: {originCounts},
         destinationCounts: destinationCounts,
         originScale: originScale,
         destinationScale: destinationScale
       };
+    } else {
+
     }
     return countData;
+  },
+
+
+  getGlobalCountData: function() {
+      var destinationCounts = this.props.refugeeCountsModel
+        .getTotalDestinationCountsByCountries(this.props.timerange);
+      var maxDestinationCount = this.getMaxCount(destinationCounts);
+      var exponent = 0.5;
+      var destinationScale = d3.scale.pow()
+        .exponent(exponent).domain([1, maxDestinationCount]).range([0.075, 0.80]);
+      var countData = {
+        originCounts: {},
+        destinationCounts: destinationCounts,
+        originScale: null,
+        destinationScale: destinationScale
+      };
+      return countData;
+  },
+
+
+  getMaxCount: function(counts) {
+    return _.values(counts).reduce(function(prev, item) {
+        return Math.max(prev, item.asylumApplications);
+    }, 0);
+  },
+
+
+  getCountData: function() {
+      if (!this.props.refugeeCountsModel) {
+        return null;
+      }
+
+      if (this.props.country != null) {
+          return this.getCountrySpecificCountData();
+      }
+      return this.getGlobalCountData();
   },
 
 
@@ -228,10 +272,10 @@ var RefugeeMapBordersLayer = React.createClass({
       if (countData != null) {
         countDetails = {
           originScale: countData.originScale,
-          destinationScale: countData.destinationScale
+          destinationScale: countData.destinationScale,
+          destinationCounts: countData.destinationCounts[country],
+          originCounts: countData.originCounts[country]
         };
-        countDetails.destinationCounts = countData.destinationCounts[country];
-        countDetails.originCounts = countData.originCounts[country];
       }
 
       return (

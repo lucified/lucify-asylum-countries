@@ -148,8 +148,10 @@ RefugeeCountsModel.prototype._prepareTotalCount = function(country, startStamp, 
   var startMoment = moment(new Date(startStamp * 1000));
 
   if (endMoment.isAfter(refugeeConstants.DATA_END_MOMENT)) {
-    console.log(endMoment + " is past the data end point");
-    endMoment = moment(refugeeConstants.DATA_END_MOMENT); // show last available data once we reach it
+    console.log(endMoment
+        + " is past the data end point by "
+        + endMoment.diff(refugeeConstants.DATA_END_MOMENT, 'days') + ' days');
+    endMoment = refugeeConstants.DATA_END_MOMENT; // show last available data once we reach it
   }
 
   if (startMoment.isBefore(refugeeConstants.DATA_START_MOMENT)) {
@@ -183,6 +185,7 @@ RefugeeCountsModel.prototype._prepareTotalCount = function(country, startStamp, 
   };
 };
 
+
 /*
  * Return an array of all the countries from which asylum seekers are arriving
  * at the supplied country, or all the countries where asylum seekers are
@@ -194,6 +197,7 @@ RefugeeCountsModel.prototype._getPairCountriesList = function(country, pairCount
     return counts[otherCountry].asylumApplications > 0;
   });
 };
+
 
 /*
  * Return a hash of all the "pair" countries (i.e. destination or origin
@@ -235,6 +239,22 @@ RefugeeCountsModel.prototype.getGlobalArrivingPerMonth = function(mom) {
   return {
     asylumApplications: this.globalRefugees[yearIndex][monthIndex].count
   };
+};
+
+
+/*
+ * Get total counts of arrived people by (destination) country
+ */
+RefugeeCountsModel.prototype.getTotalDestinationCountsByCountries = function(startStamp, timeRange) {
+    if (endStamp === undefined) {
+      endStamp = startStamp;
+      startStamp = refugeeConstants.DATA_START_MOMENT.unix();
+    }
+    var ret = {};
+    _.keys(this.arrivedRefugeesToCountry).forEach(country => {
+        ret[country] = this._prepareTotalCount(this.arrivedRefugeesToCountry[country], timeRange[0], timeRange[1], country);
+    });
+    return ret;
 };
 
 
