@@ -6,11 +6,12 @@ var project = process.env.PROJECT || 'vnk-asylum-countries'
 var branch = process.env.BRANCH || 'master'
 
 var path = `embed/${project}-${branch}`
-path += process.env.COMMIT ? `-${process.env.COMMIT.substr(0, 7)} ` : ''
+path += process.env.COMMIT ? `-${process.env.COMMIT.substr(0, 7)}` : ''
+path += "/"
 
 var bucket = 'lucify-development'
-var url = `http://${bucket}.s3-website-eu-west-1.amazonaws.com/{path}`
-
+var url = `http://${bucket}.s3-website-eu-west-1.amazonaws.com/${path}`
+console.log(url)
 var opts = {
 	paths: ['node_modules/lucify-commons'],
 	publishFromFolder: 'dist',
