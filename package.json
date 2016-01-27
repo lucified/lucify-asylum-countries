@@ -51,7 +51,7 @@
     "babelify": "^6.4.0",
     "gulp": "gulpjs/gulp#4.0",
     "watchify": "^3.2.1",
-    "should": "^7.1.0"
+    "should": "^8.1.1"
   },
   "dependencies": {
     "area-polygon": "^1.0.1",
@@ -66,13 +66,11 @@
     "lucify-commons": "~0.2.2",
     "moment": "^2.10.6",
     "node-bourbon": "^4.2.3",
-    "pixi.js": "^3.0.7",
     "point-in-polygon": "^1.0.0",
     "polygon": "^1.0.2",
     "query-string": "^2.4.1",
     "randgen": "^0.1.0",
     "react": "0.13.3",
-    "should": "^8.1.1",
     "sprintf": "^0.1.5",
     "topojson": "^1.6.19",
     "underscore": "^1.8.3",
