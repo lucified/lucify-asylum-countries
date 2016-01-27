@@ -213,7 +213,7 @@ var RefugeeMapBordersLayer = React.createClass({
 
   getGlobalCountData: function() {
       var destinationCounts = this.props.refugeeCountsModel
-        .getTotalDestinationCountsByCountries(this.props.timerange);
+        .getTotalDestinationCountsByCountries(this.props.timeRange);
       var maxDestinationCount = this.getMaxCount(destinationCounts);
       var exponent = 0.5;
       var destinationScale = d3.scale.pow()

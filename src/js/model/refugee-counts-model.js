@@ -245,14 +245,13 @@ RefugeeCountsModel.prototype.getGlobalArrivingPerMonth = function(mom) {
 /*
  * Get total counts of arrived people by (destination) country
  */
-RefugeeCountsModel.prototype.getTotalDestinationCountsByCountries = function(startStamp, timeRange) {
-    if (endStamp === undefined) {
-      endStamp = startStamp;
-      startStamp = refugeeConstants.DATA_START_MOMENT.unix();
-    }
+RefugeeCountsModel.prototype.getTotalDestinationCountsByCountries = function(timeRange) {
     var ret = {};
+
     _.keys(this.arrivedRefugeesToCountry).forEach(country => {
-        ret[country] = this._prepareTotalCount(this.arrivedRefugeesToCountry[country], timeRange[0], timeRange[1], country);
+        ret[country] = this._prepareTotalCount(
+          this.arrivedRefugeesToCountry[country],
+          timeRange[0], timeRange[1], country);
     });
     return ret;
 };
