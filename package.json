@@ -8,7 +8,7 @@
     "start": "gulp",
     "test": "gulp dist",
     "dist": "gulp dist",
-    "devdeploy": "gulp s3-deploy --bucket=lucify-dev"
+    "devdeploy": "gulp s3-deployandnotify"
   },
   "keywords": [
     "lucify",
@@ -45,13 +45,14 @@
   },
   "license": "UNLICENSED",
   "devDependencies": {
-    "lucify-component-builder": "~0.2.1",
-    "mocha": "^2.3.4",
-    "simplify-geojson": "0.0.2",
     "babelify": "^6.4.0",
     "gulp": "gulpjs/gulp#4.0",
-    "watchify": "^3.2.1",
-    "should": "^8.1.1"
+    "lucify-component-builder": "~0.2.1",
+    "mocha": "^2.3.4",
+    "request": "^2.67.0",
+    "should": "^8.1.1",
+    "simplify-geojson": "0.0.2",
+    "watchify": "^3.2.1"
   },
   "dependencies": {
     "area-polygon": "^1.0.1",

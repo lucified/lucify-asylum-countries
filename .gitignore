@@ -8,4 +8,5 @@ refugees.mp4
 *.mov
 temp/
 .awspublish*
+.envvars
 npm-debug.log
