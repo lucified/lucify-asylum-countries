@@ -89,9 +89,11 @@ var RefugeeMapCountryCountsLayer = React.createClass({
 
 
    shouldComponentUpdate: function(nextProps, nextState) {
-      if (nextProps.country !== this.props.country || nextProps.stamp !== this.props.stamp) {
+      if (nextProps.country !== this.props.country ||
+          nextProps.stamp !== this.props.stamp) {
           return true;
       }
+      return false;
    },
 
 

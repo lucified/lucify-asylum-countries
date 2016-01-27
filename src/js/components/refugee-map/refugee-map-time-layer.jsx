@@ -14,12 +14,6 @@ var RefugeeMapTimeLayer = React.createClass({
 		return {};
 	},
 
-
-	updateForStamp: function(stamp) {
-		this.setState({stamp: stamp});
-	},
-
-
 	render: function() {
 		if (!this.props.refugeeCountsModel) {
 			return <div />;
@@ -27,7 +21,7 @@ var RefugeeMapTimeLayer = React.createClass({
 
 		return (
 			<div className='refugee-map-time-layer'>
-				<RefugeeMapLineChart {...this.props} stamp={this.state.stamp} />
+				<RefugeeMapLineChart {...this.props} stamp={this.props.stamp} />
 			</div>
 		);
 	}

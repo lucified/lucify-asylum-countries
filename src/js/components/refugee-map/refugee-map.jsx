@@ -116,7 +116,7 @@ var RefugeeMap = React.createClass({
 
 
   getStamp: function() {
-    return this.stamp;
+    return this.props.stamp;
   },
 
 
