@@ -3,7 +3,9 @@ var gulp = require('gulp');
 const request = require('request');
 
 var project = process.env.PROJECT || 'vnk-asylum-countries'
-var path = `embed/${project}`
+var branch = process.env.BRANCH || 'master'
+
+var path = `embed/${project}-${branch}`
 path += process.env.COMMIT ? `-${process.env.COMMIT.substr(0, 7)} ` : ''
 
 var bucket = 'lucify-development'
@@ -14,7 +16,7 @@ var opts = {
 	publishFromFolder: 'dist',
 	defaultBucket: bucket,
 	maxAge: 3600,
-	assetContext: 'embed/'+path,
+	assetContext: path,
 	baseUrl: 'http://www.lucify.com/'
 }
 
@@ -33,7 +35,7 @@ function notify(cb) {
       body: {
         "external_user_name": "CircleCI",
         "content": `Deployed ${project} to ${url}`,
-        "tags":  ["#deployment", `#${process.NODE_ENV || 'development'}`]
+        "tags":  ["#deployment", `#${process.env.NODE_ENV || 'development'}`]
       }
     }
     
