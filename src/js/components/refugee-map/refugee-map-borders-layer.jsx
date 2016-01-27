@@ -199,7 +199,7 @@ var RefugeeMapBordersLayer = React.createClass({
         .exponent(exponent).domain([1, maxDestinationCount]).range([0.075, 0.80]);
 
       countData = {
-        originCounts: {originCounts},
+        originCounts: originCounts,
         destinationCounts: destinationCounts,
         originScale: originScale,
         destinationScale: destinationScale
@@ -291,7 +291,9 @@ var RefugeeMapBordersLayer = React.createClass({
           country={country}
           width={this.props.width}
           countDetails={countDetails}
-          {...hparams} />
+          hovered={this.props.country == country}
+          destination={countData != null && countDetails.destinationCounts != null && countDetails.asylumApplications != 0}
+          origin={countData != null && countDetails.originCounts != null && countDetails.asylumApplications != 0} />
       );
     }.bind(this));
   },
