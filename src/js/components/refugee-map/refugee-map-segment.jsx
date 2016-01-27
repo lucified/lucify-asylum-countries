@@ -111,4 +111,4 @@ var RefugeeMapSegment = React.createClass({
 
 
 
-module.exports = RefugeePlayContextDecorator(RefugeeMapSegment);
+module.exports = RefugeeMapSegment;
