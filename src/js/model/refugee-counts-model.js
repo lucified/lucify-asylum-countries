@@ -149,12 +149,12 @@ RefugeeCountsModel.prototype._prepareTotalCount = function(country, startStamp, 
 
   if (endMoment.isAfter(refugeeConstants.DATA_END_MOMENT)) {
     console.log(endMoment + " is past the data end point");
-    endMoment = refugeeConstants.DATA_END_MOMENT; // show last available data once we reach it
+    endMoment = moment(refugeeConstants.DATA_END_MOMENT); // show last available data once we reach it
   }
 
   if (startMoment.isBefore(refugeeConstants.DATA_START_MOMENT)) {
     console.log(startMoment + " is before the data start point");
-    startMoment = refugeeConstants.DATA_START_MOMENT;
+    startMoment = moment(refugeeConstants.DATA_START_MOMENT);
   }
 
   var currentYearIndex = startMoment.year() - refugeeConstants.DATA_START_YEAR;
@@ -226,7 +226,7 @@ RefugeeCountsModel.prototype._getPairCountryCounts = function(country, pairCount
 RefugeeCountsModel.prototype.getGlobalArrivingPerMonth = function(mom) {
 
   if (mom.isAfter(refugeeConstants.DATA_END_MOMENT)) {
-    mom = refugeeConstants.DATA_END_MOMENT; // show last available data once we reach it
+    mom = moment(refugeeConstants.DATA_END_MOMENT); // show last available data once we reach it
   }
 
   var yearIndex = mom.year() - refugeeConstants.DATA_START_YEAR;
