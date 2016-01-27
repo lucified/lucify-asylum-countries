@@ -238,9 +238,6 @@ var RefugeeMapLineChart = React.createClass({
             {value: this.props.stamp, text: this.getFriendlyTime()}
           ]
         }
-      },
-      subchart: {
-        show: true
       }
     };
   },
