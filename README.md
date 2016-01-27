@@ -29,6 +29,8 @@ npm install gulpjs/gulp-cli#4.0 -g
 
 For development, run `bundle install` as well.
 
+To regenerate the data, run `./prepare.sh`.
+
 ### Distribution build
 
 A distribution is built by the command `gulp dist`.
