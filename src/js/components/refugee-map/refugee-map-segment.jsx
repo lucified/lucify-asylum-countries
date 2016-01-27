@@ -13,7 +13,7 @@ var RefugeeMap = require('./responsive-refugee-map.jsx');
 var TimeLayer = require('./refugee-map-time-layer.jsx');
 var refugeeConstants = require('../../model/refugee-constants.js');
 
-var RefugeesBarChart = require('./refugees-bar-chart.jsx');
+var RefugeesBarCharts = require('./refugees-bar-charts.jsx');
 
 var Tabs = require('react-simpletabs');
 
@@ -120,9 +120,8 @@ var RefugeeMapSegment = React.createClass({
                   timeRange={this.state.timeRange}
                   interactionsEnabled={this.interactionsEnabled()} />
               </Tabs.Panel>
-
               <Tabs.Panel title="Kuvaaja">
-                  <RefugeesBarChart {...this.props}
+                  <RefugeesBarCharts {...this.props}
                     timeRange={this.state.timeRange} />
               </Tabs.Panel>
           </Tabs>
