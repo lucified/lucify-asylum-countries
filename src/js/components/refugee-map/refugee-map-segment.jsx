@@ -9,7 +9,6 @@ var lucifyUtils = require('lucify-commons/src/js/lucify-utils.jsx');
 var ComponentWidthMixin = require('lucify-commons/src/js/components/container-width-mixin.js');
 
 var RefugeeMap = require('./responsive-refugee-map.jsx');
-var RefugeePlayContextDecorator = require('./refugee-play-context-decorator.jsx');
 var TimeLayer = require('./refugee-map-time-layer.jsx');
 var refugeeConstants = require('../../model/refugee-constants.js');
 
@@ -18,12 +17,6 @@ var RefugeeMapSegment = React.createClass({
 
 
   mixins: [ComponentWidthMixin],
-
-
-  updateForStamp: function(stamp) {
-    this.refs.rmap.updateForStamp(stamp);
-    this.refs.time.updateForStamp(stamp);
-  },
 
 
   interactionsEnabled: function() {

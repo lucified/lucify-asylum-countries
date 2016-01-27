@@ -32,7 +32,7 @@ var RefugeeMap = React.createClass({
       lo: 22.2206322,
       la: 34.0485818,
       scale: 0.85,
-      showDataUpdated: true
+      showDataUpdated: false
     };
   },
 
@@ -112,34 +112,6 @@ var RefugeeMap = React.createClass({
 
   componentWillMount: function() {
     this.stamp = this.props.stamp;
-  },
-
-
-  // see refugee-play-context-decorator.jsx
-  // for explanation
-
-  updateForStamp: function(stamp) {
-    this.stamp = stamp;
-
-    if (this.refs.frameRateLayer != null) {
-      this.refs.frameRateLayer.update();
-    }
-
-    if (this.refs.bordersLayer != null) {
-      this.refs.bordersLayer.updateForStamp(stamp);
-    }
-
-    if (this.refs.countBars != null) {
-      this.refs.countBars.updateForStamp(stamp);
-    }
-
-    if (this.refs.countsLayer != null) {
-      this.refs.countsLayer.updateForStamp(stamp);
-    }
-
-    if (this.interactionsEnabled() && this.props.refugeeCountsModel != null) {
-      this.updateHighlight(this.getHighlightedCountry());
-    }
   },
 
 
@@ -239,14 +211,6 @@ var RefugeeMap = React.createClass({
   },
 
 
-  getFrameRateLayer: function() {
-    if (this.props.showFps) {
-      return <FrameRateLayer ref="frameRateLayer" />;
-    }
-    return null;
-  },
-
-
   getDataUpdated: function() {
     if (this.props.showDataUpdated) {
       return <DataUpdated updatedAt={RefugeeConstants.ASYLUM_APPLICANTS_DATA_UPDATED_MOMENT} />;
@@ -278,8 +242,6 @@ var RefugeeMap = React.createClass({
         {this.getCountryCountsLayer()}
 
         {this.getSecondBordersLayer()}
-
-        {this.getFrameRateLayer()}
 
         {this.getOverlayLayer()}
 
