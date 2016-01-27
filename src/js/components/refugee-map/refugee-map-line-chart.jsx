@@ -35,8 +35,6 @@ var RefugeeMapLineChart = React.createClass({
       colors: {
         data1: '#ffffff'
       },
-      onmouseover: this.handleMouseOverChart,
-      onclick: this.handleOnClick,
       regions: {
         'data1': [{
             start: this.getDataMissingStartStamp(),
@@ -54,53 +52,12 @@ var RefugeeMapLineChart = React.createClass({
   },
 
 
-  componentWillReceiveProps: function() {
-    this.updateLine(this.props.stamp);
-  },
-
-
   shouldComponentUpdate: function() {
     return false;
   },
 
 
-  updateLine: function(stamp) {
-    var chart = this.refs.c3Chart.chart;
-
-    if (!this.lineSel) {
-      this.lineSel = d3.select(this.getDOMNode()).select('.c3-xgrid-line');
-    }
-
-    var xval = chart.internal.x(stamp);
-
-    // we update the line directly
-    // since the c3 api function xgrids
-    // triggers a redraw for the whole chart
-
-    this.lineSel.select('line')
-      .attr('x1', xval)
-      .attr('x2', xval);
-
-    this.lineSel.select('text')
-      .attr('y', xval)
-      .text(this.getFriendlyTime());
-
-    // we update the line with the above code
-    // since the c3 api function xgrids triggers a redraw
-    // for the whole chart
-
-    //chart.xgrids([
-    //  {value: this.props.stamp, text: this.getFriendlyTime()},
-    //]);
-
-    //chart.regions([
-    //  {axis: 'x', end: this.props.stamp, 'class': 'regionX'}
-    //]);
-
-    this.updateCountriesWithMissingData(stamp);
-  },
-
-
+  // TODO: make it work with a range
   updateCountriesWithMissingData: function(stamp) {
     var timestampMoment = moment.unix(stamp);
     var res = this.countriesWithMissingDataCache[timestampMoment.year() * 12 + timestampMoment.month()];
@@ -145,68 +102,6 @@ var RefugeeMapLineChart = React.createClass({
   },
 
 
-  updatePosition: function(d) {
-    this.updateLine(d.x);
-    if (this.props.onMouseOver) {
-      this.props.onMouseOver(d.x);
-    }
-  },
-
-
-  handleOnClick: function(d) {
-    // Touch devices are never really
-    // hovering on the timeline, so the
-    // timing logic will not work, even
-    // when the touch device is sending
-    // a mouseOverEvent for a tap.
-    //
-    // We should always update on a "click"
-    // event to support touch devices.
-    //
-    // However the onClick on c3.js only supports
-    // clicks on the line itself. We will listen
-    // to onClick of the parent component and use
-    // the position conveyed via onMouseOver.
-    //
-    // To be sure that the onMouseOver runs
-    // before the onClick event, we execute
-    // the update after a small delay
-    //
-    window.setTimeout(function() {
-      if (this.d != null) {
-        this.updatePosition(this.d);
-      }
-    }.bind(this), 100);
-  },
-
-
-  handleMouseOverChart: function(d) {
-    this.d = d;
-
-    // use a simple timing logic to ignore occasions where
-    // the mouse clickly passed over the timeline chart,
-    // while maintaining the ability to scroll through time
-    // on hover
-    if (!this.mouseOverStamp || Date.now() - this.mouseOverStamp < 250) {
-      return;
-    }
-
-    this.updatePosition(d);
-  },
-
-
-  handleMouseOver: function() {
-    if (!this.mouseOverStamp) {
-      this.mouseOverStamp = Date.now();
-    }
-  },
-
-
-  handleMouseLeave: function() {
-    this.mouseOverStamp = null;
-  },
-
-
   getSpec: function() {
     return {
       axis: {
@@ -231,13 +126,6 @@ var RefugeeMapLineChart = React.createClass({
       },
       tooltip: {
         show: false
-      },
-      grid: {
-        x: {
-          lines: [
-            {value: this.props.stamp, text: this.getFriendlyTime()}
-          ]
-        }
       }
     };
   },
@@ -265,10 +153,7 @@ var RefugeeMapLineChart = React.createClass({
 
   render: function() {
     return (
-      <div className='refugee-map-line-chart'
-        onMouseOver={this.handleMouseOver}
-        onMouseLeave={this.handleMouseLeave}
-        onClick={this.handleOnClick} >
+      <div className='refugee-map-line-chart'>
         <span ref="missingData" className="refugee-map-line-chart__missing-data" />
         <C3Chart
           ref='c3Chart'
