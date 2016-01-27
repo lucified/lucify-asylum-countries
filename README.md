@@ -1,10 +1,8 @@
-# The flow towards Europe
+# Visualising asylum seeker amounts to European countries
 
-A visualization of the flow of asylum seekers to European countries from 2012 onwards. Based on UNHCR data. See it in action [here](http://www.lucify.com/the-flow-towards-europe/). For a more in-depth explanation, read [this blog post](https://medium.com/@lucify/a-novel-visualisation-of-the-refugee-crisis-565e40ab5a50).
+A visualization of the amount of asylum seekers to European countries from 2012 onwards. Based on UNHCR data. Built for the Finnish Prime Minister's Office.
 
-![Visualization screenshot](https://raw.githubusercontent.com/lucified/lucify-refugees/master/screenshot.png)
-
-This project uses a combination of [React](https://facebook.github.io/react/), [D3.js](http://d3js.org/) and [PIXI.js](http://www.pixijs.com/).
+This project uses a combination of [React](https://facebook.github.io/react/), [D3.js](http://d3js.org/) and [C3.js](http://c3js.org/).
 
 
 ## Development
@@ -12,8 +10,8 @@ This project uses a combination of [React](https://facebook.github.io/react/), [
 ### Dependencies
 
 - Node + NPM
-- Development: Bundler: `gem install bundler`
 - Development: Ruby + [RubyGems](https://rubygems.org/pages/download)
+- Development: Bundler: `gem install bundler`
 - Development: GDAL (<http://www.gdal.org/>). On OS X with homebrew install with `brew install gdal`.
 - Testing: Mocha, for running unit tests: `npm install -g mocha`
 
@@ -53,8 +51,6 @@ Run unit test with the command `mocha` in thr project directory.
 
 The build automatically creates a file called `embed-codes.html` alongside `index.html`. It contains embed codes for embedding the visualisation into other pages through an iFrame.
 
-Use embed codes from <http://www.lucify.com/embed/the-flow-towards-europe/embed-codes.html> to embed the visualisation via our Akamai-backed hosting.
-
 ## Data source
 
 [UNHCR monthly asylum applications](http://popstats.unhcr.org/en/asylum_seekers_monthly)
@@ -90,7 +86,4 @@ Have feedback? Contact us!
 
 - [Juho Ojala](https://github.com/juhoojala)
 - [Ville Saarinen](https://github.com/vsaarinen)
-
-## License
-
-This project is released under the [MIT license](LICENSE).
+- [Ville Väänänen](https://github.com/dennari)

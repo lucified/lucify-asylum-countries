@@ -1,7 +1,7 @@
 {
-  "name": "lucify-refugees",
-  "version": "1.0.5",
-  "description": "React components for visualizing refugee flows to Europe",
+  "name": "vnk-asylum-countries",
+  "version": "0.0.1",
+  "description": "React components for visualizing asylum seeker counts to European countries",
   "main": "gulpfile.js",
   "scripts": {
     "prepublish": "./prepare.sh",
@@ -21,7 +21,7 @@
   "engines": {
     "node": "~0.12.9"
   },
-  "homepage": "https://www.lucify.com/the-flow-towards-europe",
+  "homepage": "https://www.lucify.com/",
   "contributors": [
     {
       "name": "Juho Ojala",
@@ -38,7 +38,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/lucified/lucify-refugees.git"
+    "url": "https://github.com/lucified/vnk-asylum-countries.git"
   },
   "bugs": {
     "email": "info@lucify.com"
