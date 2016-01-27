@@ -151,14 +151,55 @@ var RefugeeMapLineChart = React.createClass({
   componentDidMount: function() {
     this.labelSelection = d3.select(React.findDOMNode(this.refs.missingData));
     this.countriesWithMissingDataCache = {};
+    this.initializeSelectionHandlers();
   },
 
 
+  initializeSelectionHandlers: function() {
+    var svg = d3.select(".refugee-map-line-chart__selected-area");
+    var chart = this.refs.c3Chart.chart;
+    this.brush = d3.svg.brush()
+      .x(chart.internal.x)
+      .extent([
+        moment(refugeeConstants.DATA_START_MOMENT).add(2, 'months').unix(),
+        moment(refugeeConstants.DATA_START_MOMENT).add(14, 'months').unix()])
+      .on("brushend", this.brushended);
+
+    this.gBrush = svg.append("g")
+      .attr("class", "brush")
+      .call(this.brush)
+      .call(this.brush.event);
+
+    this.gBrush.selectAll("rect")
+      .attr("height", this.getHeight());
+  },
+
+
+  // from http://bl.ocks.org/mbostock/6232537
+  brushended: function() {
+    if (!d3.event.sourceEvent) return; // only transition after input
+
+    var dateExtent = this.brush.extent().map(function(stamp) { return new Date(stamp * 1000); }),
+        roundedDateExtent = dateExtent.map(d3.time.month.round);
+
+    // if empty when rounded, use floor & ceil instead
+    if (roundedDateExtent[0] >= roundedDateExtent[1]) {
+      roundedDateExtent[0] = d3.time.month.floor(dateExtent[0]);
+      roundedDateExtent[1] = d3.time.month.ceil(dateExtent[1]);
+    }
+
+    var roundedStampExtent = roundedDateExtent.map(function(date) { return date.getTime() / 1000; });
+
+    d3.select(".brush").transition()
+        .call(this.brush.extent(roundedStampExtent))
+        .call(this.brush.event);
+  },
 
   render: function() {
     return (
       <div className='refugee-map-line-chart'>
         <span ref="missingData" className="refugee-map-line-chart__missing-data" />
+        <svg className='refugee-map-line-chart__selected-area' />
         <C3Chart
           ref='c3Chart'
           lineStrokeWidth={2}
