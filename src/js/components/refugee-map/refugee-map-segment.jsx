@@ -5,7 +5,6 @@ var sprintf = require('sprintf');
 var Inputs = require('lucify-commons/src/js/components/inputs.jsx');
 var DividedCols = require('lucify-commons/src/js/components/divided-cols.jsx');
 var FormRow = require('lucify-commons/src/js/components/nice-form-row.jsx');
-var Slider = require('lucify-commons/src/js/components/nice-slider.jsx');
 var lucifyUtils = require('lucify-commons/src/js/lucify-utils.jsx');
 var ComponentWidthMixin = require('lucify-commons/src/js/components/container-width-mixin.js');
 
@@ -84,27 +83,11 @@ var RefugeeMapSegment = React.createClass({
             <DividedCols
               first={
                 <div className="inputs__instructions">
-                  <h3>Instructions</h3>
-                  <p className="first">
-                    The map below shows the flow of
-                    {' '}<b>asylum seekers</b>{' '}
-                    to
-                    {' '}<b>European countries</b>{' '}
-                    over time.
-                  </p>
                 </div>
               }
               second={
                 <div className="inputs__instructions">
-
-                  <FormRow
-                    title={<div>Speed</div>}
-                    input={<Slider min={1} max={100}
-                      defaultValue={this.props.speed}
-                      onChange={this.props.handleSpeedChange} />} />
-
                   {this.getInteractionsInstruction()}
-
                 </div>
               } />
           </div>
