@@ -20,16 +20,14 @@ var RefugeeMapSegment = React.createClass({
   mixins: [ComponentWidthMixin],
 
   getInitialState: function() {
-      return {
-        stamp: moment([
-          refugeeConstants.DATA_START_YEAR,
-          refugeeConstants.DATA_START_MONTH, 1]).unix()
-      }
+    return {
+      timeRange: [moment([2015, 0, 1]).unix(), moment([2015, 10, 1]).unix()]
+    };
   },
 
 
-  handleStampChange: function(newStamp) {
-    this.setState({stamp: newStamp});
+  handleTimeRangeChange: function(newTimeRange) {
+    this.setState({timeRange: newTimeRange});
   },
 
 
@@ -44,7 +42,7 @@ var RefugeeMapSegment = React.createClass({
         <span>
           The counts shown on hover represent the number
           of people who have left or arrived in a country
-          since 2012.
+          during the selected time period.
         </span>
       );
     }
@@ -65,8 +63,8 @@ var RefugeeMapSegment = React.createClass({
 
           <p className="last">
             The line chart displays the total rate of
-            asylum seekers over time. Hover over the
-            chart to move the map in time.
+            asylum seekers over time. Drag over the chart
+            to change the selected time period.
           </p>
         </div>
       );
@@ -74,8 +72,8 @@ var RefugeeMapSegment = React.createClass({
       return (
         <p className="first last">
           The line chart displays the total rate of
-          asylum seekers over time. Hover over the
-          chart to move the map in time.
+          asylum seekers over time. Drag over the chart
+          to change the selected time period.
         </p>
       );
     }
@@ -102,14 +100,14 @@ var RefugeeMapSegment = React.createClass({
 
         <TimeLayer
           ref="time"
-          onMouseOver={this.handleStampChange}
-          stamp={this.state.stamp}
+          onTimeRangeChange={this.handleTimeRangeChange}
+          timeRange={this.state.timeRange}
           refugeeCountsModel={this.props.refugeeCountsModel}
           mapModel={this.props.mapModel} />
 
         <RefugeeMap ref="rmap"
           {...this.props}
-          stamp={this.state.stamp}
+          timeRange={this.state.timeRange}
           interactionsEnabled={this.interactionsEnabled()} />
       </div>
     );

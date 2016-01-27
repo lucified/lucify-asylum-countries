@@ -6,7 +6,6 @@ var RefugeeHighlightMixin = {
 
   storedDestinationCountries: [],
   storedOriginCountries: [],
-  highlightStamp: 0,
 
 
   getInitialState: function() {
@@ -63,16 +62,14 @@ var RefugeeHighlightMixin = {
 
 
   getDestinationCountries: function(country) {
-    // TODO: add range
     return this.props.refugeeCountsModel
-      .getDestinationCountriesByStamp(country, this.getStamp());
+      .getDestinationCountriesByTimeRange(country, this.getTimeRange());
   },
 
 
   getOriginCountries: function(country) {
-    // TODO: add range
     return this.props.refugeeCountsModel
-      .getOriginCountriesByStamp(country, this.getStamp());
+      .getOriginCountriesByTimeRange(country, this.getTimeRange());
   },
 
 

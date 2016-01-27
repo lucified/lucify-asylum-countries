@@ -103,18 +103,18 @@ var RefugeeMap = React.createClass({
       projection: this.getProjection(),
       width: this.getWidth(),
       height: this.getHeight(),
-      stamp: this.getStamp()
+      timeRange: this.getTimeRange()
     };
   },
 
 
   componentWillMount: function() {
-    this.stamp = this.props.stamp;
+    this.timeRange = this.props.timeRange;
   },
 
 
-  getStamp: function() {
-    return this.props.stamp;
+  getTimeRange: function() {
+    return this.props.timeRange;
   },
 
 

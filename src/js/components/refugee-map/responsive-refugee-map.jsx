@@ -19,14 +19,14 @@ var ResponsiveRefugeeMap = React.createClass({
 		return this.state.componentWidth;
 	},
 
-	updateForStamp: function(stamp) {
-		this.refs.rmap.updateForStamp(stamp);
+	updateForTimeRange: function(timeRange) {
+		this.refs.rmap.updateForTimeRange(timeRange);
 	},
 
 	render: function() {
-		return ( 
+		return (
 			<div>
-				<RefugeeMap ref="rmap" {...this.props} 
+				<RefugeeMap ref="rmap" {...this.props}
 					width={this.getWidth()}
 					height={this.getHeight()} />
 			</div>

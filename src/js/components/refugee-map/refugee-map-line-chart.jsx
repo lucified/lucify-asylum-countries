@@ -51,13 +51,21 @@ var RefugeeMapLineChart = React.createClass({
   },
 
 
-  getFriendlyTime: function() {
-    return moment(new Date(this.props.stamp * 1000)).format('DD.MM.YYYY');
+  shouldComponentUpdate: function() {
+    return false;
   },
 
 
-  shouldComponentUpdate: function() {
-    return false;
+  handleTimeRangeChange: function(stampRange) {
+    d3.select(".brush").transition()
+        .call(this.brush.extent(stampRange))
+        .call(this.brush.event);
+
+    //TODO: call updateCountriesWithMissingData
+
+    if (this.props.onTimeRangeChange) {
+      this.props.onTimeRangeChange(stampRange);
+    }
   },
 
 
@@ -160,9 +168,7 @@ var RefugeeMapLineChart = React.createClass({
     var chart = this.refs.c3Chart.chart;
     this.brush = d3.svg.brush()
       .x(chart.internal.x)
-      .extent([
-        moment(refugeeConstants.DATA_START_MOMENT).add(2, 'months').unix(),
-        moment(refugeeConstants.DATA_START_MOMENT).add(14, 'months').unix()])
+      .extent(this.props.timeRange)
       .on("brushend", this.brushended);
 
     this.gBrush = svg.append("g")
@@ -189,11 +195,9 @@ var RefugeeMapLineChart = React.createClass({
     }
 
     var roundedStampExtent = roundedDateExtent.map(function(date) { return date.getTime() / 1000; });
-
-    d3.select(".brush").transition()
-        .call(this.brush.extent(roundedStampExtent))
-        .call(this.brush.event);
+    this.handleTimeRangeChange(roundedStampExtent);
   },
+
 
   render: function() {
     return (
