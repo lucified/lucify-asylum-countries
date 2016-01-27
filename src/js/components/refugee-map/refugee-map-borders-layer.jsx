@@ -32,23 +32,19 @@ var RefugeeMapBorder = React.createClass({
         .classed('subunit--destination', nextProps.destination)
         .classed('subunit--origin', nextProps.origin);
 
-    // TODO: update cloropleth colors directly with d3,
-    // similar to updateWithCountDetails
-
+    this.updateWithCountDetails(nextProps.countDetails);
   },
 
 
-  // updateWithCountDetails: function(details) {
-  //   var fillStyle = null;
-
-  //   if (this.props.origin && getFullCount(details.originCounts) > 0) {
-  //      fillStyle = sprintf('rgba(190, 88, 179, %.2f)', details.originScale(getFullCount(details.originCounts)));
-  //   } else if (this.props.destination && getFullCount(details.destinationCounts) > 0) {
-  //      fillStyle = sprintf('rgba(95, 196, 114, %.2f)', details.destinationScale(getFullCount(details.destinationCounts)));
-  //   }
-
-  //   this.sel.style('fill', fillStyle);
-  // },
+  updateWithCountDetails: function(details) {
+    var fillStyle = null;
+    if (details != null && this.props.origin && getFullCount(details.originCounts) > 0) {
+       fillStyle = sprintf('rgba(190, 88, 179, %.2f)', details.originScale(getFullCount(details.originCounts)));
+    } else if (details != null && this.props.destination && getFullCount(details.destinationCounts) > 0) {
+       fillStyle = sprintf('rgba(95, 196, 114, %.2f)', details.destinationScale(getFullCount(details.destinationCounts)));
+    }
+    this.sel.style('fill', fillStyle);
+  },
 
 
   shouldComponentUpdate: function(nextProps, nextState) {
@@ -169,7 +165,9 @@ var RefugeeMapBordersLayer = React.createClass({
     * Get count data for current
     * this.props.country at this.props.stamp
     */
-  getCountData: function(stamp) {
+  getCountData: function() {
+
+    var stamp = this.props.stamp;
 
     var getMaxCount = function(counts) {
        return _.values(counts).reduce(function(prev, item) {
@@ -189,8 +187,10 @@ var RefugeeMapBordersLayer = React.createClass({
         .getOriginCountsByDestinationCountries(this.props.country, stamp);
       var maxDestinationCount = getMaxCount(destinationCounts);
 
-      var originScale = d3.scale.pow().exponent(exponent).domain([0, maxOriginCount]).range([0.075, 0.80]);
-      var destinationScale = d3.scale.pow().exponent(exponent).domain([1, maxDestinationCount]).range([0.075, 0.80]);
+      var originScale = d3.scale.pow()
+        .exponent(exponent).domain([0, maxOriginCount]).range([0.075, 0.80]);
+      var destinationScale = d3.scale.pow()
+        .exponent(exponent).domain([1, maxDestinationCount]).range([0.075, 0.80]);
 
       countData = {
         originCounts: originCounts,
@@ -213,6 +213,7 @@ var RefugeeMapBordersLayer = React.createClass({
     // while we use React to manage the DOM,
     // we still use D3 to calculate the path
     var path = d3.geo.path().projection(this.props.projection);
+    var countData = this.getCountData();
 
     return this.props.mapModel.featureData.features.map(function(feature) {
       var country = feature.properties.ADM0_A3;
@@ -222,6 +223,16 @@ var RefugeeMapBordersLayer = React.createClass({
         console.log("duplicate for " + country);
       }
       countries[country] = true;
+
+      var countDetails = null;
+      if (countData != null) {
+        countDetails = {
+          originScale: countData.originScale,
+          destinationScale: countData.destinationScale
+        };
+        countDetails.destinationCounts = countData.destinationCounts[country];
+        countDetails.originCounts = countData.originCounts[country];
+      }
 
       return (
         <RefugeeMapBorder
@@ -235,6 +246,7 @@ var RefugeeMapBordersLayer = React.createClass({
           feature={feature}
           country={country}
           width={this.props.width}
+          countDetails={countDetails}
           {...hparams} />
       );
     }.bind(this));
