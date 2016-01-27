@@ -133,6 +133,7 @@ var RefugeeMap = React.createClass({
           {...this.getStandardLayerParams()}
           {...this.getHighlightLayerParams()}
           refugeeCountsModel={this.props.refugeeCountsModel}
+          countryFigures={this.props.countryFigures}
           subunitClass="subunit" />
       );
     } else {
