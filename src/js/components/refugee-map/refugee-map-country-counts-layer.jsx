@@ -7,11 +7,7 @@ var refugeeConstants = require('../../model/refugee-constants.js');
 
 
 var RefugeeMapCountryCountsLayer = React.createClass({
-  
 
-    getInitialState: function() {
-      return {state: null}
-    },
 
 
     renderText: function(country, count) {
@@ -32,7 +28,7 @@ var RefugeeMapCountryCountsLayer = React.createClass({
 
       if (this.props.width > refugeeConstants.labelShowBreakPoint) {
         var counts = this.props.refugeeCountsModel
-          .getDestinationCountsByOriginCountries(this.props.country, this.state.stamp);
+          .getDestinationCountsByOriginCountries(this.props.country, this.props.stamp);
 
         var totalReceivedCount = 0;
         var totalLeftCount = 0;
@@ -48,8 +44,8 @@ var RefugeeMapCountryCountsLayer = React.createClass({
         }.bind(this));
 
        counts = this.props.refugeeCountsModel
-          .getOriginCountsByDestinationCountries(this.props.country, this.state.stamp);
-        
+          .getOriginCountsByDestinationCountries(this.props.country, this.props.stamp);
+
         _.difference(this.props.destinationCountries, refugeeConstants.disableLabels)
           .forEach(function(country) {
           var cc = counts[country]
@@ -61,11 +57,11 @@ var RefugeeMapCountryCountsLayer = React.createClass({
         }.bind(this));
       }
 
-      // On the hovered country we show either the amount of 
+      // On the hovered country we show either the amount of
       // people received of the amount of people who have left
       //
       // Some countries both receive and generate asylum seekers
-      // in most cases the other count is much larger, and 
+      // in most cases the other count is much larger, and
       // each country is either mainly a receiver or originator
       // country.
       //
@@ -74,8 +70,8 @@ var RefugeeMapCountryCountsLayer = React.createClass({
       //
       // Serbia is however a problem, as both numbers are similar
       // and the balance even shifts along the way
-      // 
-      
+      //
+
       var count = totalReceivedCount - totalLeftCount;
 
       // if (totalReceivedCount > totalLeftCount) {
@@ -92,28 +88,21 @@ var RefugeeMapCountryCountsLayer = React.createClass({
    },
 
 
-   // by passing along the stamp to the state of this component,
-   // we can trigger a re-render for specifically this component
-   updateForStamp: function(stamp) {
-      this.setState({stamp: stamp});
-   },
-
-
    shouldComponentUpdate: function(nextProps, nextState) {
-      if (nextProps.country !== this.props.country) {
+      if (nextProps.country !== this.props.country ||
+          nextProps.stamp !== this.props.stamp) {
           return true;
       }
-      return !this.lastUpdated || Math.abs(this.lastUpdated - nextState.stamp) > 60 * 60 * 24 * 1;
+      return false;
    },
 
 
    render: function() {
-        this.lastUpdated = this.state.stamp;
         return (
          <svg className="refugee-map-country-counts-layer"
             style={{width: this.props.width, height: this.props.height}}>
             {this.renderTexts()}
-         </svg> 
+         </svg>
         )
     }
 

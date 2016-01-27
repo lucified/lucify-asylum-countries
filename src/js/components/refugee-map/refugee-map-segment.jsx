@@ -1,6 +1,7 @@
 
 var React = require('react');
 var sprintf = require('sprintf');
+var moment = require('moment');
 
 var Inputs = require('lucify-commons/src/js/components/inputs.jsx');
 var DividedCols = require('lucify-commons/src/js/components/divided-cols.jsx');
@@ -9,7 +10,6 @@ var lucifyUtils = require('lucify-commons/src/js/lucify-utils.jsx');
 var ComponentWidthMixin = require('lucify-commons/src/js/components/container-width-mixin.js');
 
 var RefugeeMap = require('./responsive-refugee-map.jsx');
-var RefugeePlayContextDecorator = require('./refugee-play-context-decorator.jsx');
 var TimeLayer = require('./refugee-map-time-layer.jsx');
 var refugeeConstants = require('../../model/refugee-constants.js');
 
@@ -19,10 +19,17 @@ var RefugeeMapSegment = React.createClass({
 
   mixins: [ComponentWidthMixin],
 
+  getInitialState: function() {
+      return {
+        stamp: moment([
+          refugeeConstants.DATA_START_YEAR,
+          refugeeConstants.DATA_START_MONTH, 1]).unix()
+      }
+  },
 
-  updateForStamp: function(stamp) {
-    this.refs.rmap.updateForStamp(stamp);
-    this.refs.time.updateForStamp(stamp);
+
+  handleStampChange: function(newStamp) {
+    this.setState({stamp: newStamp});
   },
 
 
@@ -95,13 +102,14 @@ var RefugeeMapSegment = React.createClass({
 
         <TimeLayer
           ref="time"
-          onMouseOver={this.props.handleStampChange}
-          stamp={this.props.stamp}
+          onMouseOver={this.handleStampChange}
+          stamp={this.state.stamp}
           refugeeCountsModel={this.props.refugeeCountsModel}
           mapModel={this.props.mapModel} />
 
         <RefugeeMap ref="rmap"
           {...this.props}
+          stamp={this.state.stamp}
           interactionsEnabled={this.interactionsEnabled()} />
       </div>
     );
@@ -111,4 +119,4 @@ var RefugeeMapSegment = React.createClass({
 
 
 
-module.exports = RefugeePlayContextDecorator(RefugeeMapSegment);
+module.exports = RefugeeMapSegment;

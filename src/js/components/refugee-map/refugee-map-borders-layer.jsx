@@ -31,26 +31,30 @@ var RefugeeMapBorder = React.createClass({
         .classed('subunit--hovered', nextProps.hovered)
         .classed('subunit--destination', nextProps.destination)
         .classed('subunit--origin', nextProps.origin);
+
+    // TODO: update cloropleth colors directly with d3,
+    // similar to updateWithCountDetails
+
   },
+
+
+  // updateWithCountDetails: function(details) {
+  //   var fillStyle = null;
+
+  //   if (this.props.origin && getFullCount(details.originCounts) > 0) {
+  //      fillStyle = sprintf('rgba(190, 88, 179, %.2f)', details.originScale(getFullCount(details.originCounts)));
+  //   } else if (this.props.destination && getFullCount(details.destinationCounts) > 0) {
+  //      fillStyle = sprintf('rgba(95, 196, 114, %.2f)', details.destinationScale(getFullCount(details.destinationCounts)));
+  //   }
+
+  //   this.sel.style('fill', fillStyle);
+  // },
 
 
   shouldComponentUpdate: function(nextProps, nextState) {
     // it is important to prevent an expensive diff of the svg path
     // a react render will only be needed if we need to resize
     return this.props.width !== nextProps.width;
-  },
-
-
-  updateWithCountDetails: function(details) {
-    var fillStyle = null;
-
-    if (this.props.origin && getFullCount(details.originCounts) > 0) {
-       fillStyle = sprintf('rgba(190, 88, 179, %.2f)', details.originScale(getFullCount(details.originCounts)));
-    } else if (this.props.destination && getFullCount(details.destinationCounts) > 0) {
-       fillStyle = sprintf('rgba(95, 196, 114, %.2f)', details.destinationScale(getFullCount(details.destinationCounts)));
-    }
-
-    this.sel.style('fill', fillStyle);
   },
 
 
@@ -65,6 +69,7 @@ var RefugeeMapBorder = React.createClass({
 
 
   render: function() {
+
     // round pixels using a custom rendering context
     var d = "";
     var context = {
@@ -87,11 +92,9 @@ var RefugeeMapBorder = React.createClass({
 
     var path = this.props.path;
     path.context(context);
-
     path(this.props.feature);
 
     var country = this.props.country;
-
     var overlay = this.props.enableOverlay ? (
         <path key="p2" ref="overlay"
               className="subunit--overlay"
@@ -238,13 +241,6 @@ var RefugeeMapBordersLayer = React.createClass({
   },
 
 
-  componentDidUpdate: function() {
-    if (this.lastUpdate != null) {
-       this.doUpdate(this.lastUpdate);
-    }
-  },
-
-
   shouldComponentUpdate: function(nextProps, nextState) {
     if (this.props.width !== nextProps.width) {
       return true;
@@ -258,12 +254,15 @@ var RefugeeMapBordersLayer = React.createClass({
       return true;
     }
 
+    if (nextProps.stamp !== this.props.stamp) {
+      return true;
+    }
+
     return false;
   },
 
 
   render: function() {
-    //console.log("re-render borders " + this.props.country);
     return (
       <svg className="refugee-map-borders-layer"
         style={{width: this.props.width, height: this.props.height}}
@@ -273,32 +272,6 @@ var RefugeeMapBordersLayer = React.createClass({
     );
   },
 
-
-   // quick update
-   // ------------
-
-  updateForStamp: function(stamp) {
-    this.doUpdate(stamp);
-  },
-
-
-  doUpdate: function(stamp) {
-    this.lastUpdate = stamp;
-    var countData = this.getCountData(stamp);
-    return this.props.mapModel.featureData.features.map(function(feature) {
-      var country = feature.properties.ADM0_A3;
-      var countDetails = {};
-      if (countData != null) {
-        countDetails = {
-          originScale: countData.originScale,
-          destinationScale: countData.destinationScale
-        };
-        countDetails.destinationCounts = countData.destinationCounts[country];
-        countDetails.originCounts = countData.originCounts[country];
-      }
-      this.refs[country].updateWithCountDetails(countDetails);
-    }.bind(this));
- }
 
 
 });

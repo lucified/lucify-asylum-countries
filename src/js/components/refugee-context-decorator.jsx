@@ -25,14 +25,6 @@ var bindToRefugeeMapContext = function(Component) {
    return React.createClass({
 
 
-      getDefaultProps: function() {
-         return {
-            smartSpreadEnabled: true,   // different values for these props have
-            randomStartPoint: false     // not been tested and will probably result in bugs
-         };
-      },
-
-
       getInitialState: function() {
          return {
             loaded: false,
