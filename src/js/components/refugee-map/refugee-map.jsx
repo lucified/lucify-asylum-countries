@@ -9,7 +9,6 @@ var CountryLabelsLayer = require('./refugee-map-country-labels-layer.jsx');
 var CountBarsLayer = require('./refugee-map-count-bars-layer.jsx');
 var RefugeeMapLineChart = require('./refugee-map-line-chart.jsx');
 var SimpleBordersLayer = require('./refugee-map-simple-borders-layer.jsx');
-var FrameRateLayer = require('./frame-rate-layer.jsx');
 var RefugeeHighlightMixin = require('./refugee-highlight-mixin.js');
 var DataUpdated = require('../refugee-data-updated.jsx');
 var RefugeeConstants = require('../../model/refugee-constants.js');
@@ -28,7 +27,6 @@ var RefugeeMap = React.createClass({
       width: 1200,
       height: 1200,
       interactionsEnabled: true,
-      showFps: false,
       lo: 22.2206322,
       la: 34.0485818,
       scale: 0.85,
