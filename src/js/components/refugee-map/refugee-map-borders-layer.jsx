@@ -163,11 +163,11 @@ var RefugeeMapBordersLayer = React.createClass({
 
    /*
     * Get count data for current
-    * this.props.country at this.props.stamp
+    * this.props.country within this.props.timeRange
     */
   getCountData: function() {
 
-    var stamp = this.props.stamp;
+    var timeRange = this.props.timeRange;
 
     var getMaxCount = function(counts) {
        return _.values(counts).reduce(function(prev, item) {
@@ -179,14 +179,12 @@ var RefugeeMapBordersLayer = React.createClass({
     var exponent = 0.5;
 
     if (this.props.country != null) {
-      // TODO: use range
       var originCounts = this.props.refugeeCountsModel
-        .getDestinationCountsByOriginCountries(this.props.country, stamp);
+        .getDestinationCountsByOriginCountries(this.props.country, timeRange);
       var maxOriginCount = getMaxCount(originCounts);
 
-      // TODO: use range
       var destinationCounts = this.props.refugeeCountsModel
-        .getOriginCountsByDestinationCountries(this.props.country, stamp);
+        .getOriginCountsByDestinationCountries(this.props.country, timeRange);
       var maxDestinationCount = getMaxCount(destinationCounts);
 
       var originScale = d3.scale.pow()
@@ -268,7 +266,7 @@ var RefugeeMapBordersLayer = React.createClass({
       return true;
     }
 
-    if (nextProps.stamp !== this.props.stamp) {
+    if (nextProps.timeRange !== this.props.timeRange) {
       return true;
     }
 

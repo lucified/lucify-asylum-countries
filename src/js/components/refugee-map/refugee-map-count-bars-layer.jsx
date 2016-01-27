@@ -3,6 +3,8 @@ var React = require('react');
 var d3 = require('d3');
 var moment = require('moment');
 
+var refugeeConstants = require('../../model/refugee-constants.js');
+
 
 var RefugeeMapCountBar = React.createClass({
 
@@ -11,11 +13,10 @@ var RefugeeMapCountBar = React.createClass({
   // updates are rendered with
   // React, so we use D3 instead
 
-  updateForStamp: function(stamp) {
+  updateForTimeRange: function(timeRange) {
       var country = this.props.country;
-      // TODO: use range
-      var refugeeCounts = this.props.refugeeCountsModel.getTotalDestinationCounts(country, stamp);
-      var asylumBarSize = this.props.scale(refugeeCounts.asylumApplications)
+      var refugeeCounts = this.props.refugeeCountsModel.getTotalDestinationCounts(country, timeRange);
+      var asylumBarSize = this.props.scale(refugeeCounts.asylumApplications);
       var coordinates = this.props.projection(this.props.mapModel.getCenterPointOfCountry(country));
 
       this.asylumSel
@@ -27,18 +28,18 @@ var RefugeeMapCountBar = React.createClass({
 
   shouldComponentUpdate: function(nextProps) {
       return (this.props.height !== nextProps.height
-        || this.props.stamp !== nextProps.stamp);
+        || this.props.timeRange !== nextProps.timeRange);
   },
 
 
   componentDidMount: function() {
     this.asylumSel = d3.select(React.findDOMNode(this.refs.asylumBar));
-    this.updateForStamp(this.props.stamp);
+    this.updateForTimeRange(this.props.timeRange);
   },
 
 
   componentDidUpdate: function() {
-    this.updateForStamp(this.props.stamp);
+    this.updateForTimeRange(this.props.timeRange);
   },
 
 
@@ -68,9 +69,12 @@ var RefugeeMapCountBarsLayer = React.createClass({
 
   getTotal: function() {
     if (!this._total) {
-      // TODO: use range
+      var range = [
+        refugeeConstants.DATA_START_MOMENT.unix(),
+        refugeeConstants.DATA_END_MOMENT.unix()
+      ];
       this._total = this.props.refugeeCountsModel
-        .getTotalDestinationCounts('DEU', moment().unix()).asylumApplications;
+        .getTotalDestinationCounts('DEU', range).asylumApplications;
     }
     return this._total;
   },
@@ -97,12 +101,12 @@ var RefugeeMapCountBarsLayer = React.createClass({
         scale: this.getBarSizeScale(),
         width: this.props.width,
         height: this.props.height,
-        stamp: this.props.stamp
-      }
+        timeRange: this.props.timeRange
+      };
 
       if (this.props.highlightedCountry != null) {
         if (countries.indexOf(this.props.highlightedCountry) != -1) {
-          items.push(<RefugeeMapCountBar ref={this.props.highlightedCountry} key={this.props.highlightedCountry + "_"} {...props} country={this.props.highlightedCountry} />)
+          items.push(<RefugeeMapCountBar ref={this.props.highlightedCountry} key={this.props.highlightedCountry + "_"} {...props} country={this.props.highlightedCountry} />);
         }
 
       } else {
@@ -118,7 +122,7 @@ var RefugeeMapCountBarsLayer = React.createClass({
    shouldComponentUpdate: function(nextProps) {
       return (this.props.highlightedCountry !== nextProps.highlightedCountry
         || this.props.width !== nextProps.width
-        || this.props.stamp !== nextProps.stamp);
+        || this.props.timeRange !== nextProps.timeRange);
    },
 
 

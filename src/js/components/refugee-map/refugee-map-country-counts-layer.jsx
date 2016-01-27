@@ -27,9 +27,8 @@ var RefugeeMapCountryCountsLayer = React.createClass({
       var items = [];
 
       if (this.props.width > refugeeConstants.labelShowBreakPoint) {
-        // TODO: use range
         var counts = this.props.refugeeCountsModel
-          .getDestinationCountsByOriginCountries(this.props.country, this.props.stamp);
+          .getDestinationCountsByOriginCountries(this.props.country, this.props.timeRange);
 
         var totalReceivedCount = 0;
         var totalLeftCount = 0;
@@ -44,9 +43,8 @@ var RefugeeMapCountryCountsLayer = React.createClass({
           }
         }.bind(this));
 
-       // TODO: use range
        counts = this.props.refugeeCountsModel
-          .getOriginCountsByDestinationCountries(this.props.country, this.props.stamp);
+          .getOriginCountsByDestinationCountries(this.props.country, this.props.timeRange);
 
         _.difference(this.props.destinationCountries, refugeeConstants.disableLabels)
           .forEach(function(country) {
@@ -92,7 +90,7 @@ var RefugeeMapCountryCountsLayer = React.createClass({
 
    shouldComponentUpdate: function(nextProps, nextState) {
       if (nextProps.country !== this.props.country ||
-          nextProps.stamp !== this.props.stamp) {
+          nextProps.timeRange !== this.props.timeRange) {
           return true;
       }
       return false;
