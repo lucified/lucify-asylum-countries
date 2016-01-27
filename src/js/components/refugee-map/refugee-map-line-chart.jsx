@@ -12,6 +12,10 @@ var theme = require('lucify-commons/src/js/lucify-theme.jsx');
 var RefugeeMapLineChart = React.createClass({
 
 
+  getHeight: function() {
+    return 100;
+  },
+
   getData: function() {
     var mom = moment(refugeeConstants.DATA_START_MOMENT);
     var endMoment = moment(refugeeConstants.DATA_END_MOMENT);
@@ -158,7 +162,7 @@ var RefugeeMapLineChart = React.createClass({
         <C3Chart
           ref='c3Chart'
           lineStrokeWidth={2}
-          height={100}
+          height={this.getHeight()}
           spec={this.getSpec()}
           data={this.getData()} />
       </div>
