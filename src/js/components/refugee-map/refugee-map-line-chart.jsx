@@ -19,11 +19,11 @@ var RefugeeMapLineChart = React.createClass({
     var xvals = [];
 
     do {
-      var counts = this.props.refugeeCountsModel.getGlobalArrivingPerDayCounts(mom.unix());
-      cols.push(counts.asylumApplications);
+      var totalCount = this.props.refugeeCountsModel.getGlobalArrivingPerMonth(mom);
+      cols.push(totalCount.asylumApplications);
       xvals.push(mom.unix());
       mom.add(5, 'days');
-    } while (endMoment.diff(mom) >= 0);
+    } while (mom.isBefore(endMoment));
 
 
     var ret = {
@@ -33,7 +33,6 @@ var RefugeeMapLineChart = React.createClass({
         ['data1'].concat(cols)
       ],
       colors: {
-        //data1: theme.cyan
         data1: '#ffffff'
       },
       onmouseover: this.handleMouseOverChart,
@@ -106,7 +105,7 @@ var RefugeeMapLineChart = React.createClass({
     var timestampMoment = moment.unix(stamp);
     var res = this.countriesWithMissingDataCache[timestampMoment.year() * 12 + timestampMoment.month()];
 
-    if (res == null) {
+    if (res === undefined) {
       var countriesWithMissingData
         = this.props.refugeeCountsModel.getDestinationCountriesWithMissingData(timestampMoment);
       var length = countriesWithMissingData.length;
