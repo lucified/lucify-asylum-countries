@@ -137,7 +137,9 @@ var RefugeesBarChart = React.createClass({
         },
         rotated: true
       },
-
+      transition: {
+        duration: 200
+      },
       legend: {
          show: false
       }
@@ -155,6 +157,8 @@ var RefugeesBarChart = React.createClass({
     var spec = this.getSpec();
 
     return <C3Chart data={data}
+      slowUpdateDebounceTime={0}
+      fastUpdateDebounceTime={0}
       spec={spec} aspectRatio={1.0} />
   }
 
