@@ -73,6 +73,11 @@ var RefugeesBarChart = React.createClass({
           || !this.props.mapModel.getFriendlyNameForCountry(item.country)) {
           return false;
         }
+
+        if (!this.props.refugeeCountsModel.isDestination(item.country)) {
+            return false;
+        }
+
         var counts = this.props.refugeeCountsModel
           .getTotalDestinationCounts(item.country, refugeeConstants.fullRange);
         var totalCount = counts.asylumApplications;

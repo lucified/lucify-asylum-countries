@@ -226,6 +226,10 @@ RefugeeCountsModel.prototype._getPairCountryCounts = function(country, pairCount
 // ----------
 //
 
+RefugeeCountsModel.prototype.isDestination = function(country) {
+  return this.arrivedRefugeesToCountry[country] != null;
+}
+
 
 RefugeeCountsModel.prototype.getGlobalArrivingPerMonth = function(mom) {
 
