@@ -51,6 +51,21 @@ var RefugeesBarChart = React.createClass({
 
 
   getEuroFigures: function() {
+    var ret = this.getUnsortedEuroFigures().sort(function(a, b) {
+      var ac = this.props.refugeeCountsModel
+        .getTotalDestinationCounts(a.country, refugeeConstants.fullRange)
+        .asylumApplications;
+      var bc = this.props.refugeeCountsModel
+        .getTotalDestinationCounts(b.country, refugeeConstants.fullRange)
+        .asylumApplications;
+      return bc - ac;
+    }.bind(this));
+    console.log(ret);
+    return ret;
+  },
+
+
+  getUnsortedEuroFigures: function() {
       return _.filter(this.props.countryFigures, item => {
         if (item.continent != 'Europe'
           || !this.props.mapModel.getFriendlyNameForCountry(item.country)) {
