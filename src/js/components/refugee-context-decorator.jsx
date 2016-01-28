@@ -49,6 +49,10 @@ var bindToRefugeeMapContext = function(Component) {
             this.asylumData = data;
          }.bind(this)));
 
+         promises.push(d3.jsonAsync(assets.data('country-figures.json')).then(function(data) {
+            this.countryFigures = data;
+         }.bind(this)));
+
          Promise.all(promises).then(function() {
             console.timeEnd('load json');
             this.dataLoaded();
@@ -91,6 +95,7 @@ var bindToRefugeeMapContext = function(Component) {
             asylumData: this.asylumData,
             mapModel: this.mapModel,
             refugeeCountsModel: this.refugeeCountsModel,
+            countryFigures: this.countryFigures,
             loaded: true,
             loadProgress: 100
          });

@@ -17,13 +17,15 @@ cat temp/detailed-map.json | simplify-geojson -t 0.15 > temp/map.json
 
 node_modules/.bin/topojson \
   -o temp/data-assets/topomap.json \
-  -p ADM0_A3 \
+  -p ADM0_A3,CONTINENT,POP_EST,GDP_MD_EST,REGION_UN \
   -- \
   temp/map.json
 
 
 ### Process UNHCR data
 src/scripts/prepare-asylum-data.rb
+
+node src/scripts/prepare-country-figures.js
 
 # we are not using the labels for anything
 

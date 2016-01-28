@@ -133,6 +133,7 @@ var RefugeeMap = React.createClass({
           {...this.getStandardLayerParams()}
           {...this.getHighlightLayerParams()}
           refugeeCountsModel={this.props.refugeeCountsModel}
+          countryFigures={this.props.countryFigures}
           subunitClass="subunit" />
       );
     } else {
@@ -217,9 +218,7 @@ var RefugeeMap = React.createClass({
 
 
   render: function() {
-
     if (!this.props.refugeeCountsModel || !this.props.mapModel) {
-
       return (
         <div className="refugee-map"
           style={{width: this.getWidth(), height: this.getHeight()}}>

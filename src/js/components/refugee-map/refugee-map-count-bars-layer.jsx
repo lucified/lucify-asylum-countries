@@ -76,6 +76,7 @@ var RefugeeMapCountBarsLayer = React.createClass({
       this._total = this.props.refugeeCountsModel
         .getTotalDestinationCounts('DEU', range).asylumApplications;
     }
+
     return this._total;
   },
 
