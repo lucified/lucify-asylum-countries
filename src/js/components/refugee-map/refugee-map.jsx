@@ -27,6 +27,9 @@ var RefugeeMap = React.createClass({
       width: 1200,
       height: 1200,
       interactionsEnabled: true,
+      //lo: 22.2206322 - 9,
+      //la: 34.0485818 + 15,
+      //scale: 1.4,
       lo: 22.2206322,
       la: 34.0485818,
       scale: 0.85,
@@ -46,7 +49,7 @@ var RefugeeMap = React.createClass({
 
 
   componentWillUpdate: function(nextProps, nextState) {
-    if (this.props.width !== nextProps.width) {
+    if (this.props.width !== nextProps.width || this.props.la !== nextProps.la) {
       this._projection = null;
     }
   },

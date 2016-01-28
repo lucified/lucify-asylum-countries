@@ -121,13 +121,23 @@ var RefugeeMapSegment = React.createClass({
 
         <div className="refugee-map-segment__tabs">
           <Tabs>
-              <Tabs.Panel title="Kartta">
+              <Tabs.Panel title="Euroopan kartta">
                 <RefugeeMap ref="rmap"
                   {...this.props}
+                  lo={22.2206322 - 9}
+                  la={34.0485818 + 15}
+                  scale={1.4}
                   timeRange={this.state.timeRange}
                   interactionsEnabled={this.interactionsEnabled()} />
               </Tabs.Panel>
-              <Tabs.Panel title="Kuvaaja">
+              <Tabs.Panel title="Euroopan ja lähtömaiden kartta">
+                  <RefugeeMap ref="rmap"
+                    {...this.props}
+                    timeRange={this.state.timeRange}
+                    interactionsEnabled={this.interactionsEnabled()} />
+              </Tabs.Panel>
+
+              <Tabs.Panel title="Pylväskaaviona">
                 <RefugeesBarCharts {...this.props}
                   timeRange={this.state.timeRange} />
               </Tabs.Panel>
