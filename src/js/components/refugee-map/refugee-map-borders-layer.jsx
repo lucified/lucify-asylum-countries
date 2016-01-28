@@ -55,7 +55,7 @@ var RefugeeMapBorder = React.createClass({
   shouldComponentUpdate: function(nextProps, nextState) {
     // it is important to prevent an expensive diff of the svg path
     // a react render will only be needed if we need to resize
-    return this.props.width !== nextProps.width;
+    return this.props.projection !== nextProps.projection;
   },
 
 
@@ -167,8 +167,6 @@ var RefugeeMapBordersLayer = React.createClass({
        origin: this.props.originCountries.indexOf(country) != -1
     };
   },
-
-
 
 
 
@@ -299,6 +297,7 @@ var RefugeeMapBordersLayer = React.createClass({
           feature={feature}
           country={country}
           width={this.props.width}
+          projection={this.props.projection}
           countDetails={countDetails}
           hovered={this.props.country == country}
           destination={countData != null && countDetails.destinationCounts != null && countDetails.asylumApplications != 0}
@@ -309,7 +308,8 @@ var RefugeeMapBordersLayer = React.createClass({
 
 
   shouldComponentUpdate: function(nextProps, nextState) {
-    if (this.props.width !== nextProps.width) {
+    if (this.props.width !== nextProps.width
+      || this.props.projection !== nextProps.projection) {
       return true;
     }
 
