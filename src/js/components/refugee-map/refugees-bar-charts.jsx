@@ -157,12 +157,14 @@ var RefugeesBarCharts = React.createClass({
       <div className="refugees-bar-charts">
         <div className="lucify-container">
 
-          <input type="checkbox" id="staticScale"
-            onChange={this.handleCheckBoxChange}
-            checked={this.state.staticScale} />
-            <label htmlFor="staticScale">
-              Pidä skaala ajan muuttuessa vakiona
-            </label>
+          <div className="refugees-bar-chart__fix-scale">
+            <input type="checkbox" id="staticScale"
+              onChange={this.handleCheckBoxChange}
+              checked={this.state.staticScale} />
+              <label htmlFor="staticScale">
+                Pidä skaala ajan muuttuessa vakiona
+              </label>
+          </div>
 
           <DividedCols
             first={
@@ -181,23 +183,6 @@ var RefugeesBarCharts = React.createClass({
               </div>
             } />
 
-          <DividedCols
-            first={
-                <div>
-                  <h3>Hakemuksia 100 000 asukasta kohden keskimäärin per kuukausi</h3>
-                  <PerPopulationMonthlyAverageBarChart {...this.props}
-                  staticScale={this.state.staticScale} />
-                </div>
-
-            }
-            second={
-              <div>
-                <h3>Hakemuksia yhteensä keskimäärin per kuukausi</h3>
-                <TotalsMonthlyAverageBarChart {...this.props}
-                  staticScale={this.state.staticScale} />
-              </div>
-            } />
-
         </div>
       </div>
     );
@@ -206,6 +191,25 @@ var RefugeesBarCharts = React.createClass({
 
 
 });
+
+
+          // <DividedCols
+          //   first={
+          //       <div>
+          //         <h3>Hakemuksia 100 000 asukasta kohden keskimäärin per kuukausi</h3>
+          //         <PerPopulationMonthlyAverageBarChart {...this.props}
+          //         staticScale={this.state.staticScale} />
+          //       </div>
+
+          //   }
+          //   second={
+          //     <div>
+          //       <h3>Hakemuksia yhteensä keskimäärin per kuukausi</h3>
+          //       <TotalsMonthlyAverageBarChart {...this.props}
+          //         staticScale={this.state.staticScale} />
+          //     </div>
+          //   } />
+
 
 
 module.exports = RefugeesBarCharts;
