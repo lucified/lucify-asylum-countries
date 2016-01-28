@@ -148,9 +148,8 @@ RefugeeCountsModel.prototype._prepareTotalCount = function(country, startStamp, 
   var startMoment = moment(new Date(startStamp * 1000));
 
   if (endMoment.isAfter(refugeeConstants.DATA_END_MOMENT)) {
-    console.log(endMoment
-        + " is past the data end point by "
-        + endMoment.diff(refugeeConstants.DATA_END_MOMENT, 'days') + ' days');
+    console.log(endMoment + " is past the data end point by " +
+      endMoment.diff(refugeeConstants.DATA_END_MOMENT, 'days') + ' days');
     endMoment = refugeeConstants.DATA_END_MOMENT; // show last available data once we reach it
   }
 
@@ -251,7 +250,8 @@ RefugeeCountsModel.prototype.getGlobalArrivingFor = function(mom) {
 /*
  * Get an array of the monthly totals of all asylum seekers,
  * from DATA_BEGIN_MOMENT to DATA_END_MOMENT. Each object in the
- * array has the fields 'date' and 'asylumApplications'.
+ * array has the fields 'date', a moment which is set to the beginning of the
+ * month, and an integer 'asylumApplications'.
  */
 RefugeeCountsModel.prototype.getGlobalArrivingPerMonth = function() {
   var curMoment = moment(refugeeConstants.DATA_START_MOMENT);
