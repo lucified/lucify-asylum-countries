@@ -73,6 +73,35 @@ var RefugeeMapLineChart = React.createClass({
       return mom.year() * 12 + mom.month();
     };
 
+    var textForCountryList = function(countryList) {
+      var missingDataText = '';
+      var countryCount = countryList.length;
+
+      if (countryCount > 0) {
+        if (countryCount > 5) {
+          missingDataText = "Missing data from " + countryList.slice(0, 4).join(', ') +
+            " and " + (countryCount - 4) + " other countries";
+        } else {
+          missingDataText = "Missing data from ";
+          if (countryCount > 1) {
+            missingDataText += countryList.slice(0, countryCount - 1).join(', ') +
+              " and ";
+          }
+          missingDataText += countryList[countryCount - 1];
+        }
+      }
+
+      return missingDataText;
+    };
+
+    var tooltipForCountryList = function(countryList) {
+      if (countryList.length > 0) {
+        return "Missing data for " + countryList.join(', ');
+      } else {
+        return '';
+      }
+    };
+
     var currentIndex;
     var currentMoment = moment.unix(timeRange[0]);
     var endIndex = cacheIndexFor(moment.unix(timeRange[1]));
@@ -99,29 +128,9 @@ var RefugeeMapLineChart = React.createClass({
     countriesWithMissingData = _.uniq(countriesWithMissingData);
     countriesWithMissingData.sort();
 
-    var countryCount = countriesWithMissingData.length;
-    if (countryCount > 0) {
-      var missingDataText;
-      if (countryCount > 5) {
-        missingDataText = "Missing data from " + countriesWithMissingData.slice(0, 4).join(', ') +
-          " and " + (countryCount - 4) + " other countries";
-      } else {
-        missingDataText = "Missing data from ";
-        if (countryCount > 1) {
-          missingDataText += countriesWithMissingData.slice(0, countryCount - 1).join(', ') +
-            " and ";
-        }
-        missingDataText += countriesWithMissingData[countryCount - 1];
-      }
-
-      this.labelSelection
-        .attr('title', "Missing data for " + countriesWithMissingData.join(', '))
-        .text(missingDataText);
-    } else {
-      this.labelSelection
-        .attr('title', '')
-        .text('');
-    }
+    this.labelSelection
+      .attr('title', tooltipForCountryList(countriesWithMissingData))
+      .text(textForCountryList(countriesWithMissingData));
   },
 
 
