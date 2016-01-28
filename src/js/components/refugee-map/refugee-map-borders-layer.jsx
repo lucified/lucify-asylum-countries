@@ -23,15 +23,21 @@ var RefugeeMapBorder = React.createClass({
 
   componentDidMount: function() {
     this.sel = d3.select(React.findDOMNode(this.refs.overlay));
+    this.updateStyles(this.props);
   },
 
 
-  componentWillReceiveProps: function(nextProps, nextState) {
+  updateStyles: function(nextProps) {
     this.sel
         .classed('subunit--hovered', nextProps.hovered)
         .classed('subunit--destination', nextProps.destination)
         .classed('subunit--origin', nextProps.origin);
     this.updateWithCountDetails(nextProps.countDetails);
+  },
+
+
+  componentWillReceiveProps: function(nextProps, nextState) {
+    this.updateStyles(nextProps);
   },
 
 
