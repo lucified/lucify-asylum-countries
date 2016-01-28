@@ -12,6 +12,7 @@ var ComponentWidthMixin = require('lucify-commons/src/js/components/container-wi
 var RefugeeMap = require('./responsive-refugee-map.jsx');
 var TimeLayer = require('./refugee-map-time-layer.jsx');
 var refugeeConstants = require('../../model/refugee-constants.js');
+var RefugeeTimeRangeIndicator = require('./refugee-time-range-indicator.jsx');
 
 var RefugeesBarCharts = require('./refugees-bar-charts.jsx');
 
@@ -121,10 +122,11 @@ var RefugeeMapSegment = React.createClass({
                   interactionsEnabled={this.interactionsEnabled()} />
               </Tabs.Panel>
               <Tabs.Panel title="Kuvaaja">
-                  <RefugeesBarCharts {...this.props}
-                    timeRange={this.state.timeRange} />
+                <RefugeesBarCharts {...this.props}
+                  timeRange={this.state.timeRange} />
               </Tabs.Panel>
           </Tabs>
+          <RefugeeTimeRangeIndicator timeRange={this.state.timeRange} />
         </div>
 
       </div>
