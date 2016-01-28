@@ -80,8 +80,9 @@ var RefugeeMapSegment = React.createClass({
       return (
         <p className="first last">
           Valitse hiirellä vetämällä kuvaajasta ajanjakso,
-          jota haluat tarkastella. Kuvaajat ja kartta näyttävät
-          aina valitsemaasi ajanjaksoa koskevaa tietoa.
+          jota haluat tarkastella. Osoita hiirellä maata
+          nähdäksesi sinne tehtyjen turvapaikkahakemusten määrän.
+          Klikkaa maata lukitaksesi valinnan.
         </p>
       );
     }
