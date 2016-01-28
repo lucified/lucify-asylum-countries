@@ -274,7 +274,7 @@ RefugeeCountsModel.prototype.getTotalDestinationCounts = function(countryName, t
  * destination country between the given timestamps
  */
 RefugeeCountsModel.prototype.getOriginCountriesByTimeRange = function(destinationCountry, timeRange) {
-  return this._getPairCountriesList(destinationCountry, this.pairCountsByDestination, timeRange[0], timeRange[1],);
+  return this._getPairCountriesList(destinationCountry, this.pairCountsByDestination, timeRange[0], timeRange[1]);
 };
 
 
