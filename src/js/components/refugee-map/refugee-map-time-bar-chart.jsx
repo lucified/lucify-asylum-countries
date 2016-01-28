@@ -1,53 +1,19 @@
 
 var React = require('react');
-var C3Chart = require('lucify-commons/src/js/components/react-c3/c3-chart.jsx');
 
 var refugeeConstants = require('../../model/refugee-constants.js');
 var moment = require('moment');
 var _ = require('underscore');
+var d3 = require('d3');
 
 var theme = require('lucify-commons/src/js/lucify-theme.jsx');
 
 
-var RefugeeMapLineChart = React.createClass({
+var RefugeeMapTimeBarChart = React.createClass({
 
 
   getHeight: function() {
-    return 100;
-  },
-
-  getData: function() {
-    var mom = moment(refugeeConstants.DATA_START_MOMENT);
-    var endMoment = moment(refugeeConstants.DATA_END_MOMENT);
-    var cols = [];
-    var xvals = [];
-
-    do {
-      var totalCount = this.props.refugeeCountsModel.getGlobalArrivingPerMonth(mom);
-      cols.push(totalCount.asylumApplications);
-      xvals.push(mom.unix());
-      mom.add(5, 'days');
-    } while (mom.isBefore(endMoment));
-
-
-    var ret = {
-      x: 'x',
-      columns: [
-        ['x'].concat(xvals),
-        ['data1'].concat(cols)
-      ],
-      colors: {
-        data1: '#ffffff'
-      },
-      regions: {
-        'data1': [{
-            start: this.getDataMissingStartStamp(),
-            end: refugeeConstants.DATA_END_MOMENT.unix(),
-            style: 'dashed'
-        }]
-      }
-    };
-    return ret;
+    return 160;
   },
 
 
@@ -56,15 +22,8 @@ var RefugeeMapLineChart = React.createClass({
   },
 
 
-  handleTimeRangeChange: function(stampRange) {
-    d3.select(".brush")
-        .call(this.brush.extent(stampRange));
-
-    this.updateCountriesWithMissingData(stampRange);
-
-    if (this.props.onTimeRangeChange) {
-      this.props.onTimeRangeChange(stampRange);
-    }
+  getMargins: function() {
+    return {top: 30, right: 30, bottom: 50, left: 60};
   },
 
 
@@ -134,35 +93,6 @@ var RefugeeMapLineChart = React.createClass({
   },
 
 
-  getSpec: function() {
-    return {
-      axis: {
-        x: {
-          show: false
-        },
-        y: {
-          show: false
-        },
-      },
-      point: {
-        show: false
-      },
-      legend: {
-        show: false
-      },
-      padding: {
-        top: 0,
-        bottom: 0,
-        right: 0,
-        left: 0
-      },
-      tooltip: {
-        show: false
-      }
-    };
-  },
-
-
   getDataMissingStartStamp: function() {
     var timestamp = moment(refugeeConstants.DATA_END_MOMENT);
     var countriesWithMissingData = this.props.refugeeCountsModel.getDestinationCountriesWithMissingData(timestamp);
@@ -180,36 +110,114 @@ var RefugeeMapLineChart = React.createClass({
     this.labelSelection = d3.select(React.findDOMNode(this.refs.missingData));
     this.countriesWithMissingDataCache = {};
     this.updateCountriesWithMissingData(this.props.timeRange);
+
+    this.initializeChart(this.props.refugeeCountsModel.getGlobalArrivingPerMonth());
     this.initializeSelectionHandlers();
   },
 
 
+  initializeChart: function(data) {
+    var margin = this.getMargins(),
+        width = parseInt(d3.select(React.findDOMNode(this.refs.chart)).style('width'), 10),
+        height = this.getHeight() - margin.top - margin.bottom;
+
+    width = width - margin.left - margin.right;
+
+    // convert moments to Dates
+    data = data.map(function(d) {
+      return {
+        date: d.date.toDate(),
+        asylumApplications: d.asylumApplications };
+      });
+
+    //this.xScale = d3.time.scale().range([width/data.length/2, width-width/data.length/2]);
+    this.xScale = d3.time.scale().range([0, width]);
+    var yScale = d3.scale.linear().range([height, 0]);
+
+    var xAxis = d3.svg.axis()
+        .scale(this.xScale)
+        .orient("bottom")
+        .tickFormat(d3.time.format("%m/%Y"))
+        .ticks(d3.time.months, 6)
+        .tickSize(5, 5);
+
+    var yAxis = d3.svg.axis()
+        .scale(yScale)
+        .orient("left")
+        .ticks(3)
+        .tickSize(4, 0);
+
+    this.svg = d3.select(React.findDOMNode(this.refs.chart))
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
+
+    this.xScale.domain(d3.extent(data, function(d) { return d.date; }));
+    yScale.domain([0, d3.max(data, function(d) { return d.asylumApplications; })]);
+
+    this.svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis)
+      .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".25em")
+        .attr("transform", "rotate(-45)" );
+
+    this.svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+
+    this.svg.selectAll("bar")
+        .data(data)
+      .enter().append("rect")
+        .style("fill", "steelblue")
+        .attr("x", function(d) { return this.xScale(d.date) + 3; }.bind(this))
+        .attr("width", width/data.length - 6)
+        .attr("y", function(d) { return yScale(d.asylumApplications); })
+        .attr("height", function(d) { return height - yScale(d.asylumApplications); });
+
+    // TODO: mark months with incomplete data
+  },
+
+
   initializeSelectionHandlers: function() {
-    var svg = d3.select(".refugee-map-line-chart__selected-area");
-    var chart = this.refs.c3Chart.chart;
     this.brush = d3.svg.brush()
-      .x(chart.internal.x)
-      .extent(this.props.timeRange)
+      .x(this.xScale)
+      .extent(this.props.timeRange.map(function(d) { return new Date(d * 1000); }))
       .on("brush", this.brushed);
 
-    var gBrush = svg.append("g")
+    var gBrush = this.svg.append("g")
       .attr("class", "brush")
       .call(this.brush);
 
     gBrush.selectAll("rect")
-      .attr("height", this.getHeight());
+      .attr("height", this.getHeight() - this.getMargins().top - this.getMargins().bottom);
   },
 
 
-  // from http://bl.ocks.org/mbostock/6232620
+  handleTimeRangeChange: function(stampRange) {
+    d3.select(".brush")
+        .call(this.brush.extent(stampRange.map(function(d) { return new Date(d * 1000); })));
+
+    this.updateCountriesWithMissingData(stampRange);
+
+    if (this.props.onTimeRangeChange) {
+      this.props.onTimeRangeChange(stampRange);
+    }
+  },
+
+
+  // based on http://bl.ocks.org/mbostock/6232620
   brushed: function() {
-    var dateExtent = this.brush.extent().map(function(stamp) { return new Date(stamp * 1000); }),
+    var dateExtent = this.brush.extent(),
       roundedDateExtent;
 
     // if dragging, preserve the width of the extent
     if (d3.event.mode === "move") {
-      // we need the additional 1 because when we only have one month selected,
-      // it's the first and last day of the same month – the result would then be 0
       var monthsDiff = dateExtent[1].getMonth() - dateExtent[0].getMonth() +
         (12 * (dateExtent[1].getYear() - dateExtent[0].getYear()));
       var d0 = d3.time.month.round(dateExtent[0]),
@@ -240,19 +248,13 @@ var RefugeeMapLineChart = React.createClass({
 
   render: function() {
     return (
-      <div className='refugee-map-line-chart'>
-        <span ref="missingData" className="refugee-map-line-chart__missing-data" />
-        <svg className='refugee-map-line-chart__selected-area' />
-        <C3Chart
-          ref='c3Chart'
-          lineStrokeWidth={2}
-          height={this.getHeight()}
-          spec={this.getSpec()}
-          data={this.getData()} />
+      <div className='refugee-map-time'>
+        <span ref="missingData" className="refugee-map-time__missing-data" />
+        <svg ref='chart' className='refugee-map-time__chart' />
       </div>
     );
   }
 
 });
 
-module.exports = RefugeeMapLineChart;
+module.exports = RefugeeMapTimeBarChart;

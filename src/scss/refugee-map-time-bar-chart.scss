@@ -1,0 +1,36 @@
+
+.refugee-map-time__chart {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.brush .extent {
+  stroke: #000;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+  z-index: 2;
+}
+
+.refugee-map-time__missing-data {
+  position: absolute;
+  left: 1em;
+  top: 0.5em;
+  z-index: 3;
+  color: white;
+  font-size: 14px;
+  padding-right: 4em; // don't go on top of the time chart at small screen sizes
+}
+

@@ -228,11 +228,13 @@ RefugeeCountsModel.prototype._getPairCountryCounts = function(country, pairCount
 
 RefugeeCountsModel.prototype.isDestination = function(country) {
   return this.arrivedRefugeesToCountry[country] != null;
-}
+};
 
 
-RefugeeCountsModel.prototype.getGlobalArrivingPerMonth = function(mom) {
-
+/*
+ * Get total global asylum seekers for the given month.
+ */
+RefugeeCountsModel.prototype.getGlobalArrivingFor = function(mom) {
   if (mom.isAfter(refugeeConstants.DATA_END_MOMENT)) {
     mom = moment(refugeeConstants.DATA_END_MOMENT); // show last available data once we reach it
   }
@@ -243,6 +245,26 @@ RefugeeCountsModel.prototype.getGlobalArrivingPerMonth = function(mom) {
   return {
     asylumApplications: this.globalRefugees[yearIndex][monthIndex].count
   };
+};
+
+
+/*
+ * Get an array of the monthly totals of all asylum seekers,
+ * from DATA_BEGIN_MOMENT to DATA_END_MOMENT. Each object in the
+ * array has the fields 'date' and 'asylumApplications'.
+ */
+RefugeeCountsModel.prototype.getGlobalArrivingPerMonth = function() {
+  var curMoment = moment(refugeeConstants.DATA_START_MOMENT);
+  var globalAsylumSeekersPerMonth = [];
+
+  while (curMoment.isBefore(refugeeConstants.DATA_END_MOMENT)) {
+    var monthData = this.getGlobalArrivingFor(curMoment);
+    monthData.date = moment(curMoment);
+    globalAsylumSeekersPerMonth.push(monthData);
+    curMoment.add(1, 'months');
+  }
+
+  return globalAsylumSeekersPerMonth;
 };
 
 

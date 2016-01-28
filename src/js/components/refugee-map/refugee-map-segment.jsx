@@ -27,6 +27,7 @@ var RefugeeMapSegment = React.createClass({
   getInitialState: function() {
     return {
       timeRange: [
+        // use startOf('month') for the beginning month and endOf('month') for the last
         moment([2015, 0]).startOf('month').unix(),
         moment([2015, 10]).endOf('month').unix()
       ]
