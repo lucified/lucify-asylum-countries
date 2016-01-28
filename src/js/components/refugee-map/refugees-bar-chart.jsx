@@ -13,6 +13,14 @@ var refugeeConstants = require('../../model/refugee-constants.js');
 var RefugeesBarChart = React.createClass({
 
 
+  getDataValues: function() {
+    if (!this.props.refugeeCountsModel) {
+      return null;
+    }
+    return this.getEuroFigures().map(this.props.getValue);
+  },
+
+
   getData: function(){
 
     var baseData = {
@@ -22,7 +30,7 @@ var RefugeesBarChart = React.createClass({
       },
       labels: {
         show: true,
-        format: this.getFormatter()
+        format: this.props.format
       }
     }
 
@@ -30,18 +38,7 @@ var RefugeesBarChart = React.createClass({
       return baseData;
     }
 
-    var data = this.getEuroFigures().map(item => {
-      var counts = this.props.refugeeCountsModel
-        .getTotalDestinationCounts(item.country, this.props.timeRange);
-      var totalCount = counts.asylumApplications;
-      if (this.props.type == 'pop') {
-          return totalCount / item.population;
-      }
-      if (this.props.type == 'abs') {
-        return totalCount;
-      }
-    });
-
+    var data = this.getDataValues();
     var data = {
       columns: [['data1'].concat(data)],
       colors: {
@@ -53,21 +50,21 @@ var RefugeesBarChart = React.createClass({
   },
 
 
-  getFormatter: function() {
-    if (this.props.type == 'pop') {
-        return function(v, id, i, j) {
-            return sprintf("%.0f", v*10000);
-        };
-    }
-    if (this.props.type == 'abs') {
-        return function(v, id, i, j) {
-            return sprintf("%.1fk", v/1000);
-        };
-    }
+  getEuroFigures: function() {
+    var ret = this.getUnsortedEuroFigures().sort(function(a, b) {
+      var ac = this.props.refugeeCountsModel
+        .getTotalDestinationCounts(a.country, refugeeConstants.fullRange)
+        .asylumApplications;
+      var bc = this.props.refugeeCountsModel
+        .getTotalDestinationCounts(b.country, refugeeConstants.fullRange)
+        .asylumApplications;
+      return bc - ac;
+    }.bind(this));
+    return ret;
   },
 
 
-  getEuroFigures: function() {
+  getUnsortedEuroFigures: function() {
       return _.filter(this.props.countryFigures, item => {
         if (item.continent != 'Europe'
           || !this.props.mapModel.getFriendlyNameForCountry(item.country)) {
@@ -109,14 +106,13 @@ var RefugeesBarChart = React.createClass({
   },
 
 
-
   getMax: function() {
-    if (this.props.type == 'abs') {
-      return null;
-    } else if (this.props.type == 'pop') {
-      return 0.07;
+    if (!this.props.max) {
+      return _.reduce(this.getDataValues(), function(prev, curr) {
+          return Math.max(prev, curr);
+      }, 0);
     }
-    return null;
+    return this.props.max;
   },
 
 
@@ -152,8 +148,16 @@ var RefugeesBarChart = React.createClass({
   },
 
 
-  render: function() {
+  adjustY: function() {
+    if (this.refs.theChart != null) {
+      this.refs.theChart.chart.axis.max({
+        y: this.getMax()
+      });
+    }
+  },
 
+
+  render: function() {
     if (!this.props.mapModel) {
       return <div />;
     }
@@ -161,7 +165,10 @@ var RefugeesBarChart = React.createClass({
     var data = this.getData();
     var spec = this.getSpec();
 
-    return <C3Chart data={data}
+    return <C3Chart
+      ref="theChart"
+      data={data}
+      onUpdateData={this.adjustY}
       slowUpdateDebounceTime={0}
       fastUpdateDebounceTime={0}
       spec={spec} aspectRatio={1.0} />
