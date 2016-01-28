@@ -59,7 +59,7 @@ var RefugeeMapSegment = React.createClass({
 
 
   getInteractionsInstruction: function() {
-    if (this.interactionsEnabled()) {
+    if (this.interactionsEnabled() && false) {
       return (
         <div>
           <p className="first">
@@ -79,9 +79,9 @@ var RefugeeMapSegment = React.createClass({
     } else {
       return (
         <p className="first last">
-          The line chart displays the total rate of
-          asylum seekers over time. Drag over the chart
-          to change the selected time period.
+          Valitse hiirellä vetämällä kuvaajasta ajanjakso,
+          jota haluat tarkastella. Kuvaajat ja kartta näyttävät
+          aina valitsemaasi ajanjaksoa koskevaa tietoa.
         </p>
       );
     }
@@ -96,6 +96,12 @@ var RefugeeMapSegment = React.createClass({
             <DividedCols
               first={
                 <div className="inputs__instructions">
+                  <p className="first last">
+                    Tällä työkalulla voit tarkastella
+                    rekisteröityjen turvapaikkahakemusten määrää
+                    eri Euroopan maissa. Luvut perustuvat UNHCR:n tuottamiin
+                    tilastoihin.
+                  </p>
                 </div>
               }
               second={
