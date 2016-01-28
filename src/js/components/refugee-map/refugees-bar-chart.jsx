@@ -60,7 +60,6 @@ var RefugeesBarChart = React.createClass({
         .asylumApplications;
       return bc - ac;
     }.bind(this));
-    console.log(ret);
     return ret;
   },
 
