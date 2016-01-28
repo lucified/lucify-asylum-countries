@@ -316,9 +316,13 @@ RefugeeCountsModel.prototype.getDestinationCountries = function() {
 };
 
 
-RefugeeCountsModel.prototype.getDestinationCountriesWithMissingData = function(moment) {
-  var yearIndex = moment.year() - refugeeConstants.DATA_START_YEAR;
-  var monthIndex = moment.month();
+RefugeeCountsModel.prototype.getDestinationCountriesWithMissingData = function(mom) {
+  if (mom.isAfter(refugeeConstants.DATA_END_MOMENT)) {
+    console.log("Trying to get missing countries past data end moment");
+    mom = moment(refugeeConstants.DATA_END_MOMENT);
+  }
+  var yearIndex = mom.year() - refugeeConstants.DATA_START_YEAR;
+  var monthIndex = mom.month();
   return this.destinationCountriesWithMissingData[yearIndex][monthIndex];
 };
 
