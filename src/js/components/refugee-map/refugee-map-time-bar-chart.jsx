@@ -169,8 +169,8 @@ var RefugeeMapTimeBarChart = React.createClass({
         .call(xAxis)
       .selectAll("text")
         .style("text-anchor", "end")
-        .attr("dx", "-.8em")
-        .attr("dy", ".25em")
+        .attr("dx", "0.6em")
+        .attr("dy", "1.0em")
         .attr("transform", "rotate(-45)" );
 
     this.svg.append("g")
