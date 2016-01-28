@@ -57,10 +57,8 @@ var RefugeeMapLineChart = React.createClass({
 
 
   handleTimeRangeChange: function(stampRange) {
-    d3.select(".brush").transition()
-        .call(this.brush.extent(stampRange))
-        .call(this.brush.event);
-
+    d3.select(".brush")
+        .call(this.brush.extent(stampRange));
 
     this.updateCountriesWithMissingData(stampRange);
 
@@ -77,12 +75,11 @@ var RefugeeMapLineChart = React.createClass({
 
     var currentIndex;
     var currentMoment = moment.unix(timeRange[0]);
-    // endIndex is the first day of the following month
     var endIndex = cacheIndexFor(moment.unix(timeRange[1]));
 
     var countriesWithMissingData = [];
 
-    while ((currentIndex = cacheIndexFor(currentMoment)) < endIndex) {
+    while ((currentIndex = cacheIndexFor(currentMoment)) <= endIndex) {
       var monthCountries = this.countriesWithMissingDataCache[currentIndex];
 
       // fill cache if missing
@@ -184,30 +181,48 @@ var RefugeeMapLineChart = React.createClass({
     this.brush = d3.svg.brush()
       .x(chart.internal.x)
       .extent(this.props.timeRange)
-      .on("brushend", this.brushended);
+      .on("brush", this.brushed);
 
-    this.gBrush = svg.append("g")
+    var gBrush = svg.append("g")
       .attr("class", "brush")
-      .call(this.brush)
-      .call(this.brush.event);
+      .call(this.brush);
 
-    this.gBrush.selectAll("rect")
+    gBrush.selectAll("rect")
       .attr("height", this.getHeight());
   },
 
 
-  // from http://bl.ocks.org/mbostock/6232537
-  brushended: function() {
-    if (!d3.event.sourceEvent) return; // only transition after input
-
+  // from http://bl.ocks.org/mbostock/6232620
+  brushed: function() {
     var dateExtent = this.brush.extent().map(function(stamp) { return new Date(stamp * 1000); }),
-        roundedDateExtent = dateExtent.map(d3.time.month.round);
+      roundedDateExtent;
 
-    // if empty when rounded, use floor & ceil instead
-    if (roundedDateExtent[0] >= roundedDateExtent[1]) {
-      roundedDateExtent[0] = d3.time.month.floor(dateExtent[0]);
-      roundedDateExtent[1] = d3.time.month.ceil(dateExtent[1]);
+    // if dragging, preserve the width of the extent
+    if (d3.event.mode === "move") {
+      // we need the additional 1 because when we only have one month selected,
+      // it's the first and last day of the same month – the result would then be 0
+      var monthsDiff = dateExtent[1].getMonth() - dateExtent[0].getMonth() +
+        (12 * (dateExtent[1].getYear() - dateExtent[0].getYear()));
+      var d0 = d3.time.month.round(dateExtent[0]),
+          d1 = d3.time.month.offset(d0, monthsDiff);
+      roundedDateExtent = [d0, d1];
     }
+
+    // otherwise, if resizing, round both dates
+    else {
+      roundedDateExtent = dateExtent.map(d3.time.month.round);
+
+      // if empty when rounded, use floor & ceil instead
+      if (roundedDateExtent[0] >= roundedDateExtent[1]) {
+        roundedDateExtent[0] = d3.time.month.floor(dateExtent[0]);
+        roundedDateExtent[1] = d3.time.month.ceil(dateExtent[1]);
+      }
+    }
+
+    // d3 rounds to the first day of the following month. DATA_END_MOMENT
+    // is the last day of the previous month. moment.js's endOf('month')
+    // seems to do this, i.e. remove one second
+    roundedDateExtent[1] = d3.time.second.offset(roundedDateExtent[1], -1);
 
     var roundedStampExtent = roundedDateExtent.map(function(date) { return date.getTime() / 1000; });
     this.handleTimeRangeChange(roundedStampExtent);
