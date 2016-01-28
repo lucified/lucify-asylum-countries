@@ -1,7 +1,8 @@
 
 
 .refugee-map-country-counts-layer text {
-	fill: #ffffff;
+	display: none;
+  fill: #ffffff;
     opacity: 0.9;
     font-family: $lucify-header-font;
     text-anchor: middle;

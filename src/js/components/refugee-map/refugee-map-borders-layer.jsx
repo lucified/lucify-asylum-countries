@@ -17,12 +17,25 @@ var getFullCount = function(counts) {
 };
 
 
+var zeroColor = 'rgb(255,255,255)'
+var choroplethColors = [
+  'rgb(247,251,255)',
+  'rgb(222,235,247)',
+  'rgb(198,219,239)',
+  'rgb(158,202,225)',
+  'rgb(107,174,214)',
+  'rgb(66,146,198)',
+  'rgb(33,113,181)',
+  'rgb(8,81,156)',
+  'rgb(8,48,107)'
+]
+
 
 var RefugeeMapBorder = React.createClass({
 
 
   componentDidMount: function() {
-    this.sel = d3.select(React.findDOMNode(this.refs.overlay));
+    this.sel = d3.select(React.findDOMNode(this.refs.subunit));
     this.updateStyles(this.props);
   },
 
@@ -38,17 +51,30 @@ var RefugeeMapBorder = React.createClass({
 
   componentWillReceiveProps: function(nextProps, nextState) {
     this.updateStyles(nextProps);
+    //     .classed('subunit--hovered', nextProps.hovered)
+    //     .classed('subunit--destination', nextProps.destination)
+    //     .classed('subunit--origin', nextProps.origin);
+    //console.log(nextProps.countDetails.destinationCounts)
+    this.updateWithCountDetails(nextProps.countDetails, nextProps.feature);
   },
 
 
-  updateWithCountDetails: function(details) {
-    var fillStyle = null;
+  updateWithCountDetails: function(details, countryFeatures) {
+    var fill = 'rgba(255,255,255,0)';
     if (details != null && this.props.origin && getFullCount(details.originCounts) > 0) {
-       fillStyle = sprintf('rgba(190, 88, 179, %.2f)', details.originScale(getFullCount(details.originCounts)));
-    } else if (details != null && this.props.destination && getFullCount(details.destinationCounts) > 0) {
-       fillStyle = sprintf('rgba(95, 196, 114, %.2f)', details.destinationScale(getFullCount(details.destinationCounts)));
+       //fill = sprintf('rgba(190, 88, 179, %.2f)', details.originScale(getFullCount(details.originCounts)));
+      ////console.log('updateWithCountDetails1')
+
+    } else if (details != null && this.props.destination && details.destinationCounts && details.destinationCounts > 0) {
+      ////console.log('updateWithCountDetails2')
+       //console.log(details)
+       var v = details.destinationCounts
+       fill = v > 0 ? details.destinationScale(v) : zeroColor;
+       ////console.log(fill)
     }
-    this.sel.style('fill', fillStyle);
+    
+    ////console.log(this.sel)
+    this.sel.style('fill', fill);
   },
 
 
@@ -107,11 +133,12 @@ var RefugeeMapBorder = React.createClass({
     return (
       <g>
         <path key="p1"
+           ref="subunit" 
            className={this.props.subunitClass}
            d={d}
            onMouseOver={this.onMouseOver}
            onMouseLeave={this.onMouseLeave} />
-        {overlay}
+         
       </g>
     );
 
@@ -132,14 +159,14 @@ var RefugeeMapBordersLayer = React.createClass({
   },
 
   onMouseOver: function(country) {
-    //console.log("over country" + country);
+    ////console.log("over country" + country);
     if (this.props.onMouseOver) {
        this.props.onMouseOver(country);
     }
   },
 
   onMouseLeave: function(country) {
-    //console.log("out of country" + country);
+    ////console.log("out of country" + country);
     if (this.props.onMouseLeave) {
        this.props.onMouseLeave(country);
     }
@@ -219,12 +246,24 @@ var RefugeeMapBordersLayer = React.createClass({
 
 
   getGlobalCountData: function() {
+      var perHowMany = 100000
+      var max = 0
+      ////console.log(this.props)
       var destinationCounts = this.props.refugeeCountsModel
-        .getTotalDestinationCountsByCountries(this.props.timeRange);
-      var maxDestinationCount = this.getMaxCount(destinationCounts);
-      var exponent = 0.5;
-      var destinationScale = d3.scale.pow()
-        .exponent(exponent).domain([1, maxDestinationCount]).range([0.075, 0.80]);
+        .computePerCountry(this.props.timeRange, (country, total) => {
+          var features = _.find(this.props.mapModel.featureData.features, f => f.properties.ADM0_A3 === country) 
+          var p = features ? this.getPerCapitaCount(total.asylumApplications, features, perHowMany) : 0 
+          ////console.log(country, total, features, p)
+          max = p > max ? p : max
+          return p
+        });
+            
+      ////console.log(destinationCounts)
+      var destinationScale = d3.scale.quantize()
+        .domain([0, max])
+        .range(choroplethColors);
+      
+      
       var countData = {
         originCounts: {},
         destinationCounts: destinationCounts,
@@ -233,7 +272,10 @@ var RefugeeMapBordersLayer = React.createClass({
       };
       return countData;
   },
-
+  
+  getPerCapitaCount: (applications, features, perHowMany) => {
+    return applications / (features.properties.POP_EST / perHowMany)    
+  },
 
   getMaxCount: function(counts) {
     return _.values(counts).reduce(function(prev, item) {
@@ -247,9 +289,9 @@ var RefugeeMapBordersLayer = React.createClass({
         return null;
       }
 
-      if (this.props.country != null) {
-          return this.getCountrySpecificCountData();
-      }
+      // if (this.props.country != null) {
+      //     return this.getCountrySpecificCountData();
+      // }
       return this.getGlobalCountData();
   },
 
@@ -266,12 +308,12 @@ var RefugeeMapBordersLayer = React.createClass({
     var path = d3.geo.path().projection(this.props.projection);
     var countData = this.getCountData();
 
-    return this.props.mapModel.featureData.features.map(function(feature) {
+    return this.props.mapModel.featureData.features.map(feature => {
       var country = feature.properties.ADM0_A3;
       var hparams = this.getHighlightParams(country);
 
       if (countries[country]) {
-        console.log("duplicate for " + country);
+        //console.log("duplicate for " + country);
       }
       countries[country] = true;
 
@@ -303,7 +345,7 @@ var RefugeeMapBordersLayer = React.createClass({
           destination={countData != null && countDetails.destinationCounts != null && countDetails.asylumApplications != 0}
           origin={countData != null && countDetails.originCounts != null && countDetails.asylumApplications != 0} />
       );
-    }.bind(this));
+    });
   },
 
 

@@ -2,39 +2,63 @@
 .refugee-map-borders-layer {
 
 	.subunit {
-	  fill: $lucify-very-dark-blue;
-	  stroke-width: 1px;
-	  //stroke: $lucify-cyan;
-	  stroke: rgba($lucify-cyan, 0.40);
-	  opacity: 0.99;
+	  fill: transparent;
+    // fill: lighten($teak-light-blue, 5);
+	  stroke: rgba(darken($color: $teak-light-blue, $amount: 5), 0.7);    
+    // stroke-width: 1px;    
+    // &:hover {
+  	//   stroke: rgba(darken($color: $teak-light-blue, $amount: 5), 1.0); 
+   	//   stroke-width: 3px;
+    //   z-index: 999;    
+    // }    
+    // z-index: 1;    
+	  
+    //stroke: rgba(darken($color: $teak-light-blue, $amount: 5), 1.0);    
+ 	  //stroke-width: 0px;
+	  // //stroke: $lucify-cyan;
+	  // //stroke: rgba($lucify-cyan, 0.40);
+	  // //opacity: 0.99;
+    // &:hover {
+   	//   stroke-width: 2px;    
+    // }
 	}
 
 	.subunit--overlay {
-	  stroke-width: 1px;
+	  //stroke-width: 1px;
 	  //stroke: $lucify-cyan;
-	  stroke: rgba($lucify-cyan, 0.40);
-
-	  fill: rgba(26, 32, 43, 0.99);
+	  //stroke: darken($color: $teak-light-blue, $amount: 5);
+	  //fill: $teak-light-blue;
+    //display: none;
+	  stroke: rgba(darken($color: red, $amount: 5), 0.9);        
+	  fill: transparent;
 	  // disabling transition for now
-	  transition: fill 0.1s ease-in-out;
-	  opacity: 0.99;
+	  //transition: fill 0.1s ease-in-out;
+	  //opacity: 0.99;
 	}
-
+  
 	.subunit--destination {
-	  opacity: 0.5;
-	  fill: rgba(95, 196, 114, 0.25);
+	  display: none;
+    //opacity: 0.5;
+    //display: none;
+	  //fill: rgba(95, 196, 114, 0.25);
 	}
 
 	.subunit--origin {
+    	  display: none;
+
 	  //opacity: 1.0;
 	  //fill: rgba(190, 88, 179, 0.15);
 	}
 
 	.subunit--hovered {
+	  display: none;
+
 	  fill: rgba(255, 255, 255, 0.10);
 	}
 
 	.subunit-invisible {
+	  display: none;
+
 	  fill: transparent;
 	  stroke: transparent;
 	}

@@ -128,6 +128,7 @@ var RefugeeMap = React.createClass({
 
   getFirstBordersLayer: function() {
     if (this.interactionsEnabled()) {
+      //console.log("rendering firstborders")
       return (
         <BordersLayer
           ref="bordersLayer"
@@ -229,6 +230,16 @@ var RefugeeMap = React.createClass({
         </div>
       );
     }
+
+    return (
+      <div className="refugee-map"
+        style={{width: this.getWidth(), height: this.getHeight()}}>
+
+        {this.getFirstBordersLayer()}
+
+      </div>
+    );
+
 
     return (
       <div className="refugee-map"
