@@ -8,6 +8,7 @@ var RefugeeMapSegment = require('./refugee-map/refugee-map-segment.jsx');
 
 var Loading = require('lucify-commons/src/js/components/loading.jsx');
 
+var WorkInProgress = require('./work-in-progress.jsx');
 
 
 
@@ -55,6 +56,7 @@ var RefugeeMainContent = React.createClass({
 		return (
 			<div className="refugee-main-content"
 				style={{minHeight: 1000}}>
+				<WorkInProgress />
 				{this.getLoadingSegment()}
 				{this.getMapSegment()}
 			</div>
