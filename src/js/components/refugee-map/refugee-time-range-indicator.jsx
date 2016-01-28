@@ -11,9 +11,9 @@ var RefugeeTimeRangeIndicator = React.createClass({
 
     if (startMoment.month() == endMoment.month() &&
         startMoment.year() == endMoment.year()) {
-      return startMoment.format("MMM/YYYY");
+      return startMoment.format("MMM YYYY");
     } else {
-      return startMoment.format("MMM/YYYY") + " - " + endMoment.format("MMM/YYYY");
+      return startMoment.format("MMM YYYY") + " - " + endMoment.format("MMM YYYY");
     }
   },
 
