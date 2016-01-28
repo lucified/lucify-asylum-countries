@@ -45,17 +45,12 @@ var RefugeeMapBorder = React.createClass({
         .classed('subunit--hovered', nextProps.hovered)
         .classed('subunit--destination', nextProps.destination)
         .classed('subunit--origin', nextProps.origin);
-    this.updateWithCountDetails(nextProps.countDetails);
+    this.updateWithCountDetails(nextProps.countDetails, nextProps.feature);
   },
 
 
   componentWillReceiveProps: function(nextProps, nextState) {
     this.updateStyles(nextProps);
-    //     .classed('subunit--hovered', nextProps.hovered)
-    //     .classed('subunit--destination', nextProps.destination)
-    //     .classed('subunit--origin', nextProps.origin);
-    //console.log(nextProps.countDetails.destinationCounts)
-    this.updateWithCountDetails(nextProps.countDetails, nextProps.feature);
   },
 
 
