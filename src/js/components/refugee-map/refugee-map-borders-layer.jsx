@@ -67,18 +67,11 @@ var RefugeeMapBorder = React.createClass({
     var fill = 'rgba(255,255,255,1)';
 
     if (details != null && this.props.origin && getFullCount(details.originCounts) > 0) {
-       //fill = sprintf('rgba(190, 88, 179, %.2f)', details.originScale(getFullCount(details.originCounts)));
-      ////console.log('updateWithCountDetails1')
 
     } else if (details != null && this.props.destination && details.destinationCounts && details.destinationCounts > 0) {
-      ////console.log('updateWithCountDetails2')
-       //console.log(details)
        var v = details.destinationCounts
        fill = v > 0 ? details.destinationScale(v) : zeroColor;
-       ////console.log(fill)
     }
-
-    ////console.log(this.sel)
     this.sel.style('fill', fill);
   },
 
@@ -164,14 +157,12 @@ var RefugeeMapBordersLayer = React.createClass({
   },
 
   onMouseOver: function(country) {
-    ////console.log("over country" + country);
     if (this.props.onMouseOver) {
        this.props.onMouseOver(country);
     }
   },
 
   onMouseLeave: function(country) {
-    ////console.log("out of country" + country);
     if (this.props.onMouseLeave) {
        this.props.onMouseLeave(country);
     }
@@ -253,17 +244,13 @@ var RefugeeMapBordersLayer = React.createClass({
   getGlobalCountData: function() {
       var perHowMany = 100000
       var max = 0
-      ////console.log(this.props)
       var destinationCounts = this.props.refugeeCountsModel
         .computePerCountry(this.props.timeRange, (country, total) => {
           var features = _.find(this.props.mapModel.featureData.features, f => f.properties.ADM0_A3 === country)
           var p = features ? this.getPerCapitaCount(total.asylumApplications, features, perHowMany) : 0
-          ////console.log(country, total, features, p)
           max = p > max ? p : max
           return p
         });
-
-      ////console.log(destinationCounts)
       var destinationScale = d3.scale.quantize()
         .domain([0, max])
         .range(choroplethColors);
@@ -318,7 +305,7 @@ var RefugeeMapBordersLayer = React.createClass({
       var hparams = this.getHighlightParams(country);
 
       if (countries[country]) {
-        //console.log("duplicate for " + country);
+        console.log("duplicate for " + country);
       }
       countries[country] = true;
 
