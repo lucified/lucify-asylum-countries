@@ -7,7 +7,6 @@ var BordersLayer = require('./refugee-map-borders-layer.jsx');
 var CountryCountsLayer = require('./refugee-map-country-counts-layer.jsx');
 var CountryLabelsLayer = require('./refugee-map-country-labels-layer.jsx');
 var CountBarsLayer = require('./refugee-map-count-bars-layer.jsx');
-var RefugeeMapLineChart = require('./refugee-map-line-chart.jsx');
 var SimpleBordersLayer = require('./refugee-map-simple-borders-layer.jsx');
 var RefugeeHighlightMixin = require('./refugee-highlight-mixin.js');
 var DataUpdated = require('../refugee-data-updated.jsx');
