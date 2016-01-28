@@ -3,39 +3,17 @@
 
 	.subunit {
 	  fill: transparent;
-    // fill: lighten($teak-light-blue, 5);
-	  stroke: rgba(darken($color: $teak-light-blue, $amount: 5), 0.7);    
-    // stroke-width: 1px;    
-    // &:hover {
-  	//   stroke: rgba(darken($color: $teak-light-blue, $amount: 5), 1.0); 
-   	//   stroke-width: 3px;
-    //   z-index: 999;    
-    // }    
-    // z-index: 1;    
-	  
-    //stroke: rgba(darken($color: $teak-light-blue, $amount: 5), 1.0);    
- 	  //stroke-width: 0px;
-	  // //stroke: $lucify-cyan;
-	  // //stroke: rgba($lucify-cyan, 0.40);
-	  // //opacity: 0.99;
-    // &:hover {
-   	//   stroke-width: 2px;    
-    // }
+	  stroke: rgba(darken($color: $teak-light-blue, $amount: 5), 0.7);
 	}
 
 	.subunit--overlay {
-	  //stroke-width: 1px;
-	  //stroke: $lucify-cyan;
-	  //stroke: darken($color: $teak-light-blue, $amount: 5);
-	  //fill: $teak-light-blue;
-    //display: none;
-	  stroke: rgba(darken($color: red, $amount: 5), 0.9);        
-	  fill: transparent;
-	  // disabling transition for now
-	  //transition: fill 0.1s ease-in-out;
+	  stroke-width: 3px;
+    opacity: 0;
+    fill: transparent;
+	  transition: opacity 0.2s ease-in-out;
 	  //opacity: 0.99;
 	}
-  
+
 	.subunit--destination {
 	  //display: none;
     //opacity: 0.5;
@@ -44,23 +22,26 @@
 	}
 
 	.subunit--origin {
-    	  display: none;
-
+    display: none;
 	  //opacity: 1.0;
 	  //fill: rgba(190, 88, 179, 0.15);
 	}
 
 	.subunit--hovered {
-	  display: none;
-
-	  fill: rgba(255, 255, 255, 0.10);
+    opacity: 0.5;
+    //stroke: rgb(251, 112,29);
+    stroke: $teas-blue;
 	}
 
-	.subunit-invisible {
-	  display: none;
+  .subunit--clicked {
+    opacity: 0.5;
+    //stroke: rgb(251, 112,29);
+    stroke: $teas-orange;
+  }
 
+	.subunit-invisible {
 	  fill: transparent;
-	  stroke: transparent;
+	  //stroke: transparent;
 	}
 
 }

@@ -2,7 +2,6 @@
 
 .refugee-map {
 	position: relative;
-
 	svg, canvas {
 		position: absolute;
 		top: 0px;
@@ -10,7 +9,8 @@
 }
 
 .refugee-map {
-  background-color: transparent;
+  background-color: rgba(240,240,240, 1.0);
+
   color: #cccccc;
   font-weight: 200;
   letter-spacing: 0.1px;

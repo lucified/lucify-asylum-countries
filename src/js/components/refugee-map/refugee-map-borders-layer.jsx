@@ -16,8 +16,8 @@ var getFullCount = function(counts) {
   return counts.asylumApplications;
 };
 
+var zeroColor = 'rgb(255,255,255)';
 
-var zeroColor = 'rgb(255,255,255)'
 var choroplethColors = [
   'rgb(247,251,255)',
   'rgb(222,235,247)',
@@ -36,13 +36,18 @@ var RefugeeMapBorder = React.createClass({
 
   componentDidMount: function() {
     this.sel = d3.select(React.findDOMNode(this.refs.subunit));
+    this.overlaySel = d3.select(React.findDOMNode(this.refs.overlay));
+
     this.updateStyles(this.props);
   },
 
 
   updateStyles: function(nextProps) {
+    this.overlaySel
+      .classed('subunit--hovered', nextProps.hovered && this.props.subunitClass == 'subunit-invisible')
+      .classed('subunit--clicked', nextProps.clicked && this.props.subunitClass == 'subunit-invisible');
+
     this.sel
-        .classed('subunit--hovered', nextProps.hovered)
         .classed('subunit--destination', nextProps.destination)
         .classed('subunit--origin', nextProps.origin);
     this.updateWithCountDetails(nextProps.countDetails, nextProps.feature);
@@ -55,7 +60,12 @@ var RefugeeMapBorder = React.createClass({
 
 
   updateWithCountDetails: function(details, countryFeatures) {
-    var fill = 'rgba(255,255,255,0)';
+    if (this.props.subunitClass == 'subunit-invisible') {
+      return;
+    }
+
+    var fill = 'rgba(255,255,255,1)';
+
     if (details != null && this.props.origin && getFullCount(details.originCounts) > 0) {
        //fill = sprintf('rgba(190, 88, 179, %.2f)', details.originScale(getFullCount(details.originCounts)));
       ////console.log('updateWithCountDetails1')
@@ -67,7 +77,7 @@ var RefugeeMapBorder = React.createClass({
        fill = v > 0 ? details.destinationScale(v) : zeroColor;
        ////console.log(fill)
     }
-    
+
     ////console.log(this.sel)
     this.sel.style('fill', fill);
   },
@@ -128,12 +138,12 @@ var RefugeeMapBorder = React.createClass({
     return (
       <g>
         <path key="p1"
-           ref="subunit" 
+           ref="subunit"
            className={this.props.subunitClass}
            d={d}
            onMouseOver={this.onMouseOver}
            onMouseLeave={this.onMouseLeave} />
-         
+        {overlay}
       </g>
     );
 
@@ -246,19 +256,19 @@ var RefugeeMapBordersLayer = React.createClass({
       ////console.log(this.props)
       var destinationCounts = this.props.refugeeCountsModel
         .computePerCountry(this.props.timeRange, (country, total) => {
-          var features = _.find(this.props.mapModel.featureData.features, f => f.properties.ADM0_A3 === country) 
-          var p = features ? this.getPerCapitaCount(total.asylumApplications, features, perHowMany) : 0 
+          var features = _.find(this.props.mapModel.featureData.features, f => f.properties.ADM0_A3 === country)
+          var p = features ? this.getPerCapitaCount(total.asylumApplications, features, perHowMany) : 0
           ////console.log(country, total, features, p)
           max = p > max ? p : max
           return p
         });
-            
+
       ////console.log(destinationCounts)
       var destinationScale = d3.scale.quantize()
         .domain([0, max])
         .range(choroplethColors);
-      
-      
+
+
       var countData = {
         originCounts: {},
         destinationCounts: destinationCounts,
@@ -267,9 +277,9 @@ var RefugeeMapBordersLayer = React.createClass({
       };
       return countData;
   },
-  
+
   getPerCapitaCount: (applications, features, perHowMany) => {
-    return applications / (features.properties.POP_EST / perHowMany)    
+    return applications / (features.properties.POP_EST / perHowMany)
   },
 
   getMaxCount: function(counts) {
@@ -336,6 +346,7 @@ var RefugeeMapBordersLayer = React.createClass({
           width={this.props.width}
           projection={this.props.projection}
           countDetails={countDetails}
+          clicked={this.props.clickedCountry == country}
           hovered={this.props.country == country}
           destination={countData != null && countDetails.destinationCounts != null && countDetails.asylumApplications != 0}
           origin={countData != null && countDetails.originCounts != null && countDetails.asylumApplications != 0} />
@@ -354,7 +365,8 @@ var RefugeeMapBordersLayer = React.createClass({
       return false;
     }
 
-    if (nextProps.country !== this.props.country) {
+    if (nextProps.country !== this.props.country
+      || nextProps.clickedCountry !== this.props.clickedCountry) {
       return true;
     }
 

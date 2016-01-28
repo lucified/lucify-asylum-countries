@@ -1,9 +1,9 @@
 
 .refugee-map-country-labels-layer {
-  display: none;
+
 	text {
-	  fill: #ffffff;
-	  opacity: 0.9;
+	  fill: $teas-gray;
+	  opacity: 1.0;
 	  font-family: $lucify-header-font;
 	  text-anchor: middle;
 	  font-size: 12px;
@@ -14,13 +14,12 @@
 	}
 
 	.destination {
-		fill: #C9F0CE;
-
+		fill: $teas-gray;
 	}
 
 	.origin {
-  		fill: #FFC4D8;
-  		//fill: rgba(190, 88, 179, 1.0);
+  	fill: $teas-gray;
+  	//fill: rgba(190, 88, 179, 1.0);
 		//fill: rgba(255, 255, 255, 0.8);
 	}
 }

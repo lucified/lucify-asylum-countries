@@ -10,15 +10,18 @@ var RefugeeMapCountryCountsLayer = React.createClass({
 
 
 
-    renderText: function(country, count) {
+    renderText: function(country, count, type) {
       if (this.props.country === null) {
          return null;
       }
 
       var point = this.props.projection(
          this.props.mapModel.getCenterPointOfCountry(country));
+
       return (
-         <text key={country} x={point[0]} y={point[1] + 30}>{count}</text>
+         <text key={country} x={point[0]} y={point[1] + 30} className={type}>
+          {count}
+         </text>
       );
     },
 
@@ -38,7 +41,7 @@ var RefugeeMapCountryCountsLayer = React.createClass({
           var cc = counts[country]
           if (cc != null) {
             var val = cc.asylumApplications;
-            items.push(this.renderText(country, -val));
+            items.push(this.renderText(country, -val, 'origin'));
             totalReceivedCount += val;
           }
         }.bind(this));
@@ -51,7 +54,7 @@ var RefugeeMapCountryCountsLayer = React.createClass({
           var cc = counts[country]
           if (cc != null) {
             var val = cc.asylumApplications;
-            items.push(this.renderText(country, cc.asylumApplications));
+            items.push(this.renderText(country, cc.asylumApplications, 'destination'));
             totalLeftCount += val;
           }
         }.bind(this));
@@ -74,6 +77,8 @@ var RefugeeMapCountryCountsLayer = React.createClass({
 
       var count = totalReceivedCount - totalLeftCount;
 
+
+
       // if (totalReceivedCount > totalLeftCount) {
       //   count = totalReceivedCount;
       // } else {
@@ -81,7 +86,7 @@ var RefugeeMapCountryCountsLayer = React.createClass({
       // }
 
       if (isFinite(count) && count != 0 && this.props.country !== "SRB") {
-        items.push(this.renderText(this.props.country, count));
+        items.push(this.renderText(this.props.country, count, 'selected'));
       }
 
       return items;
