@@ -56,7 +56,7 @@ var TotalsBarChart = React.createClass({
 
   getMax: function() {
     if (this.props.staticScale) {
-      return 200000;
+      return 800*1000;
     }
     return null;
   },
