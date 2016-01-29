@@ -10,15 +10,21 @@
   font: 10px sans-serif;
 }
 
+.timebar {
+  fill: $teas-blue;
+  stroke: rgba(255, 255, 255, 1.0);
+  stroke-width: 1px;
+}
+
 .axis path,
 .axis line {
   fill: none;
-  stroke: #000;
+  stroke: rgba(0, 0, 0, 0.9);
   shape-rendering: crispEdges;
 }
 
 .brush .extent {
-  stroke: #000;
+  //stroke: #000;
   fill-opacity: .125;
   shape-rendering: crispEdges;
   z-index: 2;

@@ -136,13 +136,14 @@ var RefugeeMapTimeBarChart = React.createClass({
     var xAxis = d3.svg.axis()
         .scale(this.xScale)
         .orient("bottom")
-        .tickFormat(d3.time.format("%m/%Y"))
-        .ticks(d3.time.months, 6)
+        .tickFormat(d3.time.format("%Y"))
+        .ticks(d3.time.months, 12)
         .tickSize(5, 5);
 
     var yAxis = d3.svg.axis()
         .scale(yScale)
         .orient("left")
+        .tickFormat(d3.format('s'))
         .ticks(3)
         .tickSize(4, 0);
 
@@ -163,28 +164,32 @@ var RefugeeMapTimeBarChart = React.createClass({
     ]);
     yScale.domain([0, d3.max(data, function(d) { return d.asylumApplications; })]);
 
-    this.svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-      .selectAll("text")
-        .style("text-anchor", "end")
-        .attr("dx", "0.6em")
-        .attr("dy", "1.0em")
-        .attr("transform", "rotate(-45)" );
 
-    this.svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis);
 
     this.svg.selectAll("bar")
         .data(data)
       .enter().append("rect")
-        .style("fill", "steelblue")
-        .attr("x", function(d) { return this.xScale(d.date) + 3; }.bind(this))
-        .attr("width", width/data.length - 6)
-        .attr("y", function(d) { return yScale(d.asylumApplications); })
-        .attr("height", function(d) { return height - yScale(d.asylumApplications); });
+        .attr("class", "timebar")
+        .attr("x", d => this.xScale(d.date))
+        .attr("width", Math.ceil(width/data.length))
+        .attr("y", d => yScale(d.asylumApplications))
+        .attr("height", d => height - yScale(d.asylumApplications));
+
+    this.svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis)
+      //.selectAll("text")
+        //.style("text-anchor", "end")
+        //.attr("dx", "0.6em")
+        //.attr("dy", "1.0em")
+        //.attr("transform", "rotate(-45)" );
+
+
+
+    this.svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
 
     // TODO: mark months with incomplete data
   },
