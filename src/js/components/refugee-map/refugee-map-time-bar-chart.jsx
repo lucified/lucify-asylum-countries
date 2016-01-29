@@ -17,11 +17,6 @@ var RefugeeMapTimeBarChart = React.createClass({
   },
 
 
-  shouldComponentUpdate: function() {
-    return false;
-  },
-
-
   getMargins: function() {
     return {top: 30, right: 30, bottom: 50, left: 60};
   },
@@ -84,11 +79,19 @@ var RefugeeMapTimeBarChart = React.createClass({
   },
 
 
+  getSourceData: function() {
+    if (!this.props.country) {
+        return this.props.refugeeCountsModel.getGlobalArrivingPerMonth();
+    }
+    return this.props.refugeeCountsModel.getGlobalArrivingPerMonthForCountry(this.props.country);
+  },
+
+
   componentDidMount: function() {
     this.labelSelection = d3.select(React.findDOMNode(this.refs.missingData));
     this.updateCountriesWithMissingData(this.props.timeRange);
 
-    this.initializeChart(this.props.refugeeCountsModel.getGlobalArrivingPerMonth());
+    this.initializeChart(this.getSourceData());
     this.initializeSelectionHandlers();
   },
 
@@ -109,6 +112,8 @@ var RefugeeMapTimeBarChart = React.createClass({
 
     this.xScale = d3.time.scale().range([0, width]);
     var yScale = d3.scale.linear().range([height, 0]);
+    this.yScale = yScale;
+    this.height = height;
 
     var xAxis = d3.svg.axis()
         .scale(this.xScale)
@@ -117,7 +122,7 @@ var RefugeeMapTimeBarChart = React.createClass({
         .ticks(d3.time.months, 12)
         .tickSize(5, 5);
 
-    var yAxis = d3.svg.axis()
+    this.yAxis = d3.svg.axis()
         .scale(yScale)
         .orient("left")
         .tickFormat(d3.format('s'))
@@ -139,7 +144,6 @@ var RefugeeMapTimeBarChart = React.createClass({
       data[0].date,
       d3.time.second.offset(d3.time.month.offset(data[data.length-1].date, 1), -1)
     ]);
-    yScale.domain([0, d3.max(data, function(d) { return d.asylumApplications; })]);
 
     this.svg
         .append('defs')
@@ -161,8 +165,8 @@ var RefugeeMapTimeBarChart = React.createClass({
         .attr("class", "timebar")
         .attr("x", d => this.xScale(d.date))
         .attr("width", Math.ceil(width/data.length))
-        .attr("y", d => yScale(d.asylumApplications))
-        .attr("height", d => height - yScale(d.asylumApplications))
+        //.attr("y", d => yScale(d.asylumApplications))
+        //.attr("height", d => height - yScale(d.asylumApplications))
         .attr("fill", d =>
           beginningOfIncompleteData.isBefore(moment(d.date)) ?
             'url(#diagonalHatch)' : 'rgb(0, 111, 185)');
@@ -174,9 +178,47 @@ var RefugeeMapTimeBarChart = React.createClass({
 
     this.svg.append("g")
         .attr("class", "y axis")
-        .call(yAxis);
+        .call(this.yAxis);
 
+    this.updateWithData(data);
     // TODO: make chart responsive to window resizes
+  },
+
+
+  updateWithData: function(data) {
+      this.yScale.domain([0, d3.max(data, function(d) { return d.asylumApplications; })]);
+      this.yAxis.scale(this.yScale);
+
+      this.svg.select('.y')
+        .call(this.yAxis);
+
+      this.svg.selectAll("rect")
+          .data(data)
+          .attr("y", d => this.yScale(d.asylumApplications))
+          .attr("height", d => this.height - this.yScale(d.asylumApplications))
+          .attr("fill", d => {
+              if (!this.props.country) {
+                 var beginningOfIncompleteData = this.getDataMissingStartMoment();
+                 if (beginningOfIncompleteData.isBefore(moment(d.date))) {
+                    return 'url(#diagonalHatch)';
+                 } else {
+                    return 'rgb(0, 111, 185)';
+                 }
+              } else {
+                return 'rgb(0, 111, 185)';
+              }
+
+          });
+  },
+
+
+  shouldComponentUpdate: function() {
+    return true;
+  },
+
+
+  componentDidUpdate: function() {
+      this.updateWithData(this.getSourceData());
   },
 
 
