@@ -94,7 +94,7 @@ var RefugeeMapTimeBarChart = React.createClass({
   },
 
 
-  getDataMissingStartStamp: function() {
+  getDataMissingStartMoment: function() {
     var timestamp = moment(refugeeConstants.DATA_END_MOMENT);
     var countriesWithMissingData = this.props.refugeeCountsModel.getDestinationCountriesWithMissingData(timestamp);
 
@@ -103,7 +103,7 @@ var RefugeeMapTimeBarChart = React.createClass({
       countriesWithMissingData = this.props.refugeeCountsModel.getDestinationCountriesWithMissingData(timestamp);
     }
 
-    return timestamp.endOf('month').unix();
+    return timestamp.endOf('month');
   },
 
 
@@ -165,7 +165,19 @@ var RefugeeMapTimeBarChart = React.createClass({
     ]);
     yScale.domain([0, d3.max(data, function(d) { return d.asylumApplications; })]);
 
+    this.svg
+        .append('defs')
+        .append('pattern')
+          .attr('id', 'diagonalHatch')
+          .attr('patternUnits', 'userSpaceOnUse')
+          .attr('width', 4)
+          .attr('height', 4)
+        .append('path')
+          .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
+          .attr('stroke', 'rgb(0, 111, 185)')
+          .attr('stroke-width', 2);
 
+    var beginningOfIncompleteData = this.getDataMissingStartMoment();
 
     this.svg.selectAll("bar")
         .data(data)
@@ -174,25 +186,21 @@ var RefugeeMapTimeBarChart = React.createClass({
         .attr("x", d => this.xScale(d.date))
         .attr("width", Math.ceil(width/data.length))
         .attr("y", d => yScale(d.asylumApplications))
-        .attr("height", d => height - yScale(d.asylumApplications));
+        .attr("height", d => height - yScale(d.asylumApplications))
+        .attr("fill", d =>
+          beginningOfIncompleteData.isBefore(moment(d.date)) ?
+            'url(#diagonalHatch)' : 'rgb(0, 111, 185)');
 
     this.svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-      //.selectAll("text")
-        //.style("text-anchor", "end")
-        //.attr("dx", "0.6em")
-        //.attr("dy", "1.0em")
-        //.attr("transform", "rotate(-45)" );
-
-
+        .call(xAxis);
 
     this.svg.append("g")
         .attr("class", "y axis")
         .call(yAxis);
 
-    // TODO: mark months with incomplete data
+    // TODO: make chart responsive to window resizes
   },
 
 
