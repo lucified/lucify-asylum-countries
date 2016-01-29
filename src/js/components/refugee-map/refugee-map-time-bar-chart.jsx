@@ -35,10 +35,6 @@ var RefugeeMapTimeBarChart = React.createClass({
 
     var textForCountryList = function(countryList) {
 
-      if (this.isEuroCountrySelected()) {
-        return "Maahan <b>" + this.props.mapModel.getFriendlyNameForCountry(this.props.country) + "</b> turvapaikkahakemuksen jättäneet";
-      }
-
       var missingDataText = '';
       var countryCount = countryList.length;
 
@@ -60,30 +56,31 @@ var RefugeeMapTimeBarChart = React.createClass({
       return "Eurooppaan saapuneet turvapaikanhakijat <span class='missing-data-real'>" + missingDataText + "</span>";
     }.bind(this);
 
-
     var tooltipForCountryList = function(countryList) {
 
-      if (this.isEuroCountrySelected()) {
-        return "Maahan " + this.props.mapModel.getFriendlyNameForCountry(this.props.country) + " turvapaikkahakemuksen jättäneet";
-      }
-
       if (countryList.length > 0) {
-          return "Dataa puuttuu seuraavista maista: " + countryList.join(', ');
+        return "Dataa puuttuu seuraavista maista: " + countryList.join(', ');
       } else {
-          return '';
+        return '';
       }
 
     }.bind(this);
 
-    var countriesWithMissingData = this.props.refugeeCountsModel
-      .getDestinationCountriesWithMissingDataForTimeRange(timeRange)
-      .map(item => {
-          return this.props.mapModel.getFriendlyNameForCountry(item);
-      });
+    if (this.isEuroCountrySelected()) {
+      this.labelSelection
+        .attr('title', "Maahan " + this.props.mapModel.getFriendlyNameForCountry(this.props.country) + " turvapaikkahakemuksen jättäneet")
+        .html("Maahan <b>" + this.props.mapModel.getFriendlyNameForCountry(this.props.country) + "</b> turvapaikkahakemuksen jättäneet");
+    } else {
+      var countriesWithMissingData = this.props.refugeeCountsModel
+        .getDestinationCountriesWithMissingDataForTimeRange(timeRange)
+        .map(item => {
+            return this.props.mapModel.getFriendlyNameForCountry(item);
+        });
 
-    this.labelSelection
-      .attr('title', tooltipForCountryList(countriesWithMissingData))
-      .html(textForCountryList(countriesWithMissingData));
+      this.labelSelection
+        .attr('title', tooltipForCountryList(countriesWithMissingData))
+        .html(textForCountryList(countriesWithMissingData));
+    }
   },
 
 
