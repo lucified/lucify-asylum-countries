@@ -25,6 +25,11 @@ var RefugeeMapTimeBarChart = React.createClass({
   updateCountriesWithMissingData: function(timeRange) {
 
     var textForCountryList = function(countryList) {
+
+      if (this.props.country != null) {
+        return "Maahan <b>" + this.props.mapModel.getFriendlyNameForCountry(this.props.country) + "</b> turvapaikkahakemuksen jättäneet";
+      }
+
       var missingDataText = '';
       var countryCount = countryList.length;
 
@@ -44,15 +49,22 @@ var RefugeeMapTimeBarChart = React.createClass({
       }
 
       return missingDataText;
-    };
+    }.bind(this);
+
 
     var tooltipForCountryList = function(countryList) {
-      if (countryList.length > 0) {
-        return "Dataa puuttuu seuraavista maista: " + countryList.join(', ');
-      } else {
-        return '';
+
+      if (this.props.country != null) {
+        return "Maahan " + this.props.mapModel.getFriendlyNameForCountry(this.props.country) + " turvapaikkahakemuksen jättäneet";
       }
-    };
+
+      if (countryList.length > 0) {
+          return "Dataa puuttuu seuraavista maista: " + countryList.join(', ');
+      } else {
+          return '';
+      }
+
+    }.bind(this);
 
     var countriesWithMissingData = this.props.refugeeCountsModel
       .getDestinationCountriesWithMissingDataForTimeRange(timeRange)
@@ -62,7 +74,7 @@ var RefugeeMapTimeBarChart = React.createClass({
 
     this.labelSelection
       .attr('title', tooltipForCountryList(countriesWithMissingData))
-      .text(textForCountryList(countriesWithMissingData));
+      .html(textForCountryList(countriesWithMissingData));
   },
 
 
@@ -219,6 +231,7 @@ var RefugeeMapTimeBarChart = React.createClass({
 
   componentDidUpdate: function() {
       this.updateWithData(this.getSourceData());
+      this.updateCountriesWithMissingData(this.props.timeRange);
   },
 
 
