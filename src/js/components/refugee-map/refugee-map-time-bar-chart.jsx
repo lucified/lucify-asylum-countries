@@ -28,9 +28,6 @@ var RefugeeMapTimeBarChart = React.createClass({
 
 
   updateCountriesWithMissingData: function(timeRange) {
-    var cacheIndexFor = function(mom) {
-      return mom.year() * 12 + mom.month();
-    };
 
     var textForCountryList = function(countryList) {
       var missingDataText = '';
@@ -62,31 +59,11 @@ var RefugeeMapTimeBarChart = React.createClass({
       }
     };
 
-    var currentIndex;
-    var currentMoment = moment.unix(timeRange[0]);
-    var endIndex = cacheIndexFor(moment.unix(timeRange[1]));
-
-    var countriesWithMissingData = [];
-
-    while ((currentIndex = cacheIndexFor(currentMoment)) <= endIndex) {
-      var monthCountries = this.countriesWithMissingDataCache[currentIndex];
-
-      // fill cache if missing
-      if (monthCountries === undefined) {
-        var countryCodes = this.props.refugeeCountsModel
-          .getDestinationCountriesWithMissingData(currentMoment);
-        monthCountries = this.countriesWithMissingDataCache[currentIndex] =
-          _.map(countryCodes, function(countryCode) {
-            return this.props.mapModel.getFriendlyNameForCountry(countryCode);
-          }.bind(this));
-      }
-
-      countriesWithMissingData = countriesWithMissingData.concat(monthCountries);
-      currentMoment.add(1, 'months');
-    }
-
-    countriesWithMissingData = _.uniq(countriesWithMissingData);
-    countriesWithMissingData.sort();
+    var countriesWithMissingData = this.props.refugeeCountsModel
+      .getDestinationCountriesWithMissingDataForTimeRange(timeRange)
+      .map(item => {
+          return this.props.mapModel.getFriendlyNameForCountry(item);
+      });
 
     this.labelSelection
       .attr('title', tooltipForCountryList(countriesWithMissingData))
@@ -109,7 +86,6 @@ var RefugeeMapTimeBarChart = React.createClass({
 
   componentDidMount: function() {
     this.labelSelection = d3.select(React.findDOMNode(this.refs.missingData));
-    this.countriesWithMissingDataCache = {};
     this.updateCountriesWithMissingData(this.props.timeRange);
 
     this.initializeChart(this.props.refugeeCountsModel.getGlobalArrivingPerMonth());

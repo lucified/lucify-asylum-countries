@@ -1,7 +1,7 @@
 
 var React = require('react');
 var d3 = require('d3');
-
+var moment = require('moment');
 var classNames = require('classnames');
 var _ = require('underscore');
 var sprintf = require('sprintf');
@@ -119,11 +119,13 @@ var RefugeeMapBorder = React.createClass({
   updateStyles: function(nextProps) {
     this.overlaySel
       .classed('subunit--hovered', nextProps.hovered && this.props.subunitClass == 'subunit-invisible')
-      .classed('subunit--clicked', nextProps.clicked && this.props.subunitClass == 'subunit-invisible');
+      .classed('subunit--clicked', nextProps.clicked && this.props.subunitClass == 'subunit-invisible')
+      .classed('subunit--missing-data', nextProps.missingData);
 
     this.sel
         .classed('subunit--destination', nextProps.destination)
         .classed('subunit--origin', nextProps.origin);
+
     this.updateWithCountDetails(nextProps.countDetails, nextProps.feature);
   },
 
@@ -369,6 +371,12 @@ var RefugeeMapBordersLayer = React.createClass({
 
     var countries = {};
 
+    var missingDataCountries = [];
+    if (this.props.refugeeCountsModel != null) {
+      missingDataCountries = this.props.refugeeCountsModel
+        .getDestinationCountriesWithMissingDataForTimeRange(this.props.timeRange);
+    }
+
     // while we use React to manage the DOM,
     // we still use D3 to calculate the path
     var path = d3.geo.path().projection(this.props.projection);
@@ -406,6 +414,7 @@ var RefugeeMapBordersLayer = React.createClass({
           width={this.props.width}
           projection={this.props.projection}
           countDetails={countDetails}
+          missingData={missingDataCountries.indexOf(country) != -1}
           clicked={this.props.clickedCountry == country}
           hovered={this.props.country == country}
           destination={countData != null && countDetails.destinationCounts != null && countDetails.asylumApplications != 0}
@@ -438,6 +447,11 @@ var RefugeeMapBordersLayer = React.createClass({
   },
 
 
+  getDefs: function() {
+      return '<pattern id="diagonal-stripe-4" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSdibGFjaycvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J3doaXRlJyBzdHJva2Utd2lkdGg9JzMnLz4KPC9zdmc+" x="0" y="0" width="10" height="10"> </image> </pattern>';
+  },
+
+
   render: function() {
 
     var countData = this.getCountData();
@@ -447,11 +461,11 @@ var RefugeeMapBordersLayer = React.createClass({
         <svg className="refugee-map-borders-layer"
             style={{width: this.props.width, height: this.props.height}}
             onClick={this.onClick}>
+            <defs dangerouslySetInnerHTML={{__html: this.getDefs()}} />
             {this.getPaths(countData)}
         </svg>
         <ColorsLegend countData={countData} width={this.props.width} height={this.props.height} />
       </div>
-
     );
   },
 

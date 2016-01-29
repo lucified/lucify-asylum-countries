@@ -27,6 +27,8 @@ var RefugeeCountsModel = function(asylumData) {
   this.pairCountsByDestination = {};
   this.pairCountsByOrigin = {};
   this.destinationCountriesWithMissingData = {};
+  this.countriesWithMissingDataCache = {};
+
   this.globalRefugees = [];
 
   this._initializeDataStructures(asylumData);
@@ -326,6 +328,7 @@ RefugeeCountsModel.prototype.getDestinationCountriesByTimeRange = function(origi
 
 
 
+
 /*
  * Get counts of asylum seekers and refugees who
  * have arrived at destinationCountry between given timestamps
@@ -363,6 +366,41 @@ RefugeeCountsModel.prototype.getDestinationCountriesWithMissingData = function(m
   var monthIndex = mom.month();
   return this.destinationCountriesWithMissingData[yearIndex][monthIndex];
 };
+
+
+RefugeeCountsModel.prototype.getDestinationCountriesWithMissingDataForTimeRange = function(timeRange) {
+
+  var cacheIndexFor = function(mom) {
+      return mom.year() * 12 + mom.month();
+  };
+
+  var currentIndex;
+  var currentMoment = moment.unix(timeRange[0]);
+  var endIndex = cacheIndexFor(moment.unix(timeRange[1]));
+
+  var countriesWithMissingData = [];
+
+  while ((currentIndex = cacheIndexFor(currentMoment)) <= endIndex) {
+    var monthCountries = this.countriesWithMissingDataCache[currentIndex];
+
+    // fill cache if missing
+    if (monthCountries === undefined) {
+      var countryCodes = this.getDestinationCountriesWithMissingData(currentMoment);
+      monthCountries = this.countriesWithMissingDataCache[currentIndex] =
+        _.map(countryCodes, function(countryCode) {
+          return countryCode;
+        }.bind(this));
+    }
+
+    countriesWithMissingData = countriesWithMissingData.concat(monthCountries);
+    currentMoment.add(1, 'months');
+  }
+
+  countriesWithMissingData = _.uniq(countriesWithMissingData);
+  countriesWithMissingData.sort();
+
+  return countriesWithMissingData;
+}
 
 
 
