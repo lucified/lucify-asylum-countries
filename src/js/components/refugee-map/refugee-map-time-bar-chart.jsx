@@ -38,13 +38,14 @@ var RefugeeMapTimeBarChart = React.createClass({
 
       if (countryCount > 0) {
         if (countryCount > 5) {
-          missingDataText = "Missing data from " + countryList.slice(0, 4).join(', ') +
-            " and " + (countryCount - 4) + " other countries";
+          missingDataText = "Dataa puuttuu seuraavista maista: " +
+            countryList.slice(0, 4).join(', ') + " ja " +
+            (countryCount - 4) + " muuta maata";
         } else {
-          missingDataText = "Missing data from ";
+          missingDataText = "Dataa puuttuu seuraavista maista: ";
           if (countryCount > 1) {
             missingDataText += countryList.slice(0, countryCount - 1).join(', ') +
-              " and ";
+              " ja ";
           }
           missingDataText += countryList[countryCount - 1];
         }
@@ -55,7 +56,7 @@ var RefugeeMapTimeBarChart = React.createClass({
 
     var tooltipForCountryList = function(countryList) {
       if (countryList.length > 0) {
-        return "Missing data for " + countryList.join(', ');
+        return "Dataa puuttuu seuraavista maista: " + countryList.join(', ');
       } else {
         return '';
       }
