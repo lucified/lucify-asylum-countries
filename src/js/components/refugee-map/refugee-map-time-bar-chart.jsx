@@ -17,29 +17,34 @@ var RefugeeMapTimeBarChart = React.createClass({
   },
 
 
-  shouldComponentUpdate: function() {
-    return false;
+  getMargins: function() {
+    return {top: 30, right: 30, bottom: 50, left: 60};
   },
 
 
-  getMargins: function() {
-    return {top: 30, right: 30, bottom: 50, left: 60};
+  isEuroCountrySelected: function() {
+      if (!this.props.country) {
+        return false;
+      }
+      return this.props.countryFigures[this.props.country].continent == 'Europe'
+        && this.props.country != 'RUS';
   },
 
 
   updateCountriesWithMissingData: function(timeRange) {
 
     var textForCountryList = function(countryList) {
+
       var missingDataText = '';
       var countryCount = countryList.length;
 
       if (countryCount > 0) {
         if (countryCount > 5) {
-          missingDataText = "Dataa puuttuu seuraavista maista: " +
+          missingDataText = "Dataa puuttuu: " +
             countryList.slice(0, 4).join(', ') + " ja " +
             (countryCount - 4) + " muuta maata";
         } else {
-          missingDataText = "Dataa puuttuu seuraavista maista: ";
+          missingDataText = "Dataa puuttuu: ";
           if (countryCount > 1) {
             missingDataText += countryList.slice(0, countryCount - 1).join(', ') +
               " ja ";
@@ -48,26 +53,34 @@ var RefugeeMapTimeBarChart = React.createClass({
         }
       }
 
-      return missingDataText;
-    };
+      return "Eurooppaan saapuneet turvapaikanhakijat <span class='missing-data-real'>" + missingDataText + "</span>";
+    }.bind(this);
 
     var tooltipForCountryList = function(countryList) {
+
       if (countryList.length > 0) {
         return "Dataa puuttuu seuraavista maista: " + countryList.join(', ');
       } else {
         return '';
       }
-    };
 
-    var countriesWithMissingData = this.props.refugeeCountsModel
-      .getDestinationCountriesWithMissingDataForTimeRange(timeRange)
-      .map(item => {
-          return this.props.mapModel.getFriendlyNameForCountry(item);
-      });
+    }.bind(this);
 
-    this.labelSelection
-      .attr('title', tooltipForCountryList(countriesWithMissingData))
-      .text(textForCountryList(countriesWithMissingData));
+    if (this.isEuroCountrySelected()) {
+      this.labelSelection
+        .attr('title', "Maahan " + this.props.mapModel.getFriendlyNameForCountry(this.props.country) + " turvapaikkahakemuksen jättäneet")
+        .html("Maahan <b>" + this.props.mapModel.getFriendlyNameForCountry(this.props.country) + "</b> turvapaikkahakemuksen jättäneet");
+    } else {
+      var countriesWithMissingData = this.props.refugeeCountsModel
+        .getDestinationCountriesWithMissingDataForTimeRange(timeRange)
+        .map(item => {
+            return this.props.mapModel.getFriendlyNameForCountry(item);
+        });
+
+      this.labelSelection
+        .attr('title', tooltipForCountryList(countriesWithMissingData))
+        .html(textForCountryList(countriesWithMissingData));
+    }
   },
 
 
@@ -84,11 +97,19 @@ var RefugeeMapTimeBarChart = React.createClass({
   },
 
 
+  getSourceData: function() {
+    if (!this.isEuroCountrySelected()) {
+        return this.props.refugeeCountsModel.getGlobalArrivingPerMonth();
+    }
+    return this.props.refugeeCountsModel.getGlobalArrivingPerMonthForCountry(this.props.country);
+  },
+
+
   componentDidMount: function() {
     this.labelSelection = d3.select(React.findDOMNode(this.refs.missingData));
     this.updateCountriesWithMissingData(this.props.timeRange);
 
-    this.initializeChart(this.props.refugeeCountsModel.getGlobalArrivingPerMonth());
+    this.initializeChart(this.getSourceData());
     this.initializeSelectionHandlers();
   },
 
@@ -108,7 +129,9 @@ var RefugeeMapTimeBarChart = React.createClass({
       });
 
     this.xScale = d3.time.scale().range([0, width]);
-    var yScale = d3.scale.linear().range([height, 0]);
+    this.yScale = d3.scale.linear().range([height, 0]);
+    this.height = height;
+    this.width = width;
 
     var xAxis = d3.svg.axis()
         .scale(this.xScale)
@@ -117,8 +140,8 @@ var RefugeeMapTimeBarChart = React.createClass({
         .ticks(d3.time.months, 12)
         .tickSize(5, 5);
 
-    var yAxis = d3.svg.axis()
-        .scale(yScale)
+    this.yAxis = d3.svg.axis()
+        .scale(this.yScale)
         .orient("left")
         .tickFormat(d3.format('s'))
         .ticks(3)
@@ -130,16 +153,6 @@ var RefugeeMapTimeBarChart = React.createClass({
       .append("g")
         .attr("transform",
               "translate(" + margin.left + "," + margin.top + ")");
-
-    // Kludge ahead: because data contains Dates that are at the beginning of
-    // each month, we need to extend the domain to the end of the last month
-    // in the array. Otherwise we can't pick that month with the brush.
-    // Do this by adding a month and then subtracting a second.
-    this.xScale.domain([
-      data[0].date,
-      d3.time.second.offset(d3.time.month.offset(data[data.length-1].date, 1), -1)
-    ]);
-    yScale.domain([0, d3.max(data, function(d) { return d.asylumApplications; })]);
 
     this.svg
         .append('defs')
@@ -153,20 +166,6 @@ var RefugeeMapTimeBarChart = React.createClass({
           .attr('stroke', 'rgb(0, 111, 185)')
           .attr('stroke-width', 2);
 
-    var beginningOfIncompleteData = this.getDataMissingStartMoment();
-
-    this.svg.selectAll("bar")
-        .data(data)
-      .enter().append("rect")
-        .attr("class", "timebar")
-        .attr("x", d => this.xScale(d.date))
-        .attr("width", Math.ceil(width/data.length))
-        .attr("y", d => yScale(d.asylumApplications))
-        .attr("height", d => height - yScale(d.asylumApplications))
-        .attr("fill", d =>
-          beginningOfIncompleteData.isBefore(moment(d.date)) ?
-            'url(#diagonalHatch)' : 'rgb(0, 111, 185)');
-
     this.svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
@@ -174,9 +173,64 @@ var RefugeeMapTimeBarChart = React.createClass({
 
     this.svg.append("g")
         .attr("class", "y axis")
-        .call(yAxis);
+        .call(this.yAxis);
 
+    this.updateWithData(data);
     // TODO: make chart responsive to window resizes
+  },
+
+
+  updateWithData: function(data) {
+    // Kludge ahead: because data contains Dates that are at the beginning of
+    // each month, we need to extend the domain to the end of the last month
+    // in the array. Otherwise we can't pick that month with the brush.
+    // Do this by adding a month and then subtracting a second.
+    this.xScale.domain([
+      data[0].date,
+      d3.time.second.offset(d3.time.month.offset(data[data.length-1].date, 1), -1)
+    ]);
+
+    this.yScale.domain([0, d3.max(data, function(d) { return d.asylumApplications; })]);
+    this.yAxis.scale(this.yScale);
+
+    this.svg.select('.y')
+      .call(this.yAxis);
+
+    var rects = this.svg.selectAll(".timebar")
+        .data(data);
+
+    rects.enter().append("rect")
+        .attr("class", "timebar");
+
+    // appending after enter() selection is both enter() + append() selections
+    rects.attr("y", d => this.yScale(d.asylumApplications))
+         .attr("x", d => this.xScale(d.date))
+         .attr("width", Math.ceil(this.width/data.length))
+         .attr("height", d => this.height - this.yScale(d.asylumApplications))
+         .attr("fill", d => {
+           if (!this.isEuroCountrySelected()) {
+             var beginningOfIncompleteData = this.getDataMissingStartMoment();
+             if (beginningOfIncompleteData.isBefore(moment(d.date))) {
+               return 'url(#diagonalHatch)';
+             } else {
+               return 'rgb(0, 111, 185)';
+             }
+           } else {
+             return 'rgb(0, 111, 185)';
+           }
+         });
+
+  },
+
+
+  shouldComponentUpdate: function() {
+    return true;
+  },
+
+
+  componentDidUpdate: function() {
+      this.updateWithData(this.getSourceData());
+      this.updateCountriesWithMissingData(this.props.timeRange);
   },
 
 

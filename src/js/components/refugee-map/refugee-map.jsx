@@ -18,9 +18,6 @@ var lucifyUtils = require('lucify-commons/src/js/lucify-utils.jsx');
 var RefugeeMap = React.createClass({
 
 
-  mixins: [RefugeeHighlightMixin],
-
-
   getDefaultProps: function() {
     return {
       width: 1200,
@@ -153,9 +150,9 @@ var RefugeeMap = React.createClass({
           {...this.getStandardLayerParams()}
           {...this.getHighlightLayerParams()}
           subunitClass="subunit-invisible"
-          onMouseOver={this.handleMouseOver}
-          onMouseLeave={this.handleMouseLeave}
-          onClick={this.handleMapClick} />
+          onMouseOver={this.props.onMouseOver}
+          onMouseLeave={this.props.onMouseLeave}
+          onClick={this.props.onMapClick} />
       );
     }
   },
@@ -220,6 +217,19 @@ var RefugeeMap = React.createClass({
     }
   },
 
+
+  getHighlightLayerParams: function() {
+    return {
+      clickedCountry: this.props.clickedCountry,
+      country: this.props.country,
+      originCountries: this.props.originCountries,
+      destinationCountries: this.props.destinationCountries
+    };
+  },
+
+  getHighlightedCountry: function() {
+      return this.props.country;
+  },
 
   render: function() {
     if (!this.props.refugeeCountsModel || !this.props.mapModel) {

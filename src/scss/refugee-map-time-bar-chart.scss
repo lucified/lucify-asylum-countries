@@ -4,7 +4,11 @@
   top: 20px;
   left: 0;
   width: 100%;
+  rect {
+    transition: height 0.25s ease-in-out, y 0.25s ease-in-out;
+  }
 }
+
 
 .axis {
   font: 10px sans-serif;
@@ -41,3 +45,5 @@
 .tick text {
   font-size: 0.7rem;
 }
+
+
