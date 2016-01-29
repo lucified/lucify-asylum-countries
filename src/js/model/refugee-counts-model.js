@@ -385,11 +385,8 @@ RefugeeCountsModel.prototype.getDestinationCountriesWithMissingDataForTimeRange 
 
     // fill cache if missing
     if (monthCountries === undefined) {
-      var countryCodes = this.getDestinationCountriesWithMissingData(currentMoment);
       monthCountries = this.countriesWithMissingDataCache[currentIndex] =
-        _.map(countryCodes, function(countryCode) {
-          return countryCode;
-        }.bind(this));
+        this.getDestinationCountriesWithMissingData(currentMoment);
     }
 
     countriesWithMissingData = countriesWithMissingData.concat(monthCountries);
