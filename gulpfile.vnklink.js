@@ -6,7 +6,7 @@ var project = 'vnk-asylum-countries'
 
 var path = `${project}`
 
-var bucket = 'lucify-development'
+var bucket = 'lucify-dev';
 var url = `http://${bucket}.s3-website-eu-west-1.amazonaws.com/${path}`
 
 var opts = {
@@ -14,7 +14,7 @@ var opts = {
 	publishFromFolder: 'dist/',
 	defaultBucket: bucket,
 	maxAge: 3600,
-	assetContext: path,
+	assetContext: path + '/',
 	baseUrl: 'http://www.lucify.com/'
 }
 
