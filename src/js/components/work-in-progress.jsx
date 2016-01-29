@@ -12,7 +12,7 @@ var WorkInProgress = React.createClass({
         visualisaatio. Lucify laittaa verkkoon toisinaan keskeneräisiä visualisaatioita,
         jotta niitä saataisiin monipuolista palautetta. Koska kyse on keskeneräisestä
         versiosta, tässä saattaa olla virheitä ja teknisiä ongelmia. Ethän
-        jaa linkkejä tälle sivulle ilman lupaa.</p>
+        jaa linkkejä sivulle ilman lupaa.</p>
         </div>
       </div>
     );

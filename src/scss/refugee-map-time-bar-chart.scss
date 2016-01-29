@@ -1,7 +1,7 @@
 
 .refugee-map-time__chart {
   position: absolute;
-  top: 0;
+  top: 20px;
   left: 0;
   width: 100%;
 }
@@ -32,9 +32,12 @@
 .refugee-map-time__missing-data {
   position: absolute;
   left: 1em;
-  top: 0.5em;
+  top: 1.0em;
   z-index: 3;
   font-size: 14px;
   padding-right: 4em; // don't go on top of the time chart at small screen sizes
 }
 
+.tick text {
+  font-size: 0.7rem;
+}

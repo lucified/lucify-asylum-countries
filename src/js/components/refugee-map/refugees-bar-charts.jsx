@@ -142,7 +142,7 @@ var RefugeesBarCharts = React.createClass({
 
   getInitialState: function() {
     return {
-      staticScale: true
+      staticScale: false
     }
   },
 
