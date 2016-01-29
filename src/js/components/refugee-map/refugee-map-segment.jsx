@@ -138,6 +138,7 @@ var RefugeeMapSegment = React.createClass({
         <TimeLayer
           country={this.getHighlightedCountry()}
           ref="time"
+          width={this.componentWidth}
           onTimeRangeChange={this.handleTimeRangeChange}
           timeRange={this.state.timeRange}
           refugeeCountsModel={this.props.refugeeCountsModel}
