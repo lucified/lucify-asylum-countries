@@ -32,3 +32,27 @@ $teas-orange: rgb(251, 112, 29);
 
 // TODO: move later maybe to lucify-commons
 @import "work-in-progress.scss";
+
+
+.tabs-menu {
+
+  .is-active a {
+    color: $teas-orange;
+  }
+
+  .tabs-menu-item:not(.is-active) a:hover{
+    color: $teas-yellow;
+    text-decoration: none;
+  }
+
+}
+
+.colors-legend {
+  position: relative;
+  top: 1.0rem;
+  left: 1.0rem;
+
+  //background-color: red
+  //border: 1px solid green;
+}
+
