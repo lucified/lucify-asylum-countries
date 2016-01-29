@@ -117,14 +117,19 @@ var RefugeeMapBorder = React.createClass({
 
 
   updateStyles: function(nextProps) {
-    this.overlaySel
-      .classed('subunit--hovered', nextProps.hovered && this.props.subunitClass == 'subunit-invisible')
-      .classed('subunit--clicked', nextProps.clicked && this.props.subunitClass == 'subunit-invisible')
-      .classed('subunit--missing-data', nextProps.missingData);
 
-    this.sel
-        .classed('subunit--destination', nextProps.destination)
-        .classed('subunit--origin', nextProps.origin);
+    if (this.overlaySel != null) {
+      this.overlaySel
+        .classed('subunit--hovered', nextProps.hovered && this.props.subunitClass == 'subunit-invisible')
+        .classed('subunit--clicked', nextProps.clicked && this.props.subunitClass == 'subunit-invisible')
+        .classed('subunit--missing-data', nextProps.missingData);
+    }
+
+    if (this.sel != null) {
+        this.sel
+          .classed('subunit--destination', nextProps.destination)
+          .classed('subunit--origin', nextProps.origin);
+    }
 
     this.updateWithCountDetails(nextProps.countDetails, nextProps.feature);
   },

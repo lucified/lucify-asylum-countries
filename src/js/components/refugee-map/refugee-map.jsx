@@ -197,7 +197,6 @@ var RefugeeMap = React.createClass({
 
 
   getCountBarsLayer: function() {
-    if (lucifyUtils.detectIE() !== 9) {
       return (
         <CountBarsLayer
          ref="countBars"
@@ -205,7 +204,6 @@ var RefugeeMap = React.createClass({
          highlightedCountry={this.getHighlightedCountry()}
          refugeeCountsModel={this.props.refugeeCountsModel} />
       );
-    }
 
     return null;
   },

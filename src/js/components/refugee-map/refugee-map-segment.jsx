@@ -48,7 +48,7 @@ var RefugeeMapSegment = React.createClass({
 
 
   interactionsEnabled: function() {
-    return !lucifyUtils.isSlowDevice();
+    return true;
   },
 
 
