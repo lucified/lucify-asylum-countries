@@ -79,12 +79,20 @@ var RefugeeMapSegment = React.createClass({
       );
     } else {
       return (
-        <p className="first last">
-          Valitse hiirellä vetämällä kuvaajasta ajanjakso,
-          jota haluat tarkastella. Osoita hiirellä maata
-          nähdäksesi sinne tehtyjen turvapaikkahakemusten määrän.
-          Klikkaa maata lukitaksesi valinnan.
-        </p>
+        <div>
+          <p className="first">
+            Osoita hiirellä maata nähdäksesi maata koskevia lisätietoja.
+            Klikkaa maata lukitaksesi valinnan.
+          </p>
+
+          <p className="last">
+            Valitun maan päällä oleva numero vastaa joko
+            maahan jätettyjen tai maasta peräisin olevien
+            hakemusten määrää valittuna ajanjaksona.
+            Valitessasi maan näet myös eri maista tulleiden ja
+            eri maihin jätettyjen hakemusten määrät.
+          </p>
+        </div>
       );
     }
   },
@@ -98,11 +106,17 @@ var RefugeeMapSegment = React.createClass({
             <DividedCols
               first={
                 <div className="inputs__instructions">
-                  <p className="first last">
+                  <p className="first">
                     Tällä työkalulla voit tarkastella
-                    rekisteröityjen turvapaikkahakemusten määrää
-                    eri Euroopan maissa. Luvut perustuvat UNHCR:n tuottamiin
-                    tilastoihin.
+                    eri näkökulmista Euroopan valtioihin
+                    tehtyjen turvapaikkahakemusten määrää.
+                    Luvut perustuvat UNHCR:n koostamiin tilastoihin.
+                  </p>
+
+                  <p className="last">
+                      Valitse hiirellä vetämällä kuvaajasta ajanjakso,
+                      jota haluat tarkastella. Huomaa, että voit myös
+                      muuttaa ajanjakson pituutta.
                   </p>
                 </div>
               }
