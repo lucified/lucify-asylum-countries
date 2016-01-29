@@ -42,7 +42,8 @@ var RefugeesBarChart = React.createClass({
     var data = {
       columns: [['data1'].concat(data)],
       colors: {
-        data1: theme.cyan
+        data1: 'rgb(130, 196, 217)'
+        //data1: 'rgb(10, 187, 239)'
       }
     }
 
