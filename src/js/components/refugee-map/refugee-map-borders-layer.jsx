@@ -1,14 +1,18 @@
 
 var React = require('react');
 var d3 = require('d3');
+
 var classNames = require('classnames');
 var _ = require('underscore');
 var sprintf = require('sprintf');
 var console = require("console-browserify");
 
-var legend = require('d3-svg-legend/no-extend')
+var legend = require('d3-svg-legend/no-extend');
 var approx = require('approximate-number');
 
+// the d3-svg-legend components for some
+// reason seems to need a global d3
+window.d3 = d3;
 
 var getFullCount = function(counts) {
   if (!counts) {
@@ -35,11 +39,17 @@ var choroplethColors = [
 
 var ColorsLegend = React.createClass({
 
+  getInitialProps: function() {
+      return {
+        padding: 10,
+        shapeHeight: 30,
+        count: 9
+      }
+  },
 
   componentDidUpdate: function() {
     this.update();
   },
-
 
   componentDidMount: function() {
     this.update();
@@ -47,9 +57,7 @@ var ColorsLegend = React.createClass({
 
 
   update: function() {
-
     if (!this.props.countData) {
-      console.log("countData is nulll");
       return;
     }
 
@@ -67,17 +75,26 @@ var ColorsLegend = React.createClass({
         .shapeHeight(30)
         .shapePadding(0)
         .scale(this.props.countData.destinationScale);
+
     d3.select(React.findDOMNode(this.refs.legend))
       .call(colorLegend);
   },
 
 
   render: function() {
+
     return (
-      <div className="colors-legend" style={{width: 110, height: 270}}>
-          <svg style={{width: 110, height: 270}}>
-            <g ref="legend" />
-          </svg>
+      <div className="colors-legend">
+          <div className="colors-legend__inner">
+            <div className="colors-legend__title">
+              Hakijoita / 10 000 asukasta
+            </div>
+            <div className="colors-legend-boxes">
+              <svg style={{width: 110, height: 270}}>
+                <g ref="legend" />
+              </svg>
+            </div>
+          </div>
       </div>
     );
 
