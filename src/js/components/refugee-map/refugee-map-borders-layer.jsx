@@ -1,12 +1,18 @@
 
 var React = require('react');
 var d3 = require('d3');
+
 var classNames = require('classnames');
 var _ = require('underscore');
 var sprintf = require('sprintf');
 var console = require("console-browserify");
 
+var legend = require('d3-svg-legend/no-extend');
+var approx = require('approximate-number');
 
+// the d3-svg-legend components for some
+// reason seems to need a global d3
+window.d3 = d3;
 
 var getFullCount = function(counts) {
   if (!counts) {
@@ -29,6 +35,74 @@ var choroplethColors = [
   'rgb(8,81,156)',
   'rgb(8,48,107)'
 ]
+
+
+var ColorsLegend = React.createClass({
+
+  getInitialProps: function() {
+      return {
+        padding: 10,
+        shapeHeight: 30,
+        count: 9
+      }
+  },
+
+  componentDidUpdate: function() {
+    this.update();
+  },
+
+  componentDidMount: function() {
+    this.update();
+  },
+
+
+  update: function() {
+    if (!this.props.countData) {
+      return;
+    }
+
+    var format = function(value) {
+        return Math.round(value);
+        //console.log(value + " " + approx(value));
+        //return approx(Math.round(value));
+    }
+
+    var colorLegend = legend.color()
+        .labelFormat(format)
+        //.orient('horizontal')
+        .useClass(false)
+        //.shapeWidth(100)
+        .shapeHeight(30)
+        .shapePadding(0)
+        .scale(this.props.countData.destinationScale);
+
+    d3.select(React.findDOMNode(this.refs.legend))
+      .call(colorLegend);
+  },
+
+
+  render: function() {
+
+    return (
+      <div className="colors-legend">
+          <div className="colors-legend__inner">
+            <div className="colors-legend__title">
+              Hakijoita / 10 000 asukasta
+            </div>
+            <div className="colors-legend-boxes">
+              <svg style={{width: 110, height: 270}}>
+                <g ref="legend" />
+              </svg>
+            </div>
+          </div>
+      </div>
+    );
+
+  }
+
+
+});
+
 
 
 var RefugeeMapBorder = React.createClass({
@@ -255,8 +329,8 @@ var RefugeeMapBordersLayer = React.createClass({
         .domain([0, max])
         .range(choroplethColors);
 
-
       var countData = {
+        max: max,
         originCounts: {},
         destinationCounts: destinationCounts,
         originScale: null,
@@ -291,14 +365,13 @@ var RefugeeMapBordersLayer = React.createClass({
    /*
     * Get paths representing map borders
     */
-  getPaths: function() {
+  getPaths: function(countData) {
 
     var countries = {};
 
     // while we use React to manage the DOM,
     // we still use D3 to calculate the path
     var path = d3.geo.path().projection(this.props.projection);
-    var countData = this.getCountData();
 
     return this.props.mapModel.featureData.features.map(feature => {
       var country = feature.properties.ADM0_A3;
@@ -366,12 +439,19 @@ var RefugeeMapBordersLayer = React.createClass({
 
 
   render: function() {
+
+    var countData = this.getCountData();
+
     return (
-      <svg className="refugee-map-borders-layer"
-        style={{width: this.props.width, height: this.props.height}}
-        onClick={this.onClick}>
-        {this.getPaths()}
-      </svg>
+      <div style={{width: this.props.width, height: this.props.height}}>
+        <svg className="refugee-map-borders-layer"
+            style={{width: this.props.width, height: this.props.height}}
+            onClick={this.onClick}>
+            {this.getPaths(countData)}
+        </svg>
+        <ColorsLegend countData={countData} width={this.props.width} height={this.props.height} />
+      </div>
+
     );
   },
 

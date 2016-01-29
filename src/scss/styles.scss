@@ -32,3 +32,45 @@ $teas-orange: rgb(251, 112, 29);
 
 // TODO: move later maybe to lucify-commons
 @import "work-in-progress.scss";
+
+
+.tabs-menu {
+
+  .is-active a {
+    color: $teas-orange;
+  }
+
+  .tabs-menu-item:not(.is-active) a:hover{
+    color: $teas-yellow;
+    text-decoration: none;
+  }
+
+}
+
+.colors-legend {
+  position: relative;
+  top: 1.0rem;
+  left: 1.0rem;
+  //background-color: red
+  //border: 1px solid green;
+  svg {
+    position: static;
+    top: auto;
+  }
+
+  text {
+    font-weight: normal;
+  }
+}
+
+.colors-legend__inner {
+  border: 1px solid rgba($teas-turqoise, 0.8);
+  display: inline-block;
+  padding: 1.0rem;
+  background-color: rgba(255,255,255, 0.96);
+}
+
+.colors-legend__title {
+  margin-bottom: 10px;
+  color: $lucify-gray-text-color;
+}
