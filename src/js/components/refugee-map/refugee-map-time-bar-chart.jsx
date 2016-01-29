@@ -245,7 +245,8 @@ var RefugeeMapTimeBarChart = React.createClass({
       .call(this.brush);
 
     gBrush.selectAll("rect")
-      .attr("height", this.getHeight() - this.getMargins().top - this.getMargins().bottom);
+      .attr("height", this.getHeight() - this.getMargins().top - this.getMargins().bottom + 10)
+      .attr("transform", "translate(0, -5)");
   },
 
 
