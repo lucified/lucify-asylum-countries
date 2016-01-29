@@ -296,7 +296,6 @@ RefugeeCountsModel.prototype.getGlobalArrivingPerMonthForCountry = function(coun
     }
     curMoment.add(1, 'months');
   }
-  console.log(ret);
   return ret;
 };
 
