@@ -15,6 +15,7 @@ var refugeeConstants = require('../../model/refugee-constants.js');
 var RefugeeTimeRangeIndicator = require('./refugee-time-range-indicator.jsx');
 
 var RefugeesBarCharts = require('./refugees-bar-charts.jsx');
+var RefugeeHighlightMixin = require('./refugee-highlight-mixin.js');
 
 var Tabs = require('react-simpletabs');
 
@@ -22,7 +23,8 @@ var Tabs = require('react-simpletabs');
 var RefugeeMapSegment = React.createClass({
 
 
-  mixins: [ComponentWidthMixin],
+  mixins: [ComponentWidthMixin, RefugeeHighlightMixin],
+
 
   getInitialState: function() {
     return {
@@ -32,6 +34,11 @@ var RefugeeMapSegment = React.createClass({
         moment([2015, 10]).endOf('month').unix()
       ]
     };
+  },
+
+
+  getTimeRange: function() {
+    return this.state.timeRange;
   },
 
 
@@ -129,6 +136,7 @@ var RefugeeMapSegment = React.createClass({
         </Inputs>
 
         <TimeLayer
+          country={this.getHighlightedCountry()}
           ref="time"
           onTimeRangeChange={this.handleTimeRangeChange}
           timeRange={this.state.timeRange}
@@ -140,6 +148,10 @@ var RefugeeMapSegment = React.createClass({
               <Tabs.Panel title="Euroopan kartta">
                 <RefugeeMap ref="rmap"
                   {...this.props}
+                  {...this.getHighlightLayerParams()}
+                  onMouseOver={this.handleMouseOver}
+                  onMouseLeave={this.handleMouseLeave}
+                  onMapClick={this.handleMapClick}
                   lo={22.2206322 - 9}
                   la={34.0485818 + 15}
                   scale={1.4}
@@ -149,6 +161,10 @@ var RefugeeMapSegment = React.createClass({
               <Tabs.Panel title="Euroopan ja lähtömaiden kartta">
                   <RefugeeMap ref="rmap"
                     {...this.props}
+                    {...this.getHighlightLayerParams()}
+                    onMouseOver={this.handleMouseOver}
+                    onMouseLeave={this.handleMouseLeave}
+                    onMapClick={this.handleMapClick}
                     timeRange={this.state.timeRange}
                     interactionsEnabled={this.interactionsEnabled()} />
               </Tabs.Panel>
