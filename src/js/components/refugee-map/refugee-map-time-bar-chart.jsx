@@ -44,11 +44,11 @@ var RefugeeMapTimeBarChart = React.createClass({
 
       if (countryCount > 0) {
         if (countryCount > 5) {
-          missingDataText = "Dataa puuttuu seuraavista maista: " +
+          missingDataText = "Dataa puuttuu: " +
             countryList.slice(0, 4).join(', ') + " ja " +
             (countryCount - 4) + " muuta maata";
         } else {
-          missingDataText = "Dataa puuttuu seuraavista maista: ";
+          missingDataText = "Dataa puuttuu: ";
           if (countryCount > 1) {
             missingDataText += countryList.slice(0, countryCount - 1).join(', ') +
               " ja ";
@@ -57,7 +57,7 @@ var RefugeeMapTimeBarChart = React.createClass({
         }
       }
 
-      return missingDataText;
+      return "Eurooppaan saapuneet turvapaikanhakijat <span class='missing-data-real'>" + missingDataText + "</span>";
     }.bind(this);
 
 
