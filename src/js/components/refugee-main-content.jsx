@@ -9,8 +9,7 @@ var RefugeeMapSegment = require('./refugee-map/refugee-map-segment.jsx');
 var Loading = require('lucify-commons/src/js/components/loading.jsx');
 
 var WorkInProgress = require('./work-in-progress.jsx');
-
-
+var UberProtection = require('lucify-commons/src/js/components/uber-protection.jsx');
 
 var RefugeeMainContent = React.createClass({
 
@@ -67,4 +66,6 @@ var RefugeeMainContent = React.createClass({
 });
 
 
-module.exports = Decorator(RefugeeMainContent);
+module.exports = UberProtection(
+	Decorator(RefugeeMainContent),
+	'55b81c403099c4f9eda5592166cefc6f1ec5d58ed7806b93ec9941ede31ebf459298937694d3a8801a92106c648c27695ebcd9a3d337a4e581c17ae554711c09');
