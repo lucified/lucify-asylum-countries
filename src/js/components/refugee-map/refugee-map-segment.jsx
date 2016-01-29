@@ -141,6 +141,7 @@ var RefugeeMapSegment = React.createClass({
           onTimeRangeChange={this.handleTimeRangeChange}
           timeRange={this.state.timeRange}
           refugeeCountsModel={this.props.refugeeCountsModel}
+          countryFigures={this.props.countryFigures}
           mapModel={this.props.mapModel} />
 
         <div className="refugee-map-segment__tabs">

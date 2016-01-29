@@ -22,11 +22,20 @@ var RefugeeMapTimeBarChart = React.createClass({
   },
 
 
+  isEuroCountrySelected: function() {
+      if (!this.props.country) {
+        return false;
+      }
+      return this.props.countryFigures[this.props.country].continent == 'Europe'
+        && this.props.country != 'RUS';
+  },
+
+
   updateCountriesWithMissingData: function(timeRange) {
 
     var textForCountryList = function(countryList) {
 
-      if (this.props.country != null) {
+      if (this.isEuroCountrySelected()) {
         return "Maahan <b>" + this.props.mapModel.getFriendlyNameForCountry(this.props.country) + "</b> turvapaikkahakemuksen jättäneet";
       }
 
@@ -54,7 +63,7 @@ var RefugeeMapTimeBarChart = React.createClass({
 
     var tooltipForCountryList = function(countryList) {
 
-      if (this.props.country != null) {
+      if (this.isEuroCountrySelected()) {
         return "Maahan " + this.props.mapModel.getFriendlyNameForCountry(this.props.country) + " turvapaikkahakemuksen jättäneet";
       }
 
@@ -92,7 +101,7 @@ var RefugeeMapTimeBarChart = React.createClass({
 
 
   getSourceData: function() {
-    if (!this.props.country) {
+    if (!this.isEuroCountrySelected()) {
         return this.props.refugeeCountsModel.getGlobalArrivingPerMonth();
     }
     return this.props.refugeeCountsModel.getGlobalArrivingPerMonthForCountry(this.props.country);
@@ -126,6 +135,7 @@ var RefugeeMapTimeBarChart = React.createClass({
     var yScale = d3.scale.linear().range([height, 0]);
     this.yScale = yScale;
     this.height = height;
+    this.width = width;
 
     var xAxis = d3.svg.axis()
         .scale(this.xScale)
@@ -209,7 +219,7 @@ var RefugeeMapTimeBarChart = React.createClass({
           .attr("y", d => this.yScale(d.asylumApplications))
           .attr("height", d => this.height - this.yScale(d.asylumApplications))
           .attr("fill", d => {
-              if (!this.props.country) {
+              if (!this.isEuroCountrySelected()) {
                  var beginningOfIncompleteData = this.getDataMissingStartMoment();
                  if (beginningOfIncompleteData.isBefore(moment(d.date))) {
                     return 'url(#diagonalHatch)';
