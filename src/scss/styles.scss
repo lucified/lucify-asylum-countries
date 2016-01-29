@@ -1,6 +1,5 @@
 
 @import "../../node_modules/lucify-commons/src/scss/styles-full.scss";
-@import "variables.scss";
 
 // main colors
 $teas-blue: rgb(0, 111, 185);
@@ -13,7 +12,6 @@ $teas-turqoise: rgb(130, 196, 217);
 $teas-light-turqoise: rgb(186, 223, 235);
 $teas-yellow: rgb(247, 173, 41);
 $teas-orange: rgb(251, 112, 29);
-
 
 @import "refugee-main-content.scss";
 @import "refugee-map.scss";
