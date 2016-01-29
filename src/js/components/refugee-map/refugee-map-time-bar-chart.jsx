@@ -116,12 +116,9 @@ var RefugeeMapTimeBarChart = React.createClass({
 
 
   initializeChart: function(data) {
-    var margin = this.getMargins()
-        //width = parseInt(d3.select(React.findDOMNode(this.refs.chart)).style('width'), 10),
-     var height = this.getHeight() - margin.top - margin.bottom;
-
-    var width = this.props.width;
-    width = width - margin.left - margin.right;
+    var margin = this.getMargins();
+    this.height = this.getHeight() - margin.top - margin.bottom;
+    this.width = this.props.width - margin.left - margin.right;
 
     // convert moments to Dates
     data = data.map(function(d) {
@@ -130,13 +127,9 @@ var RefugeeMapTimeBarChart = React.createClass({
         asylumApplications: d.asylumApplications };
       });
 
-    this.xScale = d3.time.scale().range([0, width]);
-    this.yScale = d3.scale.linear().range([height, 0]);
-    this.height = height;
-    this.width = width;
+    this.yScale = d3.scale.linear().range([this.height, 0]);
 
     this.xAxis = d3.svg.axis()
-        .scale(this.xScale)
         .orient("bottom")
         .tickFormat(d3.time.format("%Y"))
         .ticks(d3.time.months, 12)
@@ -150,8 +143,8 @@ var RefugeeMapTimeBarChart = React.createClass({
         .tickSize(4, 0);
 
     this.svg = d3.select(React.findDOMNode(this.refs.chart))
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("width", this.width + margin.left + margin.right)
+        .attr("height", this.height + margin.top + margin.bottom)
       .append("g")
         .attr("transform",
               "translate(" + margin.left + "," + margin.top + ")");
@@ -170,7 +163,7 @@ var RefugeeMapTimeBarChart = React.createClass({
 
     this.svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
+        .attr("transform", "translate(0," + this.height + ")")
         .call(this.xAxis);
 
     this.svg.append("g")
@@ -183,28 +176,28 @@ var RefugeeMapTimeBarChart = React.createClass({
 
 
   updateWithData: function(data) {
-    var margin = this.getMargins()
-    var width = this.props.width;
-    width = width - margin.left - margin.right;
-    this.xScale = d3.time.scale().range([0, width]);
+    var margin = this.getMargins();
+    this.width = this.props.width - margin.left - margin.right;
+    this.svg.attr("width", this.width + margin.left + margin.right);
 
     // Kludge ahead: because data contains Dates that are at the beginning of
     // each month, we need to extend the domain to the end of the last month
     // in the array. Otherwise we can't pick that month with the brush.
     // Do this by adding a month and then subtracting a second.
-    this.xScale.domain([
-      data[0].date,
-      d3.time.second.offset(d3.time.month.offset(data[data.length-1].date, 1), -1)
-    ]);
+    this.xScale = d3.time.scale()
+        .range([0, this.width])
+        .domain([
+          data[0].date,
+          d3.time.second.offset(d3.time.month.offset(data[data.length-1].date, 1), -1)
+        ]);
+    this.xAxis.scale(this.xScale);
+    this.svg.select('.x')
+      .call(this.xAxis);
 
     this.yScale.domain([0, d3.max(data, function(d) { return d.asylumApplications; })]);
     this.yAxis.scale(this.yScale);
-
     this.svg.select('.y')
       .call(this.yAxis);
-
-    this.svg.select('.x')
-      .call(this.xAxis);
 
     var rects = this.svg.selectAll(".timebar")
         .data(data);
@@ -238,8 +231,8 @@ var RefugeeMapTimeBarChart = React.createClass({
 
 
   componentDidUpdate: function() {
-      this.updateWithData(this.getSourceData());
-      this.updateCountriesWithMissingData(this.props.timeRange);
+    this.updateWithData(this.getSourceData());
+    this.updateCountriesWithMissingData(this.props.timeRange);
   },
 
 
