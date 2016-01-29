@@ -127,6 +127,7 @@ var RefugeeMapTimeBarChart = React.createClass({
         asylumApplications: d.asylumApplications };
       });
 
+    this.xScale = d3.time.scale();
     this.yScale = d3.scale.linear().range([this.height, 0]);
 
     this.xAxis = d3.svg.axis()
@@ -184,8 +185,7 @@ var RefugeeMapTimeBarChart = React.createClass({
     // each month, we need to extend the domain to the end of the last month
     // in the array. Otherwise we can't pick that month with the brush.
     // Do this by adding a month and then subtracting a second.
-    this.xScale = d3.time.scale()
-        .range([0, this.width])
+    this.xScale.range([0, this.width])
         .domain([
           data[0].date,
           d3.time.second.offset(d3.time.month.offset(data[data.length-1].date, 1), -1)
