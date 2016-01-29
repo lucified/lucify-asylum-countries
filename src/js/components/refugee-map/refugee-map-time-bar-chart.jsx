@@ -129,8 +129,7 @@ var RefugeeMapTimeBarChart = React.createClass({
       });
 
     this.xScale = d3.time.scale().range([0, width]);
-    var yScale = d3.scale.linear().range([height, 0]);
-    this.yScale = yScale;
+    this.yScale = d3.scale.linear().range([height, 0]);
     this.height = height;
     this.width = width;
 
@@ -142,7 +141,7 @@ var RefugeeMapTimeBarChart = React.createClass({
         .tickSize(5, 5);
 
     this.yAxis = d3.svg.axis()
-        .scale(yScale)
+        .scale(this.yScale)
         .orient("left")
         .tickFormat(d3.format('s'))
         .ticks(3)
@@ -155,15 +154,6 @@ var RefugeeMapTimeBarChart = React.createClass({
         .attr("transform",
               "translate(" + margin.left + "," + margin.top + ")");
 
-    // Kludge ahead: because data contains Dates that are at the beginning of
-    // each month, we need to extend the domain to the end of the last month
-    // in the array. Otherwise we can't pick that month with the brush.
-    // Do this by adding a month and then subtracting a second.
-    this.xScale.domain([
-      data[0].date,
-      d3.time.second.offset(d3.time.month.offset(data[data.length-1].date, 1), -1)
-    ]);
-
     this.svg
         .append('defs')
         .append('pattern')
@@ -175,20 +165,6 @@ var RefugeeMapTimeBarChart = React.createClass({
           .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
           .attr('stroke', 'rgb(0, 111, 185)')
           .attr('stroke-width', 2);
-
-    var beginningOfIncompleteData = this.getDataMissingStartMoment();
-
-    this.svg.selectAll("bar")
-        .data(data)
-      .enter().append("rect")
-        .attr("class", "timebar")
-        .attr("x", d => this.xScale(d.date))
-        .attr("width", Math.ceil(width/data.length))
-        //.attr("y", d => yScale(d.asylumApplications))
-        //.attr("height", d => height - yScale(d.asylumApplications))
-        .attr("fill", d =>
-          beginningOfIncompleteData.isBefore(moment(d.date)) ?
-            'url(#diagonalHatch)' : 'rgb(0, 111, 185)');
 
     this.svg.append("g")
         .attr("class", "x axis")
@@ -205,29 +181,45 @@ var RefugeeMapTimeBarChart = React.createClass({
 
 
   updateWithData: function(data) {
-      this.yScale.domain([0, d3.max(data, function(d) { return d.asylumApplications; })]);
-      this.yAxis.scale(this.yScale);
+    // Kludge ahead: because data contains Dates that are at the beginning of
+    // each month, we need to extend the domain to the end of the last month
+    // in the array. Otherwise we can't pick that month with the brush.
+    // Do this by adding a month and then subtracting a second.
+    this.xScale.domain([
+      data[0].date,
+      d3.time.second.offset(d3.time.month.offset(data[data.length-1].date, 1), -1)
+    ]);
 
-      this.svg.select('.y')
-        .call(this.yAxis);
+    this.yScale.domain([0, d3.max(data, function(d) { return d.asylumApplications; })]);
+    this.yAxis.scale(this.yScale);
 
-      this.svg.selectAll("rect")
-          .data(data)
-          .attr("y", d => this.yScale(d.asylumApplications))
-          .attr("height", d => this.height - this.yScale(d.asylumApplications))
-          .attr("fill", d => {
-              if (!this.isEuroCountrySelected()) {
-                 var beginningOfIncompleteData = this.getDataMissingStartMoment();
-                 if (beginningOfIncompleteData.isBefore(moment(d.date))) {
-                    return 'url(#diagonalHatch)';
-                 } else {
-                    return 'rgb(0, 111, 185)';
-                 }
-              } else {
-                return 'rgb(0, 111, 185)';
-              }
+    this.svg.select('.y')
+      .call(this.yAxis);
 
-          });
+    var rects = this.svg.selectAll(".timebar")
+        .data(data);
+
+    rects.enter().append("rect")
+        .attr("class", "timebar");
+
+    // appending after enter() selection is both enter() + append() selections
+    rects.attr("y", d => this.yScale(d.asylumApplications))
+         .attr("x", d => this.xScale(d.date))
+         .attr("width", Math.ceil(this.width/data.length))
+         .attr("height", d => this.height - this.yScale(d.asylumApplications))
+         .attr("fill", d => {
+           if (!this.isEuroCountrySelected()) {
+             var beginningOfIncompleteData = this.getDataMissingStartMoment();
+             if (beginningOfIncompleteData.isBefore(moment(d.date))) {
+               return 'url(#diagonalHatch)';
+             } else {
+               return 'rgb(0, 111, 185)';
+             }
+           } else {
+             return 'rgb(0, 111, 185)';
+           }
+         });
+
   },
 
 
