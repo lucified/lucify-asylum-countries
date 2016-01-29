@@ -12,6 +12,7 @@ var theme = require('lucify-commons/src/js/lucify-theme.jsx');
 var RefugeeMapTimeBarChart = React.createClass({
 
 
+
   getHeight: function() {
     return 160;
   },
@@ -115,10 +116,11 @@ var RefugeeMapTimeBarChart = React.createClass({
 
 
   initializeChart: function(data) {
-    var margin = this.getMargins(),
-        width = parseInt(d3.select(React.findDOMNode(this.refs.chart)).style('width'), 10),
-        height = this.getHeight() - margin.top - margin.bottom;
+    var margin = this.getMargins()
+        //width = parseInt(d3.select(React.findDOMNode(this.refs.chart)).style('width'), 10),
+     var height = this.getHeight() - margin.top - margin.bottom;
 
+    var width = this.props.width;
     width = width - margin.left - margin.right;
 
     // convert moments to Dates
@@ -133,7 +135,7 @@ var RefugeeMapTimeBarChart = React.createClass({
     this.height = height;
     this.width = width;
 
-    var xAxis = d3.svg.axis()
+    this.xAxis = d3.svg.axis()
         .scale(this.xScale)
         .orient("bottom")
         .tickFormat(d3.time.format("%Y"))
@@ -169,7 +171,7 @@ var RefugeeMapTimeBarChart = React.createClass({
     this.svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
+        .call(this.xAxis);
 
     this.svg.append("g")
         .attr("class", "y axis")
@@ -181,6 +183,11 @@ var RefugeeMapTimeBarChart = React.createClass({
 
 
   updateWithData: function(data) {
+    var margin = this.getMargins()
+    var width = this.props.width;
+    width = width - margin.left - margin.right;
+    this.xScale = d3.time.scale().range([0, width]);
+
     // Kludge ahead: because data contains Dates that are at the beginning of
     // each month, we need to extend the domain to the end of the last month
     // in the array. Otherwise we can't pick that month with the brush.
@@ -195,6 +202,9 @@ var RefugeeMapTimeBarChart = React.createClass({
 
     this.svg.select('.y')
       .call(this.yAxis);
+
+    this.svg.select('.x')
+      .call(this.xAxis);
 
     var rects = this.svg.selectAll(".timebar")
         .data(data);
@@ -219,7 +229,6 @@ var RefugeeMapTimeBarChart = React.createClass({
              return 'rgb(0, 111, 185)';
            }
          });
-
   },
 
 
