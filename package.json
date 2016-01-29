@@ -63,7 +63,7 @@
     "d3": "^3.5.6",
     "date-names": "vsaarinen/date-names#add-fi-locale",
     "deepcopy": "^0.5.0",
-    "i18n-iso-countries": "vsaarinen/node-i18n-iso-countries#add-fi-locale",
+    "i18n-iso-countries": "^0.12.0",
     "jquery": "^2.1.4",
     "lucify-commons": "~0.2.5",
     "moment": "^2.10.6",
