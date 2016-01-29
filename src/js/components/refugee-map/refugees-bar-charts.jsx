@@ -19,7 +19,7 @@ var PerPopulationBarChart = React.createClass({
   },
 
   format: function(v, id, i, j) {
-      return sprintf("%.0f", v*10000);
+      return sprintf("%.0f", v*100000);
   },
 
   getMax: function() {
@@ -169,7 +169,7 @@ var RefugeesBarCharts = React.createClass({
           <DividedCols
             first={
                 <div>
-                  <h3>Hakemuksia 10 000 asukasta kohden</h3>
+                  <h3>Hakemuksia 100 000 asukasta kohden</h3>
                   <PerPopulationBarChart {...this.props}
                   staticScale={this.state.staticScale} />
                 </div>
