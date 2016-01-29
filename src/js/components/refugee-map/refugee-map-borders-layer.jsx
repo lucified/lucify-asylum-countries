@@ -87,7 +87,7 @@ var ColorsLegend = React.createClass({
       <div className="colors-legend">
           <div className="colors-legend__inner">
             <div className="colors-legend__title">
-              Hakijoita / 10 000 asukasta
+              Hakijoita / 100 000 asukasta
             </div>
             <div className="colors-legend-boxes">
               <svg style={{width: 110, height: 270}}>
