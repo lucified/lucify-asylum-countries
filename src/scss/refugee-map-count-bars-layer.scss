@@ -1,13 +1,16 @@
 
 
 .refugee-map-count-bars-layer {
-	
-	.refugee-bar {
+
+  .refugee-bar {
 		fill: #ffad33;
 	}
 
 	.asylum-bar {
-		fill: #ffffff;
+		fill: rgba($teas-blue, 1.0);
+    stroke-width: 1.5px;
+    stroke: rgba(255,255,255, 0.7);
 	}
+
 }
 

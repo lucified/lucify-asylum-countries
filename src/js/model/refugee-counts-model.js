@@ -260,6 +260,18 @@ RefugeeCountsModel.prototype.getTotalDestinationCountsByCountries = function(tim
     return ret;
 };
 
+RefugeeCountsModel.prototype.computePerCountry = function (timeRange, f) {
+    var ret = {};
+
+    _.keys(this.arrivedRefugeesToCountry).forEach(country => {
+         var total = this._prepareTotalCount(
+          this.arrivedRefugeesToCountry[country],
+          timeRange[0], timeRange[1], country);
+        ret[country] = f(country, total)
+    });
+    return ret;
+};
+
 
 /*
  * Get total counts for people that have arrived in

@@ -16,23 +16,41 @@ var getFullCount = function(counts) {
   return counts.asylumApplications;
 };
 
+var zeroColor = 'rgb(255,255,255)';
+
+var choroplethColors = [
+  'rgb(247,251,255)',
+  'rgb(222,235,247)',
+  'rgb(198,219,239)',
+  'rgb(158,202,225)',
+  'rgb(107,174,214)',
+  'rgb(66,146,198)',
+  'rgb(33,113,181)',
+  'rgb(8,81,156)',
+  'rgb(8,48,107)'
+]
 
 
 var RefugeeMapBorder = React.createClass({
 
 
   componentDidMount: function() {
-    this.sel = d3.select(React.findDOMNode(this.refs.overlay));
+    this.sel = d3.select(React.findDOMNode(this.refs.subunit));
+    this.overlaySel = d3.select(React.findDOMNode(this.refs.overlay));
+
     this.updateStyles(this.props);
   },
 
 
   updateStyles: function(nextProps) {
+    this.overlaySel
+      .classed('subunit--hovered', nextProps.hovered && this.props.subunitClass == 'subunit-invisible')
+      .classed('subunit--clicked', nextProps.clicked && this.props.subunitClass == 'subunit-invisible');
+
     this.sel
-        .classed('subunit--hovered', nextProps.hovered)
         .classed('subunit--destination', nextProps.destination)
         .classed('subunit--origin', nextProps.origin);
-    this.updateWithCountDetails(nextProps.countDetails);
+    this.updateWithCountDetails(nextProps.countDetails, nextProps.feature);
   },
 
 
@@ -41,14 +59,20 @@ var RefugeeMapBorder = React.createClass({
   },
 
 
-  updateWithCountDetails: function(details) {
-    var fillStyle = null;
-    if (details != null && this.props.origin && getFullCount(details.originCounts) > 0) {
-       fillStyle = sprintf('rgba(190, 88, 179, %.2f)', details.originScale(getFullCount(details.originCounts)));
-    } else if (details != null && this.props.destination && getFullCount(details.destinationCounts) > 0) {
-       fillStyle = sprintf('rgba(95, 196, 114, %.2f)', details.destinationScale(getFullCount(details.destinationCounts)));
+  updateWithCountDetails: function(details, countryFeatures) {
+    if (this.props.subunitClass == 'subunit-invisible') {
+      return;
     }
-    this.sel.style('fill', fillStyle);
+
+    var fill = 'rgba(255,255,255,1)';
+
+    if (details != null && this.props.origin && getFullCount(details.originCounts) > 0) {
+
+    } else if (details != null && this.props.destination && details.destinationCounts && details.destinationCounts > 0) {
+       var v = details.destinationCounts
+       fill = v > 0 ? details.destinationScale(v) : zeroColor;
+    }
+    this.sel.style('fill', fill);
   },
 
 
@@ -107,6 +131,7 @@ var RefugeeMapBorder = React.createClass({
     return (
       <g>
         <path key="p1"
+           ref="subunit"
            className={this.props.subunitClass}
            d={d}
            onMouseOver={this.onMouseOver}
@@ -132,14 +157,12 @@ var RefugeeMapBordersLayer = React.createClass({
   },
 
   onMouseOver: function(country) {
-    //console.log("over country" + country);
     if (this.props.onMouseOver) {
        this.props.onMouseOver(country);
     }
   },
 
   onMouseLeave: function(country) {
-    //console.log("out of country" + country);
     if (this.props.onMouseLeave) {
        this.props.onMouseLeave(country);
     }
@@ -219,12 +242,20 @@ var RefugeeMapBordersLayer = React.createClass({
 
 
   getGlobalCountData: function() {
+      var perHowMany = 100000
+      var max = 0
       var destinationCounts = this.props.refugeeCountsModel
-        .getTotalDestinationCountsByCountries(this.props.timeRange);
-      var maxDestinationCount = this.getMaxCount(destinationCounts);
-      var exponent = 0.5;
-      var destinationScale = d3.scale.pow()
-        .exponent(exponent).domain([1, maxDestinationCount]).range([0.075, 0.80]);
+        .computePerCountry(this.props.timeRange, (country, total) => {
+          var features = _.find(this.props.mapModel.featureData.features, f => f.properties.ADM0_A3 === country)
+          var p = features ? this.getPerCapitaCount(total.asylumApplications, features, perHowMany) : 0
+          max = p > max ? p : max
+          return p
+        });
+      var destinationScale = d3.scale.quantize()
+        .domain([0, max])
+        .range(choroplethColors);
+
+
       var countData = {
         originCounts: {},
         destinationCounts: destinationCounts,
@@ -234,6 +265,9 @@ var RefugeeMapBordersLayer = React.createClass({
       return countData;
   },
 
+  getPerCapitaCount: (applications, features, perHowMany) => {
+    return applications / (features.properties.POP_EST / perHowMany)
+  },
 
   getMaxCount: function(counts) {
     return _.values(counts).reduce(function(prev, item) {
@@ -247,9 +281,9 @@ var RefugeeMapBordersLayer = React.createClass({
         return null;
       }
 
-      if (this.props.country != null) {
-          return this.getCountrySpecificCountData();
-      }
+      // if (this.props.country != null) {
+      //     return this.getCountrySpecificCountData();
+      // }
       return this.getGlobalCountData();
   },
 
@@ -266,7 +300,7 @@ var RefugeeMapBordersLayer = React.createClass({
     var path = d3.geo.path().projection(this.props.projection);
     var countData = this.getCountData();
 
-    return this.props.mapModel.featureData.features.map(function(feature) {
+    return this.props.mapModel.featureData.features.map(feature => {
       var country = feature.properties.ADM0_A3;
       var hparams = this.getHighlightParams(country);
 
@@ -299,11 +333,12 @@ var RefugeeMapBordersLayer = React.createClass({
           width={this.props.width}
           projection={this.props.projection}
           countDetails={countDetails}
+          clicked={this.props.clickedCountry == country}
           hovered={this.props.country == country}
           destination={countData != null && countDetails.destinationCounts != null && countDetails.asylumApplications != 0}
           origin={countData != null && countDetails.originCounts != null && countDetails.asylumApplications != 0} />
       );
-    }.bind(this));
+    });
   },
 
 
@@ -317,7 +352,8 @@ var RefugeeMapBordersLayer = React.createClass({
       return false;
     }
 
-    if (nextProps.country !== this.props.country) {
+    if (nextProps.country !== this.props.country
+      || nextProps.clickedCountry !== this.props.clickedCountry) {
       return true;
     }
 

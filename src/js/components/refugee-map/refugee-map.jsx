@@ -149,8 +149,10 @@ var RefugeeMap = React.createClass({
     if (this.interactionsEnabled()) {
       return (
         <BordersLayer
-          updatesEnabled={false}
+          updatesEnabled={true}
+          enableOverlay={true}
           {...this.getStandardLayerParams()}
+          {...this.getHighlightLayerParams()}
           subunitClass="subunit-invisible"
           onMouseOver={this.handleMouseOver}
           onMouseLeave={this.handleMouseLeave}
@@ -189,7 +191,6 @@ var RefugeeMap = React.createClass({
     if (this.interactionsEnabled()) {
       return null;
     }
-
     return (
       <div
         className="refugee-map__overlay-layer"
@@ -197,6 +198,7 @@ var RefugeeMap = React.createClass({
       </div>
     );
   },
+
 
   getCountBarsLayer: function() {
     if (lucifyUtils.detectIE() !== 9) {

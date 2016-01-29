@@ -2,41 +2,47 @@
 .refugee-map-borders-layer {
 
 	.subunit {
-	  fill: $lucify-very-dark-blue;
-	  stroke-width: 1px;
-	  //stroke: $lucify-cyan;
-	  stroke: rgba($lucify-cyan, 0.40);
-	  opacity: 0.99;
-	}
+	  fill: transparent;
+	  stroke: rgba(darken($color: $teas-light-blue, $amount: 5), 0.7);
+    transition: fill 0.5s ease-in-out;
+  }
 
 	.subunit--overlay {
-	  stroke-width: 1px;
-	  //stroke: $lucify-cyan;
-	  stroke: rgba($lucify-cyan, 0.40);
-
-	  fill: rgba(26, 32, 43, 0.99);
-	  // disabling transition for now
-	  transition: fill 0.1s ease-in-out;
-	  opacity: 0.99;
+	  stroke-width: 3px;
+    opacity: 0;
+    fill: transparent;
+	  transition: opacity 0.2s ease-in-out;
+	  //opacity: 0.99;
 	}
 
 	.subunit--destination {
-	  opacity: 0.5;
-	  fill: rgba(95, 196, 114, 0.25);
+	  //display: none;
+    //opacity: 0.5;
+    //display: none;
+	  //fill: rgba(95, 196, 114, 0.25);
 	}
 
 	.subunit--origin {
+    display: none;
 	  //opacity: 1.0;
 	  //fill: rgba(190, 88, 179, 0.15);
 	}
 
 	.subunit--hovered {
-	  fill: rgba(255, 255, 255, 0.10);
+    opacity: 0.5;
+    //stroke: rgb(251, 112,29);
+    stroke: $teas-blue;
 	}
+
+  .subunit--clicked {
+    opacity: 0.5;
+    //stroke: rgb(251, 112,29);
+    stroke: $teas-orange;
+  }
 
 	.subunit-invisible {
 	  fill: transparent;
-	  stroke: transparent;
+	  //stroke: transparent;
 	}
 
 }
