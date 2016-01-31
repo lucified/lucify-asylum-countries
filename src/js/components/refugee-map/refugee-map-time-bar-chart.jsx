@@ -233,6 +233,7 @@ var RefugeeMapTimeBarChart = React.createClass({
   componentDidUpdate: function() {
     this.updateWithData(this.getSourceData());
     this.updateCountriesWithMissingData(this.props.timeRange);
+    this.updateBrush();
   },
 
 
@@ -249,6 +250,13 @@ var RefugeeMapTimeBarChart = React.createClass({
     gBrush.selectAll("rect")
       .attr("height", this.getHeight() - this.getMargins().top - this.getMargins().bottom + 10)
       .attr("transform", "translate(0, -5)");
+  },
+
+
+  updateBrush: function() {
+    this.brush.x(this.xScale);
+    d3.select(".brush")
+        .call(this.brush.extent(this.props.timeRange.map(function(d) { return new Date(d * 1000); })));
   },
 
 
