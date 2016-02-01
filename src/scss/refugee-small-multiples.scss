@@ -58,6 +58,10 @@ text.refugee-small-multiples__static_year{
   fill: rgba(0,0,0,0.8);
 }
 
+.refugee-small-multiples__axis line {
+  display: none;
+}
+
 .small-multiples {
   position: relative;
 }
