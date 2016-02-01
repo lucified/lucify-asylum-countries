@@ -51,14 +51,6 @@ var RefugeeMap = React.createClass({
   },
 
 
-  getConicConformalProjection: function() {
-    var lo = 26.2206322; // x
-    var la = 46.0485818 - 8; // y
-    return d3.geo.conicConformal()
-      .center([0, la])
-      .rotate([-lo, 0])
-      .scale(this.getWidth()*0.85)
-      .translate([this.getWidth() / 2, this.getHeight() / 2]);
   },
 
 
@@ -73,18 +65,6 @@ var RefugeeMap = React.createClass({
       .scale(this.getWidth()*this.props.scale)
       .translate([this.getWidth() / 2, this.getHeight() / 2])
       .precision(1);
-  },
-
-
-  getMercatorProjection: function() {
-    var lo = 26.2206322; // x
-    var la = 46.0485818; // y
-
-    return d3.geo.mercator()
-      .center([0, la])
-      .rotate([-lo, 0])
-      .scale(this.getWidth()*0.55)
-      .translate([this.getWidth() / 2, this.getHeight() / 2]);
   },
 
 
