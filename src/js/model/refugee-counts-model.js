@@ -475,7 +475,6 @@ RefugeeCountsModel.prototype.getUnsortedEuroFigures = function(countryFigures) {
       //  // TODO: add this to some "others" category
       //  return false;
       //}
-      console.log(item.country + " " + totalCount);
       return true;
     });
     return filtered;
