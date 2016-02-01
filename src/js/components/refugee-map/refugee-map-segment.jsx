@@ -48,11 +48,6 @@ var RefugeeMapSegment = React.createClass({
   },
 
 
-  handleBeforeTabChange: function(selectedIndex, $selectedPanel, $selectedTabMenu) {
-    // TODO: don't hard-code index
-    this.setState({showTimeRange: selectedIndex != 4});
-  },
-
 
   interactionsEnabled: function() {
     return true;
@@ -153,7 +148,7 @@ var RefugeeMapSegment = React.createClass({
           mapModel={this.props.mapModel} />
 
         <div className="refugee-map-segment__tabs">
-          <Tabs onBeforeChange={this.handleBeforeTabChange}>
+          <Tabs>
               <Tabs.Panel title="Euroopan kartta">
                 <RefugeeMap ref="rmap"
                   {...this.props}
@@ -186,7 +181,6 @@ var RefugeeMapSegment = React.createClass({
               </Tabs.Panel>
           </Tabs>
           <RefugeeTimeRangeIndicator
-            show={this.state.showTimeRange}
             timeRange={this.state.timeRange} />
         </div>
 
