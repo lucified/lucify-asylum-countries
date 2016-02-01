@@ -24,13 +24,15 @@ var RefugeeTimeRangeIndicator = React.createClass({
   },
 
   render: function() {
-
-    return (
-      <div className="refugee-time-range-indicator">
-        {this.displayTimeRange(this.props.timeRange)}
-      </div>
-    );
-
+    if (this.props.show) {
+      return (
+        <div className="refugee-time-range-indicator">
+          {this.displayTimeRange(this.props.timeRange)}
+        </div>
+      );
+    } else {
+      return <div />;
+    }
   }
 
 
