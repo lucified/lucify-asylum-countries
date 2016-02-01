@@ -13,7 +13,7 @@ var SmallMultiples = function(mapModel) {
   margin = {
     top: 15,
     right: 10,
-    bottom: 40,
+    bottom: 50,
     left: 35
   };
   data = [];

@@ -15,17 +15,20 @@
 }
 
 .refugee-small-multiples__area {
-  fill: #cec6b9;
+  //fill: #cec6b9;
+  fill: lighten($teas-light-blue, 20);
 }
 
 .refugee-small-multiples__line {
   fill: none;
-  stroke: #74736c;
+  //stroke: #74736c;
+  stroke: $teas-blue;
   stroke-width: 1.4px;
 }
 
 .refugee-small-multiples__title {
   font-size: 12px;
+
 }
 
 .refugee-small-multiples__axis line, .refugee-small-multiples__grid line {
@@ -43,4 +46,12 @@
 .refugee-small-multiples__hidden {
   display:none;
   opacity: 0.0;
+}
+
+.refugee-small-multiples__axis text {
+  fill: rgba(0,0,0,0.5);
+}
+
+text.refugee-small-multiples__static_year{
+  fill: rgba(0,0,0,0.8);
 }

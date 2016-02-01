@@ -16,7 +16,6 @@ var RefugeeTimeRangeIndicator = require('./refugee-time-range-indicator.jsx');
 
 var RefugeesBarCharts = require('./refugees-bar-charts.jsx');
 var RefugeeHighlightMixin = require('./refugee-highlight-mixin.js');
-var RefugeeSmallMultiplees = require('./refugee-small-multiples.jsx');
 
 var Tabs = require('react-simpletabs');
 
@@ -48,11 +47,6 @@ var RefugeeMapSegment = React.createClass({
     this.setState({timeRange: newTimeRange});
   },
 
-
-  handleBeforeTabChange: function(selectedIndex, $selectedPanel, $selectedTabMenu) {
-    // TODO: don't hard-code index
-    this.setState({showTimeRange: selectedIndex != 4});
-  },
 
 
   interactionsEnabled: function() {
@@ -154,7 +148,7 @@ var RefugeeMapSegment = React.createClass({
           mapModel={this.props.mapModel} />
 
         <div className="refugee-map-segment__tabs">
-          <Tabs onBeforeChange={this.handleBeforeTabChange}>
+          <Tabs>
               <Tabs.Panel title="Euroopan kartta">
                 <RefugeeMap ref="rmap"
                   {...this.props}
@@ -185,14 +179,8 @@ var RefugeeMapSegment = React.createClass({
                 <RefugeesBarCharts {...this.props}
                   timeRange={this.state.timeRange} />
               </Tabs.Panel>
-
-              <Tabs.Panel title="Viivakaaviona">
-                <RefugeeSmallMultiplees
-                  {...this.props} />
-              </Tabs.Panel>
           </Tabs>
           <RefugeeTimeRangeIndicator
-            show={this.state.showTimeRange}
             timeRange={this.state.timeRange} />
         </div>
 

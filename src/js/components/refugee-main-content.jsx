@@ -5,11 +5,13 @@ var HideableContainer = require('lucify-commons/src/js/components/hideable-conta
 
 var Decorator = require('./refugee-context-decorator.jsx');
 var RefugeeMapSegment = require('./refugee-map/refugee-map-segment.jsx');
+var RefugeeMultiplesSegment = require('./refugee-map/refugee-multiples-segment.jsx');
 
 var Loading = require('lucify-commons/src/js/components/loading.jsx');
 
 var WorkInProgress = require('./work-in-progress.jsx');
 var UberProtection = require('lucify-commons/src/js/components/uber-protection.jsx');
+
 
 var RefugeeMainContent = React.createClass({
 
@@ -17,7 +19,7 @@ var RefugeeMainContent = React.createClass({
 	getDefaultProps: function() {
 		return {
 			mapEnabled: true
-		};
+		}
 	},
 
 
@@ -31,6 +33,19 @@ var RefugeeMainContent = React.createClass({
 		}
 		return <div />;
 	},
+
+
+	getMultiplesSegment: function() {
+		if (this.props.mapEnabled && this.props.loaded) {
+			return (
+				<HideableContainer visible={this.props.loaded}>
+					<RefugeeMultiplesSegment {...this.props} />
+				</HideableContainer>
+			);
+		}
+		return <div />;
+	},
+
 
 	getLoadingSegment: function() {
 		if (!this.props.loaded) {
@@ -58,6 +73,7 @@ var RefugeeMainContent = React.createClass({
 				<WorkInProgress />
 				{this.getLoadingSegment()}
 				{this.getMapSegment()}
+				{this.getMultiplesSegment()}
 			</div>
 		);
 
