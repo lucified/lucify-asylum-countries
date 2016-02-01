@@ -68,6 +68,15 @@ describe('RefugeeCountsModel', function() {
 		});
 	});
 
+	describe('getGlobalArrivingFor', function() {
+		it('correct total for Jan 2013 (only European destinations)', function() {
+			assert.equal(model.getGlobalArrivingFor(moment([2013, 0])).asylumApplications, 31092);
+		});
+		it('correct total for August 2015 (only European destinations)', function() {
+			assert.equal(model.getGlobalArrivingFor(moment([2015, 7])).asylumApplications, 181022);
+		});
+	});
+
 	describe('getOriginCountsByDestinationCountries()', function() {
 		it('correct total for SYR->GER after one months end', function() {
 			assert.equal(model.getOriginCountsByDestinationCountries('SYR',
