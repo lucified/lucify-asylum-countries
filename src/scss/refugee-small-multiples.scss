@@ -18,13 +18,13 @@
 
 .refugee-small-multiples__area {
   //fill: #cec6b9;
-  fill: lighten($teas-light-blue, 20);
+  fill: lighten($teas-blue, 0);
 }
 
 .refugee-small-multiples__line {
   fill: none;
   //stroke: #74736c;
-  stroke: $teas-blue;
+  stroke: darken($teas-blue, 20);
   stroke-width: 1.4px;
 }
 
