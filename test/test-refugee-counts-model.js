@@ -77,6 +77,22 @@ describe('RefugeeCountsModel', function() {
 		});
 	});
 
+	describe('getGlobalArrivingPerMonthForCountry', function() {
+		var germanyTotals = model.getGlobalArrivingPerMonthForCountry('DEU');
+
+		it('correct total for germany for jan 2012', function() {
+		 	assert.equal(germanyTotals[0].asylumApplications, 4667);
+		});
+
+		it('correct total for germany for jun 2014', function() {
+		 	assert.equal(germanyTotals[12*2 + 5].asylumApplications, 12445);
+		});
+
+		it('correct total for germany for oct 2015', function() {
+		 	assert.equal(germanyTotals[12*3 + 9].asylumApplications, 52686);
+		});
+	});
+
 	describe('getOriginCountsByDestinationCountries()', function() {
 		it('correct total for SYR->GER after one months end', function() {
 			assert.equal(model.getOriginCountsByDestinationCountries('SYR',
