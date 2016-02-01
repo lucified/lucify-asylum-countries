@@ -155,8 +155,9 @@ var RefugeeMapSegment = React.createClass({
                   onMouseLeave={this.handleMouseLeave}
                   onMapClick={this.handleMapClick}
                   lo={22.2206322 - 9}
-                  la={34.0485818 + 15}
-                  scale={1.4}
+                  la={34.0485818 + 18.5}
+                  scale={1.706}
+                  preferredHeightWidthRatio={0.82}
                   timeRange={this.state.timeRange}
                   interactionsEnabled={this.interactionsEnabled()} />
               </Tabs.Panel>

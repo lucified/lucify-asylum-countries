@@ -29,6 +29,7 @@ var RefugeeMap = React.createClass({
       lo: 22.2206322,
       la: 34.0485818,
       scale: 0.85,
+      preferredHeightWidthRatio: 0.6,
       showDataUpdated: false
     };
   },
@@ -40,7 +41,7 @@ var RefugeeMap = React.createClass({
 
 
   getHeight: function() {
-    return this.props.height;
+    return this.getSmartHeight();
   },
 
 
@@ -51,6 +52,19 @@ var RefugeeMap = React.createClass({
   },
 
 
+  getGraphHeight: function() {
+    return 180 + 23 + 10;
+  },
+
+
+  getSmartHeight: function() {
+    var height = Math.round(this.props.width * this.props.preferredHeightWidthRatio);
+    var graphHeight = this.getGraphHeight();
+    var chromeHeight = 100;
+    if (screen.height > graphHeight * 2 + chromeHeight) {
+        //console.log(sprintf("here %d %d", screen.height - chromeHeight - graphHeight, height));
+        return Math.min(screen.height - chromeHeight - graphHeight, height);
+    }
   },
 
 
@@ -62,7 +76,7 @@ var RefugeeMap = React.createClass({
     return d3.geo.azimuthalEqualArea()
       .center([0, la])
       .rotate([-lo, 0])
-      .scale(this.getWidth()*this.props.scale)
+      .scale(this.getHeight()*scale)
       .translate([this.getWidth() / 2, this.getHeight() / 2])
       .precision(1);
   },
