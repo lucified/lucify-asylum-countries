@@ -5,10 +5,9 @@ rm -rf temp data/*.json
 # Create directory structure
 gulp prepare-skeleton
 
-
 ogr2ogr \
   -f GeoJSON \
-  -where "ADM0_A3 IN ('SYR', 'AFG', 'SRB', 'IRQ', 'ALB', 'ERI', 'PAK', 'SOM', 'CHI', 'UKR', 'TUR', 'CYP', 'PSE') OR Continent IN ('Europe') OR REGION_WB IN ('Sub-Saharan Africa', 'Middle East & North Africa') OR SUBREGION IN ('Western Asia', 'Central Asia', 'Southern Asia', 'Eastern Asia', 'South-Eastern Asia')" \
+  -where "Continent NOT IN ('Antarctica')" \
   temp/detailed-map.json \
   data/ne_10m_admin_0_countries.shp
 
