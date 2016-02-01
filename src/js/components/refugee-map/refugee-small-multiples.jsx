@@ -219,12 +219,51 @@ var SmallMultiples = function(mapModel) {
   return chart;
 };
 
+
+
 var RefugeeSmallMultiplees = React.createClass({
 
-  componentDidMount: function() {
+
+  getSourceData: function() {
+    var data = this.props.refugeeCountsModel.getEuroFigures(this.props.countryFigures, 25);
+
+    return data.map(item => {
+        return {
+          country: item.country,
+          values: this.props.refugeeCountsModel.getGlobalArrivingPerMonthForCountry(item.country)
+        }
+    });
+  },
+
+
+  getData: function() {
+      var data = this.getSourceData();
+
+      if (this.props.relativeToPopulation) {
+        data.forEach(countryItem => {
+          countryItem.values.forEach(valueItem => {
+            valueItem.asylumApplications = Math.round(valueItem.asylumApplications / this.props.countryFigures[countryItem.country].population * 10000);
+          })
+        });
+      }
+      return data;
+  },
+
+
+  componentDidUpdate: function() {
+    d3.select(".small-multiples").html("");
+    this.draw();
+  },
+
+
+  draw: function() {
     var plot = SmallMultiples(this.props.mapModel);
-    var data = this.props.refugeeCountsModel.getGlobalArrivingPerMonthForAllCountries();
+    var data = this.getData();
     d3.select(".small-multiples").datum(data).call(plot);
+  },
+
+  componentDidMount: function() {
+    this.draw();
   },
 
 
