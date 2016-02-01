@@ -172,7 +172,6 @@ var RefugeeMapTimeBarChart = React.createClass({
         .call(this.yAxis);
 
     this.updateWithData(data);
-    // TODO: make chart responsive to window resizes
   },
 
 

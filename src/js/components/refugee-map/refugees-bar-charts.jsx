@@ -3,7 +3,7 @@ var React = require('react');
 var _ = require('underscore');
 var sprintf = require('sprintf');
 
-var DividedCols = require('lucify-commons/src/js/components/divided-cols.jsx');;
+var DividedCols = require('lucify-commons/src/js/components/divided-cols.jsx');
 var RefugeesBarChart = require('./refugees-bar-chart.jsx');
 
 var utils = require('../../utils.js');
@@ -12,14 +12,14 @@ var utils = require('../../utils.js');
 var PerPopulationBarChart = React.createClass({
 
   getValue: function(item) {
-      var counts = this.props.refugeeCountsModel
-        .getTotalDestinationCounts(item.country, this.props.timeRange);
-      var totalCount = counts.asylumApplications;
-      return totalCount / item.population;
+    var counts = this.props.refugeeCountsModel
+      .getTotalDestinationCounts(item.country, this.props.timeRange);
+    var totalCount = counts.asylumApplications;
+    return totalCount / item.population;
   },
 
   format: function(v, id, i, j) {
-      return sprintf("%.0f", v*100000);
+    return sprintf("%.0f", v*100000);
   },
 
   getMax: function() {
@@ -35,7 +35,7 @@ var PerPopulationBarChart = React.createClass({
         format={this.format}
         getValue={this.getValue}
         max={this.getMax()} />
-    )
+    );
   }
 
 });
@@ -44,14 +44,14 @@ var PerPopulationBarChart = React.createClass({
 var TotalsBarChart = React.createClass({
 
   getValue: function(item) {
-      var counts = this.props.refugeeCountsModel
-        .getTotalDestinationCounts(item.country, this.props.timeRange);
-      var totalCount = counts.asylumApplications;
-      return totalCount;
+    var counts = this.props.refugeeCountsModel
+      .getTotalDestinationCounts(item.country, this.props.timeRange);
+    var totalCount = counts.asylumApplications;
+    return totalCount;
   },
 
   format: function(v, id, i, j) {
-      return sprintf("%.0fk", v/1000);
+    return sprintf("%.0fk", v/1000);
   },
 
   getMax: function() {
@@ -67,7 +67,7 @@ var TotalsBarChart = React.createClass({
         format={this.format}
         getValue={this.getValue}
         max={this.getMax()} />
-    )
+    );
   }
 
 });
@@ -76,14 +76,14 @@ var TotalsBarChart = React.createClass({
 var TotalsMonthlyAverageBarChart = React.createClass({
 
   getValue: function(item) {
-      var counts = this.props.refugeeCountsModel
-        .getTotalDestinationCounts(item.country, this.props.timeRange);
-      var totalCount = counts.asylumApplications;
-      return totalCount / utils.timeRangeInMonths(this.props.timeRange);
+    var counts = this.props.refugeeCountsModel
+      .getTotalDestinationCounts(item.country, this.props.timeRange);
+    var totalCount = counts.asylumApplications;
+    return totalCount / utils.timeRangeInMonths(this.props.timeRange);
   },
 
   format: function(v, id, i, j) {
-      return sprintf("%.0f", v);
+    return sprintf("%.0f", v);
   },
 
   getMax: function() {
@@ -99,7 +99,7 @@ var TotalsMonthlyAverageBarChart = React.createClass({
         format={this.format}
         getValue={this.getValue}
         max={this.getMax()} />
-    )
+    );
   }
 
 });
@@ -108,14 +108,14 @@ var TotalsMonthlyAverageBarChart = React.createClass({
 var PerPopulationMonthlyAverageBarChart = React.createClass({
 
   getValue: function(item) {
-      var counts = this.props.refugeeCountsModel
-        .getTotalDestinationCounts(item.country, this.props.timeRange);
-      var totalCount = counts.asylumApplications;
-      return totalCount / item.population / utils.timeRangeInMonths(this.props.timeRange);
+    var counts = this.props.refugeeCountsModel
+      .getTotalDestinationCounts(item.country, this.props.timeRange);
+    var totalCount = counts.asylumApplications;
+    return totalCount / item.population / utils.timeRangeInMonths(this.props.timeRange);
   },
 
   format: function(v, id, i, j) {
-      return sprintf("%.0f", v*100000);
+    return sprintf("%.0f", v*100000);
   },
 
   getMax: function() {
@@ -131,7 +131,7 @@ var PerPopulationMonthlyAverageBarChart = React.createClass({
         format={this.format}
         getValue={this.getValue}
         max={this.getMax()} />
-    )
+    );
   }
 
 });
@@ -143,12 +143,12 @@ var RefugeesBarCharts = React.createClass({
   getInitialState: function() {
     return {
       staticScale: false
-    }
+    };
   },
 
 
   handleCheckBoxChange: function() {
-      this.setState({staticScale: !this.state.staticScale});
+    this.setState({staticScale: !this.state.staticScale});
   },
 
 
@@ -173,7 +173,6 @@ var RefugeesBarCharts = React.createClass({
                   <PerPopulationBarChart {...this.props}
                   staticScale={this.state.staticScale} />
                 </div>
-
             }
             second={
               <div>
@@ -191,25 +190,6 @@ var RefugeesBarCharts = React.createClass({
 
 
 });
-
-
-          // <DividedCols
-          //   first={
-          //       <div>
-          //         <h3>Hakemuksia 100 000 asukasta kohden keskimäärin per kuukausi</h3>
-          //         <PerPopulationMonthlyAverageBarChart {...this.props}
-          //         staticScale={this.state.staticScale} />
-          //       </div>
-
-          //   }
-          //   second={
-          //     <div>
-          //       <h3>Hakemuksia yhteensä keskimäärin per kuukausi</h3>
-          //       <TotalsMonthlyAverageBarChart {...this.props}
-          //         staticScale={this.state.staticScale} />
-          //     </div>
-          //   } />
-
 
 
 module.exports = RefugeesBarCharts;

@@ -5,7 +5,7 @@ var sprintf = require('sprintf');
 var extend = require('object-extend');
 
 var C3Chart = require('lucify-commons/src/js/components/react-c3/c3-chart.jsx');
-var theme = require('lucify-commons/src/js/lucify-theme.jsx');;
+var theme = require('lucify-commons/src/js/lucify-theme.jsx');
 var d3 = require('d3');
 
 var refugeeConstants = require('../../model/refugee-constants.js');
@@ -32,20 +32,19 @@ var RefugeesBarChart = React.createClass({
         show: true,
         format: this.props.format
       }
-    }
+    };
 
     if (!this.props.refugeeCountsModel) {
       return baseData;
     }
 
-    var data = this.getDataValues();
     var data = {
-      columns: [['data1'].concat(data)],
+      columns: [['data1'].concat(this.getDataValues())],
       colors: {
         data1: 'rgb(130, 196, 217)'
         //data1: 'rgb(10, 187, 239)'
       }
-    }
+    };
 
     return extend(baseData, data);
   },
@@ -66,33 +65,32 @@ var RefugeesBarChart = React.createClass({
 
 
   getUnsortedEuroFigures: function() {
-      return _.filter(this.props.countryFigures, item => {
-        if (item.continent != 'Europe'
-          || !this.props.mapModel.getFriendlyNameForCountry(item.country)) {
-          return false;
-        }
+    return _.filter(this.props.countryFigures, item => {
+      if (item.continent != 'Europe' ||
+          !this.props.mapModel.getFriendlyNameForCountry(item.country)) {
+        return false;
+      }
 
-        if (!this.props.refugeeCountsModel.isDestination(item.country)) {
-            return false;
-        }
+      if (!this.props.refugeeCountsModel.isDestination(item.country)) {
+        return false;
+      }
 
-        var counts = this.props.refugeeCountsModel
-          .getTotalDestinationCounts(item.country, refugeeConstants.fullRange);
-        var totalCount = counts.asylumApplications;
-        if (totalCount < 5000) {
-            // todo: add this to some "others"
-            // category
-            return false;
-        }
-        return true;
-      });
+      var counts = this.props.refugeeCountsModel
+        .getTotalDestinationCounts(item.country, refugeeConstants.fullRange);
+      var totalCount = counts.asylumApplications;
+      if (totalCount < 5000) {
+        // TODO: add this to some "others" category
+        return false;
+      }
+      return true;
+    });
   },
 
 
   getCategories: function() {
       var friendlyNames = {};
       var ret = this.getEuroFigures().map(item => {
-        return this.props.mapModel.getFriendlyNameForCountry(item.country)
+        return this.props.mapModel.getFriendlyNameForCountry(item.country);
       });
       return ret;
   },
@@ -123,10 +121,10 @@ var RefugeesBarChart = React.createClass({
         enabled: false
       },
       padding: {
-          top: 0,
-          right: 40,
-          bottom: 0,
-          left: 120
+        top: 0,
+        right: 40,
+        bottom: 0,
+        left: 120
       },
       axis: {
         x: {
@@ -143,9 +141,9 @@ var RefugeesBarChart = React.createClass({
         duration: 200
       },
       legend: {
-         show: false
+        show: false
       }
-    }
+    };
   },
 
 
@@ -172,7 +170,7 @@ var RefugeesBarChart = React.createClass({
       onUpdateData={this.adjustY}
       slowUpdateDebounceTime={0}
       fastUpdateDebounceTime={0}
-      spec={spec} aspectRatio={1.0} />
+      spec={spec} aspectRatio={1.0} />;
   }
 
 
