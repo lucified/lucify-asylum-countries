@@ -35,7 +35,7 @@ var RefugeeMultiplesSegment = React.createClass({
                 <div className="inputs__instructions">
                   <p className="first last">
                     Seuraavat kuvaajat esittävät turvapaikanhakijoiden
-                    kuukausittaisia määriä ajan funktiona kohde maittain.
+                    kuukausittaisia määriä ajan funktiona kohdemaittain.
                   </p>
                 </div>
               }

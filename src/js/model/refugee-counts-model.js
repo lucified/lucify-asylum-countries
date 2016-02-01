@@ -446,4 +446,39 @@ RefugeeCountsModel.prototype.getDestinationCountriesWithMissingDataForTimeRange 
 
 
 
+RefugeeCountsModel.prototype.getEuroFigures = function(countryFigures, limit) {
+    var ret = this.getUnsortedEuroFigures(countryFigures).sort(function(a, b) {
+      var ac = this
+        .getTotalDestinationCounts(a.country, refugeeConstants.fullRange)
+        .asylumApplications;
+      var bc = this
+        .getTotalDestinationCounts(b.country, refugeeConstants.fullRange)
+        .asylumApplications;
+      return bc - ac;
+    }.bind(this));
+    return ret.slice(0, limit);
+},
+
+
+RefugeeCountsModel.prototype.getUnsortedEuroFigures = function(countryFigures) {
+    var filtered = _.filter(countryFigures, item => {
+      if (!countryFigures[item.country]) {
+        return false;
+      }
+      if (!this.isDestination(item.country)) {
+        return false;
+      }
+      var counts = this.getTotalDestinationCounts(item.country, refugeeConstants.fullRange);
+      var totalCount = counts.asylumApplications;
+
+      //if (totalCount < 5000) {
+      //  // TODO: add this to some "others" category
+      //  return false;
+      //}
+      return true;
+    });
+    return filtered;
+}
+
+
 module.exports = RefugeeCountsModel;

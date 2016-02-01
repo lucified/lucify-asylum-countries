@@ -8,6 +8,8 @@
 
 .refugee-small-multiples__chart svg {
   font-size: 10px;
+  overflow: visible;
+  z-index: 100;
 }
 
 .refugee-small-multiples__background {
@@ -16,13 +18,13 @@
 
 .refugee-small-multiples__area {
   //fill: #cec6b9;
-  fill: lighten($teas-light-blue, 20);
+  fill: lighten($teas-blue, 0);
 }
 
 .refugee-small-multiples__line {
   fill: none;
   //stroke: #74736c;
-  stroke: $teas-blue;
+  stroke: darken($teas-blue, 20);
   stroke-width: 1.4px;
 }
 
@@ -54,4 +56,12 @@
 
 text.refugee-small-multiples__static_year{
   fill: rgba(0,0,0,0.8);
+}
+
+.refugee-small-multiples__axis line {
+  display: none;
+}
+
+.small-multiples {
+  position: relative;
 }
