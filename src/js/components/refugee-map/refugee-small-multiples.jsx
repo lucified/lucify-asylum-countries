@@ -42,7 +42,7 @@ var SmallMultiples = function(mapModel) {
             .outerTickSize(0)
             .tickSubdivide(1)
             .tickSize(-width)
-            .tickFormat(d3.format(".3r"));
+            .tickFormat(d3.format("s"));
 
   area = d3.svg.area()
            .x(function(d) {
