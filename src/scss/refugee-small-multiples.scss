@@ -1,0 +1,46 @@
+.refugee-small-multiples__chart {
+  float: left;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-top:0;
+  padding-left:0;
+}
+
+.refugee-small-multiples__chart svg {
+  font-size: 10px;
+}
+
+.refugee-small-multiples__background {
+  fill: none;
+}
+
+.refugee-small-multiples__area {
+  fill: #cec6b9;
+}
+
+.refugee-small-multiples__line {
+  fill: none;
+  stroke: #74736c;
+  stroke-width: 1.4px;
+}
+
+.refugee-small-multiples__title {
+  font-size: 12px;
+}
+
+.refugee-small-multiples__axis line, .refugee-small-multiples__grid line {
+  stroke-width: .5px;
+  shape-rendering: crispEdges;
+  stroke: #fff;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.refugee-small-multiples__axis path {
+  display: none;
+}
+
+.refugee-small-multiples__hidden {
+  display:none;
+  opacity: 0.0;
+}

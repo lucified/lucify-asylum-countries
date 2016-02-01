@@ -16,6 +16,7 @@ var RefugeeTimeRangeIndicator = require('./refugee-time-range-indicator.jsx');
 
 var RefugeesBarCharts = require('./refugees-bar-charts.jsx');
 var RefugeeHighlightMixin = require('./refugee-highlight-mixin.js');
+var RefugeeSmallMultiplees = require('./refugee-small-multiples.jsx');
 
 var Tabs = require('react-simpletabs');
 
@@ -32,7 +33,8 @@ var RefugeeMapSegment = React.createClass({
         // use startOf('month') for the beginning month and endOf('month') for the last
         moment([2015, 0]).startOf('month').unix(),
         moment([2015, 10]).endOf('month').unix()
-      ]
+      ],
+      showTimeRange: true
     };
   },
 
@@ -44,6 +46,12 @@ var RefugeeMapSegment = React.createClass({
 
   handleTimeRangeChange: function(newTimeRange) {
     this.setState({timeRange: newTimeRange});
+  },
+
+
+  handleBeforeTabChange: function(selectedIndex, $selectedPanel, $selectedTabMenu) {
+    // TODO: don't hard-code index
+    this.setState({showTimeRange: selectedIndex != 4});
   },
 
 
@@ -146,7 +154,7 @@ var RefugeeMapSegment = React.createClass({
           mapModel={this.props.mapModel} />
 
         <div className="refugee-map-segment__tabs">
-          <Tabs>
+          <Tabs onBeforeChange={this.handleBeforeTabChange}>
               <Tabs.Panel title="Euroopan kartta">
                 <RefugeeMap ref="rmap"
                   {...this.props}
@@ -160,6 +168,7 @@ var RefugeeMapSegment = React.createClass({
                   timeRange={this.state.timeRange}
                   interactionsEnabled={this.interactionsEnabled()} />
               </Tabs.Panel>
+
               <Tabs.Panel title="Euroopan ja lähtömaiden kartta">
                   <RefugeeMap ref="rmap"
                     {...this.props}
@@ -175,8 +184,15 @@ var RefugeeMapSegment = React.createClass({
                 <RefugeesBarCharts {...this.props}
                   timeRange={this.state.timeRange} />
               </Tabs.Panel>
+
+              <Tabs.Panel title="Viivakaaviona">
+                <RefugeeSmallMultiplees
+                  {...this.props} />
+              </Tabs.Panel>
           </Tabs>
-          <RefugeeTimeRangeIndicator timeRange={this.state.timeRange} />
+          <RefugeeTimeRangeIndicator
+            show={this.state.showTimeRange}
+            timeRange={this.state.timeRange} />
         </div>
 
       </div>
