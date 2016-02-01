@@ -16,7 +16,6 @@ var RefugeeTimeRangeIndicator = require('./refugee-time-range-indicator.jsx');
 
 var RefugeesBarCharts = require('./refugees-bar-charts.jsx');
 var RefugeeHighlightMixin = require('./refugee-highlight-mixin.js');
-var RefugeeSmallMultiplees = require('./refugee-small-multiples.jsx');
 
 var Tabs = require('react-simpletabs');
 
@@ -184,11 +183,6 @@ var RefugeeMapSegment = React.createClass({
               <Tabs.Panel title="Pylväskaaviona">
                 <RefugeesBarCharts {...this.props}
                   timeRange={this.state.timeRange} />
-              </Tabs.Panel>
-
-              <Tabs.Panel title="Viivakaaviona">
-                <RefugeeSmallMultiplees
-                  {...this.props} />
               </Tabs.Panel>
           </Tabs>
           <RefugeeTimeRangeIndicator
