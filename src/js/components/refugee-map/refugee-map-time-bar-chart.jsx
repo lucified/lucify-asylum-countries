@@ -7,7 +7,7 @@ var _ = require('underscore');
 var d3 = require('d3');
 
 var theme = require('lucify-commons/src/js/lucify-theme.jsx');
-
+var sprintf = require('sprintf');
 
 var RefugeeMapTimeBarChart = React.createClass({
 
@@ -280,8 +280,18 @@ var RefugeeMapTimeBarChart = React.createClass({
     if (d3.event.mode === "move") {
       var monthsDiff = dateExtent[1].getMonth() - dateExtent[0].getMonth() +
         (12 * (dateExtent[1].getYear() - dateExtent[0].getYear()));
+
+      if (monthsDiff == 0) {
+        return;
+      }
+
       var d0 = d3.time.month.round(dateExtent[0]),
           d1 = d3.time.month.offset(d0, monthsDiff);
+
+      //console.log(sprintf('%d %d %d %d %d %d %d', monthsDiff, dateExtent[0].getMonth(),
+      //  dateExtent[1].getMonth(), dateExtent[0].getYear(), dateExtent[1].getYear(),
+      //  d0.getMonth(), d1.getMonth()));
+
       roundedDateExtent = [d0, d1];
     }
 
