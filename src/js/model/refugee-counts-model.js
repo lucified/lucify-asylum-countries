@@ -106,9 +106,10 @@ RefugeeCountsModel.prototype._addMonthlyArrivals = function(destinationCountry, 
 
 
 /*
- * Assume that "big" European countries should receive at least some asylum seekers from
- * the most distressed origin countries: Syria, Iraq. If there are no asylum seekers
- * from these countries, assume the data is (at least partially) missing for that month.
+ * Assume that "big" European countries should receive at least some asylum
+ * seekers from the most distressed origin countries: Syria, Iraq, Ukraine.
+ * If there are no asylum seekers from these countries, assume the data is
+ * (at least partially) missing for that month.
  */
 RefugeeCountsModel.prototype._calculateMissingData = function() {
   var destinationCountriesToCheck = [
@@ -286,11 +287,11 @@ RefugeeCountsModel.prototype.getGlobalArrivingPerMonthForCountry = function(coun
     var yearIndex = curMoment.year() - refugeeConstants.DATA_START_YEAR;
     var monthIndex = curMoment.month();
 
-    if (this.arrivedRefugeesToCountry[country] != null
-        && this.arrivedRefugeesToCountry[country][yearIndex] != null
-        && this.arrivedRefugeesToCountry[country][yearIndex][monthIndex] != null) {
+    if (this.arrivedRefugeesToCountry[country] != null &&
+        this.arrivedRefugeesToCountry[country][yearIndex] != null &&
+        this.arrivedRefugeesToCountry[country][yearIndex][monthIndex] != null) {
       var count = this.arrivedRefugeesToCountry[country][yearIndex][monthIndex].count;
-        ret.push({asylumApplications: count, date: moment(curMoment)});
+      ret.push({asylumApplications: count, date: moment(curMoment)});
     } else {
       ret.push({asylumApplications: 0, date: moment(curMoment)});
     }
