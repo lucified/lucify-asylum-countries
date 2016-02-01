@@ -8,6 +8,8 @@
 
 .refugee-small-multiples__chart svg {
   font-size: 10px;
+  overflow: visible;
+  z-index: 100;
 }
 
 .refugee-small-multiples__background {
