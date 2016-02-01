@@ -164,13 +164,18 @@ var RefugeesBarChart = React.createClass({
     var data = this.getData();
     var spec = this.getSpec();
 
-    return <C3Chart
-      ref="theChart"
-      data={data}
-      onUpdateData={this.adjustY}
-      slowUpdateDebounceTime={0}
-      fastUpdateDebounceTime={0}
-      spec={spec} aspectRatio={1.0} />;
+    return (
+        <div className="refugees-bar-chart">
+          <C3Chart
+                ref="theChart"
+                data={data}
+                onUpdateData={this.adjustY}
+                slowUpdateDebounceTime={0}
+                fastUpdateDebounceTime={0}
+                spec={spec} aspectRatio={1.0} />
+        </div>
+      );
+
   }
 
 
