@@ -27,6 +27,18 @@ var RefugeeMultiplesSegment = React.createClass({
   },
 
 
+  getInstructionsText: function() {
+    if (this.state.relativeToPopulation) {
+      return "Seuraavat kuvaajat esittävät turvapaikanhakijoiden " +
+        "kuukausittaisia määriä per " + this.getPopulationDivider() +
+        " asukasta kohdemaittain.";
+    } else {
+      return "Seuraavat kuvaajat esittävät turvapaikanhakijoiden " +
+        "kuukausittaisia määriä ajan funktiona kohdemaittain.";
+    }
+  },
+
+
   render: function() {
     return (
       <div className="refugee-multiples-segment">
@@ -36,8 +48,7 @@ var RefugeeMultiplesSegment = React.createClass({
               first={
                 <div className="inputs__instructions">
                   <p className="first last">
-                    Seuraavat kuvaajat esittävät turvapaikanhakijoiden
-                    kuukausittaisia määriä ajan funktiona kohdemaittain.
+                    {this.getInstructionsText()}
                   </p>
                 </div>
               }
