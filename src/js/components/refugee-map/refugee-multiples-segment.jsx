@@ -22,6 +22,11 @@ var RefugeeMultiplesSegment = React.createClass({
   },
 
 
+  getPopulationDivider: function() {
+    return 100000;
+  },
+
+
   render: function() {
     return (
       <div className="refugee-multiples-segment">
@@ -51,7 +56,8 @@ var RefugeeMultiplesSegment = React.createClass({
 
         <div className="lucify-container">
           <RefugeeSmallMultiples {...this.props}
-            relativeToPopulation={this.state.relativeToPopulation} />
+            relativeToPopulation={this.state.relativeToPopulation}
+            populationDivider={this.getPopulationDivider()} />
         </div>
       </div>
 

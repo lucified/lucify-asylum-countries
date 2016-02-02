@@ -231,7 +231,9 @@ var RefugeeSmallMultiplees = React.createClass({
         data.forEach(countryItem => {
           countryItem.values.forEach(valueItem => {
             valueItem.asylumApplications =
-              Math.round(valueItem.asylumApplications / this.props.countryFigures[countryItem.country].population * 100000);
+              Math.round(valueItem.asylumApplications /
+                this.props.countryFigures[countryItem.country].population *
+                this.props.populationDivider);
           });
         });
       }
