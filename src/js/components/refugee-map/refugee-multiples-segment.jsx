@@ -22,6 +22,23 @@ var RefugeeMultiplesSegment = React.createClass({
   },
 
 
+  getPopulationDivider: function() {
+    return 100000;
+  },
+
+
+  getInstructionsText: function() {
+    if (this.state.relativeToPopulation) {
+      return "Seuraavat kuvaajat esittävät turvapaikanhakijoiden " +
+        "kuukausittaisia määriä per " + this.getPopulationDivider() +
+        " asukasta kohdemaittain.";
+    } else {
+      return "Seuraavat kuvaajat esittävät turvapaikanhakijoiden " +
+        "kuukausittaisia määriä ajan funktiona kohdemaittain.";
+    }
+  },
+
+
   render: function() {
     return (
       <div className="refugee-multiples-segment">
@@ -31,8 +48,7 @@ var RefugeeMultiplesSegment = React.createClass({
               first={
                 <div className="inputs__instructions">
                   <p className="first last">
-                    Seuraavat kuvaajat esittävät turvapaikanhakijoiden
-                    kuukausittaisia määriä ajan funktiona kohdemaittain.
+                    {this.getInstructionsText()}
                   </p>
                 </div>
               }
@@ -51,7 +67,8 @@ var RefugeeMultiplesSegment = React.createClass({
 
         <div className="lucify-container">
           <RefugeeSmallMultiples {...this.props}
-            relativeToPopulation={this.state.relativeToPopulation} />
+            relativeToPopulation={this.state.relativeToPopulation}
+            populationDivider={this.getPopulationDivider()} />
         </div>
       </div>
 
