@@ -175,21 +175,25 @@ var SmallMultiples = function(mapModel) {
 
   mousemove = function() {
     var date = xScale.invert(d3.mouse(this)[0]);
+    // the data points are placed at the beginning of each month.
+    // we need to round the date to the point for each month.
+    var beginningOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
     var index = 0;
 
-    circle.attr("cx", xScale(date)).attr("cy", function(c) {
-      index = bisect(c.values, date, 0, c.values.length - 1);
+    circle.attr("cx", xScale(beginningOfMonth)).attr("cy", function(c) {
+      index = bisect(c.values, beginningOfMonth, 0, c.values.length - 1);
       return yScale(yValue(c.values[index]));
     });
 
-    caption.attr("x", xScale(date)).attr("y", function(c) {
+    caption.attr("x", xScale(beginningOfMonth)).attr("y", function(c) {
       return yScale(yValue(c.values[index]));
     }).text(function(c) {
       return yValue(c.values[index]);
     });
 
-    curYear.attr("x", xScale(date))
-           .text((date.getMonth() + 1) + "/" + date.getFullYear());
+    curYear.attr("x", xScale(beginningOfMonth))
+           .text((beginningOfMonth.getMonth() + 1) + "/" +
+                 beginningOfMonth.getFullYear());
   };
 
   mouseout = function() {
