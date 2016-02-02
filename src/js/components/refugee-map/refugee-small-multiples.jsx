@@ -248,10 +248,20 @@ var RefugeeSmallMultiplees = React.createClass({
 
 
   draw: function() {
-    var plot = SmallMultiples(this.props.mapModel);
     var data = this.getData();
-    d3.select(".small-multiples").datum(data).call(plot);
+    var graph = this.getPlot();
+    d3.select(".small-multiples").datum(data).call(graph);
   },
+
+
+  getPlot: function() {
+    if (this.plot == null) {
+      this.plot = SmallMultiples(this.props.mapModel);
+    }
+
+    return this.plot;
+  },
+
 
   componentDidMount: function() {
     this.draw();
