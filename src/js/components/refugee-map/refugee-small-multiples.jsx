@@ -25,7 +25,6 @@ var SmallMultiples = function(mapModel) {
   bisect = d3.bisector(function(d) {
     return d.date;
   }).left;
-  format = d3.time.format("%m/%y");
   xScale = d3.time.scale().range([0, width]);
   yScale = d3.scale.linear().range([height, 0]);
 
@@ -78,101 +77,142 @@ var SmallMultiples = function(mapModel) {
     xScale.domain(extentX);
   };
 
-  chart = function(selection) {
-    return selection.each(function(rawData) {
-      var div, g, lines, svg;
-      data = rawData;
-      setupScales(data);
+  chart = function(selection, rawData) {
+    data = rawData;
+    setupScales(data);
 
-      div = d3.select(this).selectAll(".refugee-small-multiples__chart").data(data);
-      div.enter()
-        .append("div")
-          .attr("class", "refugee-small-multiples__chart")
-        .append("svg")
-        .append("g");
+    var svgUpdate = selection.selectAll(".refugee-small-multiples__chart")
+                     .data(data, d => d.country);
 
-      svg = div.select("svg")
-               .attr("width", width + margin.left + margin.right)
-               .attr("height", height + margin.top + margin.bottom);
+    var svgEnter = svgUpdate.enter().append("div").append("svg")
+                     .attr("class", "refugee-small-multiples__chart")
+                     .attr("width", width + margin.left + margin.right)
+                     .attr("height", height + margin.top + margin.bottom);
 
-      g = svg.select("g")
-             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-      g.append("rect")
-        .attr("class", "refugee-small-multiples__background")
-        .style("pointer-events", "all").attr("width", width + 2)
-        .attr("height", height)
-        .on("mouseover", mouseover)
-        .on("mousemove", mousemove)
-        .on("mouseout", mouseout);
+    var g = svgEnter.append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    g.append("rect")
+      .attr("class", "refugee-small-multiples__background")
+      .style("pointer-events", "all").attr("width", width + 2)
+      .attr("height", height)
+      .on("mouseover", mouseover)
+      .on("mousemove", mousemove)
+      .on("mouseout", mouseout);
 
-      lines = g.append("g");
-      lines.append("path")
-           .attr("class", "refugee-small-multiples__area")
-           .style("pointer-events", "none")
-           .attr("d", function(c) {
-              return area(c.values);
-            });
-      lines.append("path")
-           .attr("class", "refugee-small-multiples__line")
-           .style("pointer-events", "none")
-           .attr("d", function(c) {
-              return line(c.values);
-            });
-      lines.append("text")
-           .attr("class", "refugee-small-multiples__title")
-           .attr("text-anchor", "middle")
-           .attr("y", height)
-           .attr("dy", margin.bottom / 2 + 5)
-           .attr("x", width / 2)
-           .text(function(c) {
-              return mapModel.getFriendlyNameForCountry(c.country);
-            });
-      lines.append("text")
-           .attr("class", "refugee-small-multiples__static_year")
-           .attr("text-anchor", "start").style("pointer-events", "none")
-           .attr("dy", 13)
-           .attr("y", height)
-           .attr("x", 0)
-           .text(function(c) {
-              return xValue(c.values[0]).year();
-            });
-      lines.append("text")
-           .attr("class", "refugee-small-multiples__static_year")
-           .attr("text-anchor", "end")
-           .style("pointer-events", "none")
-           .attr("dy", 13).attr("y", height).attr("x", width).text(function(c) {
-              return xValue(c.values[c.values.length - 1]).year();
-            });
+    var lines = g.append("g")
+                 .attr("class", "refugee-small-multiples__content");
 
-      circle = lines.append("circle")
-                    .attr("r", 2.2)
-                    .attr("class", "refugee-small-multiples__hidden")
-                    .style("pointer-events", "none");
+    lines.append("path")
+         .attr("class", "refugee-small-multiples__area")
+         .style("pointer-events", "none")
+         .attr("d", function(c) {
+            return area(c.values);
+          });
+    lines.append("path")
+         .attr("class", "refugee-small-multiples__line")
+         .style("pointer-events", "none")
+         .attr("d", function(c) {
+            return line(c.values);
+          });
+    lines.append("text")
+         .attr("class", "refugee-small-multiples__title")
+         .attr("text-anchor", "middle")
+         .attr("y", height)
+         .attr("dy", margin.bottom / 2 + 5)
+         .attr("x", width / 2)
+         .text(function(c) {
+            return mapModel.getFriendlyNameForCountry(c.country);
+          });
+    lines.append("text")
+         .attr("class", "refugee-small-multiples__static_year start")
+         .attr("text-anchor", "start").style("pointer-events", "none")
+         .attr("dy", 13)
+         .attr("y", height)
+         .attr("x", 0)
+         .text(function(c) {
+            return xValue(c.values[0]).year();
+          });
+    lines.append("text")
+         .attr("class", "refugee-small-multiples__static_year end")
+         .attr("text-anchor", "end")
+         .style("pointer-events", "none")
+         .attr("dy", 13)
+         .attr("y", height)
+         .attr("x", width)
+         .text(function(c) {
+            return xValue(c.values[c.values.length - 1]).year();
+          });
 
-      caption = lines.append("text")
-                     .attr("class", "refugee-small-multiples__caption")
-                     .attr("text-anchor", "middle")
-                     .style("pointer-events", "none")
-                     .attr("dy", -8);
+    circle = lines.append("circle")
+                  .attr("r", 2.2)
+                  .attr("class", "refugee-small-multiples__hidden")
+                  .style("pointer-events", "none");
 
-      curYear = lines.append("text")
-                     .attr("class", "refugee-small-multiples__year")
-                     .attr("text-anchor", "middle")
-                     .style("pointer-events", "none")
-                     .attr("dy", 13)
-                     .attr("y", height);
+    caption = lines.append("text")
+                   .attr("class", "refugee-small-multiples__caption")
+                   .attr("text-anchor", "middle")
+                   .style("pointer-events", "none")
+                   .attr("dy", -8);
 
-      return g.append("g")
-              .attr("class", "y refugee-small-multiples__axis")
-              .call(yAxis);
-    });
+    curYear = lines.append("text")
+                   .attr("class", "refugee-small-multiples__year")
+                   .attr("text-anchor", "middle")
+                   .style("pointer-events", "none")
+                   .attr("dy", 13)
+                   .attr("y", height);
+
+    g.append("g")
+      .attr("class", "y refugee-small-multiples__axis")
+      .call(yAxis);
+  };
+
+  chart.updateData = function(selection, rawData) {
+    data = rawData;
+    setupScales(data);
+
+    var svgUpdate = selection.selectAll(".refugee-small-multiples__chart")
+                     .data(data, d => d.country);
+
+    svgUpdate.select(".refugee-small-multiples__area")
+      .transition().duration(150)
+        .attr("d", function(c) {
+          return area(c.values);
+        });
+
+    svgUpdate.select(".refugee-small-multiples__line")
+      .transition().duration(150)
+        .attr("d", function(c) {
+          return line(c.values);
+        });
+
+    svgUpdate.select(".refugee-small-multiples__title")
+      .text(function(c) {
+        return mapModel.getFriendlyNameForCountry(c.country);
+      });
+
+    svgUpdate.select(".refugee-small-multiples__static_year.start")
+      .text(function(c) {
+        return xValue(c.values[0]).year();
+      });
+
+    svgUpdate.select(".refugee-small-multiples__static_year.end")
+      .text(function(c) {
+        return xValue(c.values[c.values.length - 1]).year();
+      });
+
+    svgUpdate.select(".y.refugee-small-multiples__axis")
+      .call(yAxis);
+
+    circle = svgUpdate.select(".refugee-small-multiples__content circle");
+    caption = svgUpdate.select(".refugee-small-multiples__caption");
+    curYear = svgUpdate.select(".refugee-small-multiples__year");
   };
 
   mouseover = function() {
     circle.classed("refugee-small-multiples__hidden", false);
     d3.selectAll(".refugee-small-multiples__static_year")
       .classed("refugee-small-multiples__hidden", true);
-    return mousemove.call(this);
+    mousemove.call(this);
   };
 
   mousemove = function() {
@@ -182,16 +222,19 @@ var SmallMultiples = function(mapModel) {
     var beginningOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
     var index = 0;
 
-    circle.attr("cx", xScale(beginningOfMonth)).attr("cy", function(c) {
-      index = bisect(c.values, beginningOfMonth, 0, c.values.length - 1);
-      return yScale(yValue(c.values[index]));
-    });
+    circle.attr("cx", xScale(beginningOfMonth))
+          .attr("cy", function(c) {
+            index = bisect(c.values, beginningOfMonth, 0, c.values.length - 1);
+            return yScale(yValue(c.values[index]));
+          });
 
-    caption.attr("x", xScale(beginningOfMonth)).attr("y", function(c) {
-      return yScale(yValue(c.values[index]));
-    }).text(function(c) {
-      return yValue(c.values[index]);
-    });
+    caption.attr("x", xScale(beginningOfMonth))
+           .attr("y", function(c) {
+              return yScale(yValue(c.values[index]));
+            })
+           .text(function(c) {
+              return yValue(c.values[index]);
+            });
 
     curYear.attr("x", xScale(beginningOfMonth))
            .text(d3.time.format("%m/%Y")(beginningOfMonth));
@@ -242,21 +285,8 @@ var RefugeeSmallMultiplees = React.createClass({
   },
 
 
-  componentDidUpdate: function() {
-    d3.select(".small-multiples").html("");
-    this.draw();
-  },
-
-
-  draw: function() {
-    var data = this.getData();
-    var graph = this.getPlot();
-    d3.select(".small-multiples").datum(data).call(graph);
-  },
-
-
   getPlot: function() {
-    if (this.plot == null) {
+    if (this.plot === undefined) {
       this.plot = SmallMultiples(this.props.mapModel);
     }
 
@@ -266,6 +296,25 @@ var RefugeeSmallMultiplees = React.createClass({
 
   componentDidMount: function() {
     this.draw();
+  },
+
+
+  componentDidUpdate: function() {
+    this.redraw();
+  },
+
+
+  draw: function(redrawing) {
+    var data = this.getData();
+    var graph = this.getPlot();
+    graph(d3.select(".small-multiples"), data);
+  },
+
+
+  redraw: function() {
+    var data = this.getData();
+    var graph = this.getPlot().updateData;
+    graph(d3.select(".small-multiples"), data);
   },
 
 

@@ -1,4 +1,8 @@
-.refugee-small-multiples__chart {
+.small-multiples {
+  position: relative;
+}
+
+.small-multiples div {
   float: left;
   padding-right: 5px;
   padding-bottom: 5px;
@@ -6,7 +10,7 @@
   padding-left:0;
 }
 
-.refugee-small-multiples__chart svg {
+.refugee-small-multiples__chart {
   font-size: 10px;
   overflow: visible;
   z-index: 100;
@@ -60,8 +64,4 @@ text.refugee-small-multiples__static_year{
 
 .refugee-small-multiples__axis line {
   display: none;
-}
-
-.small-multiples {
-  position: relative;
 }
