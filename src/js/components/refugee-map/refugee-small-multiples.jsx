@@ -3,7 +3,9 @@ var React = require('react');
 var d3 = require('d3');
 
 
-// From https://flowingdata.com/2014/10/15/linked-small-multiples/
+// Based on https://flowingdata.com/2014/10/15/linked-small-multiples/
+// Expects data in the form:
+// [{country: "GER", values: [{date: <moment>, asylumApplications: 123}, ...]}, ...]
 var SmallMultiples = function(mapModel) {
   var area, bisect, caption, chart, circle, curYear, data, format, height, line,
     margin, mousemove, mouseout, mouseover, setupScales, width, xScale, xValue,
