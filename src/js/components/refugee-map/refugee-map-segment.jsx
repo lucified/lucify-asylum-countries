@@ -1,12 +1,9 @@
 
 var React = require('react');
-var sprintf = require('sprintf');
 var moment = require('moment');
 
 var Inputs = require('lucify-commons/src/js/components/inputs.jsx');
 var DividedCols = require('lucify-commons/src/js/components/divided-cols.jsx');
-var FormRow = require('lucify-commons/src/js/components/nice-form-row.jsx');
-var lucifyUtils = require('lucify-commons/src/js/lucify-utils.jsx');
 var ComponentWidthMixin = require('lucify-commons/src/js/components/container-width-mixin.js');
 
 var RefugeeMap = require('./responsive-refugee-map.jsx');

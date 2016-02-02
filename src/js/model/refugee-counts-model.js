@@ -301,20 +301,6 @@ RefugeeCountsModel.prototype.getGlobalArrivingPerMonthForCountry = function(coun
 };
 
 
-RefugeeCountsModel.prototype.getGlobalArrivingPerMonthForAllCountries = function() {
-  var ret = [];
-
-  _.keys(this.arrivedRefugeesToCountry).sort().forEach(country => {
-    ret.push({
-      country: country,
-      values: this.getGlobalArrivingPerMonthForCountry(country)
-    });
-  });
-
-  return ret;
-};
-
-
 /*
  * Get total counts of arrived people by (destination) country
  */

@@ -200,22 +200,6 @@ var SmallMultiples = function(mapModel) {
     curYear.text("");
   };
 
-  chart.x = function(_) {
-    if (!arguments.length) {
-      return xValue;
-    }
-    xValue = _;
-    return chart;
-  };
-
-  chart.y = function(_) {
-    if (!arguments.length) {
-      return yValue;
-    }
-    yValue = _;
-    return chart;
-  };
-
   return chart;
 };
 
@@ -228,10 +212,10 @@ var RefugeeSmallMultiplees = React.createClass({
     var data = this.props.refugeeCountsModel.getEuroFigures(this.props.countryFigures, 25);
 
     return data.map(item => {
-        return {
-          country: item.country,
-          values: this.props.refugeeCountsModel.getGlobalArrivingPerMonthForCountry(item.country)
-        }
+      return {
+        country: item.country,
+        values: this.props.refugeeCountsModel.getGlobalArrivingPerMonthForCountry(item.country)
+      };
     });
   },
 
@@ -242,8 +226,9 @@ var RefugeeSmallMultiplees = React.createClass({
       if (this.props.relativeToPopulation) {
         data.forEach(countryItem => {
           countryItem.values.forEach(valueItem => {
-            valueItem.asylumApplications = Math.round(valueItem.asylumApplications / this.props.countryFigures[countryItem.country].population * 100000);
-          })
+            valueItem.asylumApplications =
+              Math.round(valueItem.asylumApplications / this.props.countryFigures[countryItem.country].population * 100000);
+          });
         });
       }
       return data;
