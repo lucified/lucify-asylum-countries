@@ -189,7 +189,7 @@ var SmallMultiples = function(mapModel) {
     });
 
     curYear.attr("x", xScale(date))
-           .text(date.getMonth() + "/" + date.getFullYear());
+           .text((date.getMonth() + 1) + "/" + date.getFullYear());
   };
 
   mouseout = function() {
