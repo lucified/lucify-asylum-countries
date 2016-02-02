@@ -194,8 +194,7 @@ var SmallMultiples = function(mapModel) {
     });
 
     curYear.attr("x", xScale(beginningOfMonth))
-           .text((beginningOfMonth.getMonth() + 1) + "/" +
-                 beginningOfMonth.getFullYear());
+           .text(d3.time.format("%m/%Y")(beginningOfMonth));
   };
 
   mouseout = function() {
