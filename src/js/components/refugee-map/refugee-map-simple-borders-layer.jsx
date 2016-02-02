@@ -28,7 +28,8 @@ var RefugeeMapSimpleBordersLayer = React.createClass({
 
 
 	componentWillReceiveProps: function(nextProps) {
-		if (this.props.width !== nextProps.width) {
+		if (this.props.width !== nextProps.width
+			|| this.props.projection !== nextProps.projection) {
 			this.pendingUpdate = true;
 		}
 	},

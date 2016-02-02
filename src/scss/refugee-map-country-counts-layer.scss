@@ -1,10 +1,22 @@
 
 
-.refugee-map-country-counts-layer text {
-	fill: #ffffff;
+.refugee-map-country-counts-layer {
+
+  text {
+    fill: $teas-black;
     opacity: 0.9;
     font-family: $lucify-header-font;
     text-anchor: middle;
     font-size: 12px;
+  }
+
+  .origin {
+    fill: $teas-orange;
+  }
+
+  .destination {
+    fill: $teas-blue;
+  }
+
 }
 

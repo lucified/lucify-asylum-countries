@@ -116,6 +116,7 @@ var RefugeeHighlightMixin = {
 
   getHighlightLayerParams: function() {
     return {
+      clickedCountry: this.state.clickedCountry,
       country: this.getHighlightedCountry(),
       originCountries: this.storedOriginCountries,
       destinationCountries: this.storedDestinationCountries

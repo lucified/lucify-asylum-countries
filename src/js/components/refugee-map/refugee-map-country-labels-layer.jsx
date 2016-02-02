@@ -9,7 +9,7 @@ var refugeeConstants = require('../../model/refugee-constants.js');
 var RefugeeMapCountryLabelsLayer = React.createClass({
 
 
- 
+
   renderCountryLabel: function(country, type) {
     var point = this.props.projection(
       this.props.mapModel.getCenterPointOfCountry(country));
@@ -32,21 +32,21 @@ var RefugeeMapCountryLabelsLayer = React.createClass({
   	items.push(this.renderCountryLabel(this.props.country, "highlighted"))
 
     if (this.props.width > refugeeConstants.labelShowBreakPoint) {
-      _.difference(this.props.destinationCountries, refugeeConstants.disableLabels) 
+      _.difference(this.props.destinationCountries, refugeeConstants.disableLabels)
         .forEach(function(country) {
         items.push(this.renderCountryLabel(country, "destination"));
       }.bind(this));
 
-      _.difference(this.props.originCountries, refugeeConstants.disableLabels) 
+      _.difference(this.props.originCountries, refugeeConstants.disableLabels)
         .forEach(function(country) {
         items.push(this.renderCountryLabel(country, "origin"));
-      }.bind(this));      
+      }.bind(this));
     }
 
     return items;
   },
 
-  // refugee-map is updating the originCountries 
+  // refugee-map is updating the originCountries
   // and destinationCountries in refugee-map's state
   // regularly when stamps are updated, so any changes
   // will trigger a render as appropriate
@@ -54,7 +54,8 @@ var RefugeeMapCountryLabelsLayer = React.createClass({
       return nextProps.country !== this.props.country
         || nextProps.originCountries.length !== this.props.originCountries.length
         || nextProps.destinationCountries.length !== this.props.destinationCountries.length
-        || nextProps.width !== this.props.width;
+        || nextProps.width !== this.props.width
+        || this.props.projection !== nextProps.projection;
   },
 
 

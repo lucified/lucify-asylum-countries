@@ -1,6 +1,18 @@
 
 @import "../../node_modules/lucify-commons/src/scss/styles-full.scss";
 
+// main colors
+$teas-blue: rgb(0, 111, 185);
+$teas-light-blue: rgb(10, 187, 239);
+$teas-gray: rgb(122, 136, 144);
+$teas-black: rgb(0, 0, 0);
+
+// extra colors
+$teas-turqoise: rgb(130, 196, 217);
+$teas-light-turqoise: rgb(186, 223, 235);
+$teas-yellow: rgb(247, 173, 41);
+$teas-orange: rgb(251, 112, 29);
+
 @import "refugee-main-content.scss";
 @import "refugee-map.scss";
 @import "refugee-map-segment.scss";
@@ -10,8 +22,71 @@
 @import "refugee-map-count-bars-layer.scss";
 @import "refugee-map-controls-and-legend.scss";
 @import "refugee-map-time-layer.scss";
-@import "refugee-map-line-chart.scss";
-@import "refugee-sankey.scss";
-@import "refugee-sankey-segment.scss";
-@import "refugee-soccer-segment.scss";
+@import "refugee-map-time-bar-chart.scss";
 @import "refugee-data-updated.scss";
+@import "refugee-time-range-indicator.scss";
+@import "refugee-bar-charts.scss";
+@import "refugee-small-multiples.scss";
+@import "refugee-multiples-segment.scss";
+
+// TODO: move later maybe to lucify-commons
+@import "work-in-progress.scss";
+
+
+.tabs-menu {
+
+  .is-active a {
+    color: $teas-orange;
+  }
+
+  .tabs-menu-item:not(.is-active) a:hover{
+    color: $teas-yellow;
+    text-decoration: none;
+  }
+
+}
+
+.colors-legend {
+  position: relative;
+  top: 1.0rem;
+  left: 1.0rem;
+  //background-color: red
+  //border: 1px solid green;
+  svg {
+    position: static;
+    top: auto;
+  }
+
+  text {
+    font-weight: normal;
+  }
+}
+
+.colors-legend__inner {
+  border: 1px solid rgba($teas-turqoise, 0.8);
+  display: inline-block;
+  padding: 1.0rem;
+  background-color: rgba(255,255,255, 0.96);
+}
+
+.colors-legend__title {
+  margin-bottom: 10px;
+  color: $lucify-gray-text-color;
+}
+
+.inputs {
+  padding-top: 3.0rem;
+  padding-bottom: 3.0rem;
+}
+
+
+span.missing-data-real {
+  margin-left: 0.5rem;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: rgba(150,150,150, 1.0);
+}
+
+.refugee-time-range-indicator {
+  top: 1.3rem;
+}

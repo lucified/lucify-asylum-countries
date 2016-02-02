@@ -2,7 +2,6 @@
 
 .refugee-map {
 	position: relative;
-
 	svg, canvas {
 		position: absolute;
 		top: 0px;
@@ -10,7 +9,10 @@
 }
 
 .refugee-map {
-  background-color: $lucify-dark-blue;
+  //background-color: rgba(240,240,240, 1.0);
+  background-color: rgba(122, 136, 135, 0.15);
+  //background-color: rgba(186, 224, 235, 0.15);
+
   color: #cccccc;
   font-weight: 200;
   letter-spacing: 0.1px;

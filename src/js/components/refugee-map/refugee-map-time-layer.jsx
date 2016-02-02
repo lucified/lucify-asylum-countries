@@ -1,11 +1,10 @@
 
 var React = require('react');
-var C3Chart = require('lucify-commons/src/js/components/react-c3/c3-chart.jsx');
 
 var refugeeConstants = require('../../model/refugee-constants.js');
 var moment = require('moment');
 
-var RefugeeMapLineChart = require('./refugee-map-line-chart.jsx');
+var RefugeeMapTimeBarChart = require('./refugee-map-time-bar-chart.jsx');
 
 var RefugeeMapTimeLayer = React.createClass({
 
@@ -21,7 +20,7 @@ var RefugeeMapTimeLayer = React.createClass({
 
 		return (
 			<div className='refugee-map-time-layer'>
-				<RefugeeMapLineChart {...this.props} timeRange={this.props.timeRange} />
+				<RefugeeMapTimeBarChart {...this.props} timeRange={this.props.timeRange} />
 			</div>
 		);
 	}

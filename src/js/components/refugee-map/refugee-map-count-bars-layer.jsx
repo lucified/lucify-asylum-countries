@@ -28,6 +28,7 @@ var RefugeeMapCountBar = React.createClass({
 
   shouldComponentUpdate: function(nextProps) {
       return (this.props.height !== nextProps.height
+        || this.props.projection !== nextProps.projection
         || this.props.timeRange !== nextProps.timeRange);
   },
 
@@ -76,6 +77,7 @@ var RefugeeMapCountBarsLayer = React.createClass({
       this._total = this.props.refugeeCountsModel
         .getTotalDestinationCounts('DEU', range).asylumApplications;
     }
+
     return this._total;
   },
 
@@ -122,6 +124,7 @@ var RefugeeMapCountBarsLayer = React.createClass({
    shouldComponentUpdate: function(nextProps) {
       return (this.props.highlightedCountry !== nextProps.highlightedCountry
         || this.props.width !== nextProps.width
+        || this.props.projection !== nextProps.projection
         || this.props.timeRange !== nextProps.timeRange);
    },
 

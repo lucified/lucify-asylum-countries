@@ -23,8 +23,8 @@ var MapModel = function(featureData) {
 MapModel.prototype.initialize = function() {
   // the centroid isn't always good. fix for these countries:
   this._countryCentersCache["FRA"] = [2.449486512892406, 46.62237366531258];
-  this._countryCentersCache["SWE"] = [15.273817, 59.803497];
-  this._countryCentersCache["FIN"] = [25.356445, 61.490593];
+  this._countryCentersCache["SWE"] = [14.273817, 59.803497];
+  this._countryCentersCache["FIN"] = [25.356445, 62.890593];
   this._countryCentersCache["NOR"] = [8.506239, 60.975869];
   this._countryCentersCache["GBR"] = [-1.538086, 52.815213];
   this._countryCentersCache["GRC"] = [21.752930, 39.270271];
@@ -74,14 +74,15 @@ MapModel.prototype.getLabelPointForCountry = function(country) {
 
 MapModel.prototype.getFriendlyNameForCountry = function(country) {
   switch(country) {
-    case "SYR": return "Syria";
-    case "MKD": return "Macedonia";
+    case "SYR": return "Syyria";
+    case "MKD": return "Makedonia";
     case "IRN": return "Iran";
     case "LBY": return "Libya";
-    case "RUS": return "Russia";
-    case "RCB": return "Congo";
-    case "COD": return "Congo";
-    default: return countries.getName(country, "en");
+    case "RUS": return "Venäjä";
+    case "RCB": return "Kongo";
+    case "COD": return "Kongo";
+    case "GBR": return "Iso-Britannia";
+    default: return countries.getName(country, "fi");
   }
 };
 

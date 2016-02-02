@@ -16,8 +16,9 @@ module.exports.DATA_END_MOMENT = moment([
 	module.exports.DATA_END_MONTH]).endOf('month');
 
 module.exports.ASYLUM_APPLICANTS_DATA_UPDATED_MOMENT = moment([2016, 0, 6]);
-module.exports.SYRIA_REFUGEES_DATA_UPDATED_MOMENT = moment([2016, 0, 6]);
 
 module.exports.disableLabels = ['BIH', 'MKD', 'ALB', 'LUX', 'MNE', 'ARM', 'AZE', 'LBN'];
+
+module.exports.fullRange = [module.exports.DATA_START_MOMENT.unix(), module.exports.DATA_END_MOMENT.unix()];
 
 module.exports.labelShowBreakPoint = 992;

@@ -1,0 +1,28 @@
+
+.refugees-bar-charts {
+
+  h3 {
+    font-weight: 300;
+    font-family: $lucify-body-font;
+    font-size: 1.1rem;
+    margin-bottom: 1.3rem;
+    margin-top: 1.3rem;
+  }
+
+  margin-bottom: 2rem;
+}
+
+.refugees-bar-chart__fix-scale {
+  margin-top: 1.0rem;
+  margin-bottom: 0.5rem;
+}
+
+
+.refugees-bar-chart {
+  max-width: 100%;
+  svg {
+    max-width: 100%;
+  }
+}
+
+

@@ -1,0 +1,67 @@
+.small-multiples {
+  position: relative;
+}
+
+.small-multiples div {
+  float: left;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-top:0;
+  padding-left:0;
+}
+
+.refugee-small-multiples__chart {
+  font-size: 10px;
+  overflow: visible;
+  z-index: 100;
+}
+
+.refugee-small-multiples__background {
+  fill: none;
+}
+
+.refugee-small-multiples__area {
+  //fill: #cec6b9;
+  fill: lighten($teas-blue, 0);
+}
+
+.refugee-small-multiples__line {
+  fill: none;
+  //stroke: #74736c;
+  stroke: darken($teas-blue, 20);
+  stroke-width: 1.4px;
+}
+
+.refugee-small-multiples__title {
+  font-size: 12px;
+
+}
+
+.refugee-small-multiples__axis line, .refugee-small-multiples__grid line {
+  stroke-width: .5px;
+  shape-rendering: crispEdges;
+  stroke: #fff;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.refugee-small-multiples__axis path {
+  display: none;
+}
+
+.refugee-small-multiples__hidden {
+  display:none;
+  opacity: 0.0;
+}
+
+.refugee-small-multiples__axis text {
+  fill: rgba(0,0,0,0.5);
+}
+
+text.refugee-small-multiples__static_year{
+  fill: rgba(0,0,0,0.8);
+}
+
+.refugee-small-multiples__axis line {
+  display: none;
+}
