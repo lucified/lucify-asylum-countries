@@ -97,7 +97,7 @@ var SmallMultiples = function(mapModel) {
              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
       g.append("rect")
         .attr("class", "refugee-small-multiples__background")
-        .style("pointer-events", "all").attr("width", width + margin.right)
+        .style("pointer-events", "all").attr("width", width + 2)
         .attr("height", height)
         .on("mouseover", mouseover)
         .on("mousemove", mousemove)
