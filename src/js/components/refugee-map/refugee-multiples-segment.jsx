@@ -6,6 +6,8 @@ var DividedCols = require('lucify-commons/src/js/components/divided-cols.jsx');
 
 var RefugeeSmallMultiples = require('./refugee-small-multiples.jsx');
 
+var LucifyUtils = require('../../utils.js');
+
 
 var RefugeeMultiplesSegment = React.createClass({
 
@@ -28,7 +30,8 @@ var RefugeeMultiplesSegment = React.createClass({
 
 
   getFriendlyPopulationDivider: function() {
-    return this.getPopulationDivider().toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    // "," means enable thousands separator
+    return LucifyUtils.d3FiLocale.numberFormat(",")(this.getPopulationDivider());
   },
 
 
