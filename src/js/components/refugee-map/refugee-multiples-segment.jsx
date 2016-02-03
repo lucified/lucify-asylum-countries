@@ -27,11 +27,16 @@ var RefugeeMultiplesSegment = React.createClass({
   },
 
 
+  getFriendlyPopulationDivider: function() {
+    return this.getPopulationDivider().toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  },
+
+
   getInstructionsText: function() {
     if (this.state.relativeToPopulation) {
       return "Seuraavat kuvaajat esittävät turvapaikanhakijoiden " +
-        "kuukausittaisia määriä per " + this.getPopulationDivider() +
-        " asukasta kohdemaittain.";
+        "kuukausittaisia määriä kohdemaittain " + this.getFriendlyPopulationDivider() +
+        " asukasta kohden.";
     } else {
       return "Seuraavat kuvaajat esittävät turvapaikanhakijoiden " +
         "kuukausittaisia määriä ajan funktiona kohdemaittain.";
