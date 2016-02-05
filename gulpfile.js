@@ -28,17 +28,22 @@ gulp.task('s3-deployandnotify', gulp.series('s3-deploy', notify))
 
 
 function notify(cb) {
-  
+      
     var options = {
-      url: 'https://api.flowdock.com/v1/messages/chat/' + process.env.FLOW_TOKEN,
+      url: `https://api.flowdock.com/v1/messages/team_inbox/${process.env.FLOW_TOKEN}`,
       method: 'POST',
       json: true,
       body: {
-        "external_user_name": "CircleCI",
-        "content": `Deployed ${project} to ${url}`,
+        "source": "CircleCI",
+        "from_name": "Mr. Robot",
+        "from_address": "info@lucify.com",
+        "subject": `Deployed!`,
+        "content": `See ${url}`,
+        "project": project,
         "tags":  ["#deployment", `#${process.env.NODE_ENV || 'development'}`]
       }
     }
+    
     
     
     request(options, (error, res, body) => {
