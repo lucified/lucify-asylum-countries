@@ -44,7 +44,7 @@ describe('RefugeeCountsModel', function() {
 
 	describe('pairCountsByDestination', function() {
 		it('correct total for AFG -> DEU @ jan 2015', function() {
-			assert.equal(model.pairCountsByDestination['DEU']['AFG'][3][0].count, 1129);
+			assert.equal(model.pairCountsByDestination['DEU']['AFG'][3][0].count, 1248);
 		});
 	});
 
@@ -73,7 +73,7 @@ describe('RefugeeCountsModel', function() {
 			assert.equal(model.getGlobalArrivingFor(moment([2013, 0])).asylumApplications, 31092);
 		});
 		it('correct total for August 2015 (only European destinations)', function() {
-			assert.equal(model.getGlobalArrivingFor(moment([2015, 7])).asylumApplications, 181022);
+			assert.equal(model.getGlobalArrivingFor(moment([2015, 7])).asylumApplications, 183895);
 		});
 	});
 
@@ -89,7 +89,7 @@ describe('RefugeeCountsModel', function() {
 		});
 
 		it('correct total for germany for oct 2015', function() {
-		 	assert.equal(germanyTotals[12*3 + 9].asylumApplications, 52686);
+		 	assert.equal(germanyTotals[12*3 + 9].asylumApplications, 58083);
 		});
 	});
 
