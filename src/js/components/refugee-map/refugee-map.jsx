@@ -30,7 +30,7 @@ var RefugeeMap = React.createClass({
       la: 34.0485818,
       scale: 0.85,
       preferredHeightWidthRatio: 0.6,
-      showDataUpdated: false
+      showDataUpdated: true
     };
   },
 

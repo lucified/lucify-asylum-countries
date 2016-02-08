@@ -1,4 +1,5 @@
 var React = require('react');
+var LucifyUtils = require('../utils.js');
 
 var RefugeeDataUpdated = React.createClass({
 
@@ -9,8 +10,8 @@ var RefugeeDataUpdated = React.createClass({
   render: function() {
     return (
       <div className="refugee-updated-at">
-        Data updated<br />
-        {this.props.updatedAt.format("MMM D, YYYY")}
+        Data päivitetty<br />
+        {LucifyUtils.d3FiLocale.timeFormat('%e %B %Y')(this.props.updatedAt.toDate())}
       </div>
       );
   }
