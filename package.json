@@ -47,7 +47,7 @@
   "devDependencies": {
     "babelify": "^6.4.0",
     "gulp": "gulpjs/gulp#4.0",
-    "lucify-component-builder": "~0.2.1",
+    "lucify-component-builder": "~0.2.9",
     "mocha": "^2.3.4",
     "request": "^2.67.0",
     "should": "^8.1.1",
