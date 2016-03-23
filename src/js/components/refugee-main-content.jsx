@@ -9,7 +9,6 @@ var RefugeeMultiplesSegment = require('./refugee-map/refugee-multiples-segment.j
 
 var Loading = require('lucify-commons/src/js/components/loading.jsx');
 
-//var WorkInProgress = require('./work-in-progress.jsx');
 var UberProtection = require('lucify-commons/src/js/components/uber-protection.jsx');
 
 

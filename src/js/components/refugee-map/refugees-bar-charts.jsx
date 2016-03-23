@@ -1,12 +1,9 @@
 
 var React = require('react');
-var _ = require('underscore');
 var sprintf = require('sprintf');
 
 var DividedCols = require('lucify-commons/src/js/components/divided-cols.jsx');
 var RefugeesBarChart = require('./refugees-bar-chart.jsx');
-
-var utils = require('../../utils.js');
 
 
 var PerPopulationBarChart = React.createClass({

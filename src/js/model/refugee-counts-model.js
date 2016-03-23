@@ -1,7 +1,6 @@
 
 var _ = require('underscore');
 var moment = require('moment');
-var utils = require('../utils.js');
 var console = require("console-browserify");
 
 var refugeeConstants = require('./refugee-constants.js');

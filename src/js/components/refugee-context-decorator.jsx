@@ -8,7 +8,6 @@ var Promise = require("bluebird");
 var RefugeeCountsModel = require('../model/refugee-counts-model.js');
 var MapModel = require('../model/map-model.js');
 
-var lucifyUtils = require('lucify-commons/src/js/lucify-utils.jsx');
 var assets = require('lucify-commons/src/js/lucify-assets.js');
 
 Promise.promisifyAll(d3);

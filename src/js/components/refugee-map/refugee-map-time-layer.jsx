@@ -1,9 +1,6 @@
 
 var React = require('react');
 
-var refugeeConstants = require('../../model/refugee-constants.js');
-var moment = require('moment');
-
 var RefugeeMapTimeBarChart = require('./refugee-map-time-bar-chart.jsx');
 
 var RefugeeMapTimeLayer = React.createClass({

@@ -1,14 +1,10 @@
 
 var React = require('react');
 var d3 = require('d3');
-var moment = require('moment');
-var classNames = require('classnames');
 var _ = require('underscore');
-var sprintf = require('sprintf');
 var console = require("console-browserify");
 
 var legend = require('d3-svg-legend/no-extend');
-var approx = require('approximate-number');
 
 // the d3-svg-legend components for some
 // reason seems to need a global d3

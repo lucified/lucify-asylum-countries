@@ -3,11 +3,7 @@ var React = require('react');
 
 var refugeeConstants = require('../../model/refugee-constants.js');
 var moment = require('moment');
-var _ = require('underscore');
 var d3 = require('d3');
-
-var theme = require('lucify-commons/src/js/lucify-theme.jsx');
-var sprintf = require('sprintf');
 
 var RefugeeMapTimeBarChart = React.createClass({
 

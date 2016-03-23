@@ -1,7 +1,6 @@
 
 var React = require('react');
 var d3 = require('d3');
-var moment = require('moment');
 
 var refugeeConstants = require('../../model/refugee-constants.js');
 

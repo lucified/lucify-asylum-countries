@@ -1,5 +1,4 @@
 
-var _ = require('underscore');
 var React = require('react');
 var d3 = require('d3');
 
@@ -8,11 +7,8 @@ var CountryCountsLayer = require('./refugee-map-country-counts-layer.jsx');
 var CountryLabelsLayer = require('./refugee-map-country-labels-layer.jsx');
 var CountBarsLayer = require('./refugee-map-count-bars-layer.jsx');
 var SimpleBordersLayer = require('./refugee-map-simple-borders-layer.jsx');
-var RefugeeHighlightMixin = require('./refugee-highlight-mixin.js');
 var DataUpdated = require('../refugee-data-updated.jsx');
 var RefugeeConstants = require('../../model/refugee-constants.js');
-
-var lucifyUtils = require('lucify-commons/src/js/lucify-utils.jsx');
 
 
 var RefugeeMap = React.createClass({

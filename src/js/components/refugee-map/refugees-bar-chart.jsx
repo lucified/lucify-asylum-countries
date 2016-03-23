@@ -1,14 +1,10 @@
 
 var React = require('react');
 var _ = require('underscore');
-var sprintf = require('sprintf');
 var extend = require('object-extend');
 
 var C3Chart = require('lucify-commons/src/js/components/react-c3/c3-chart.jsx');
-var theme = require('lucify-commons/src/js/lucify-theme.jsx');
 var d3 = require('d3');
-
-var refugeeConstants = require('../../model/refugee-constants.js');
 
 var RefugeesBarChart = React.createClass({
 
