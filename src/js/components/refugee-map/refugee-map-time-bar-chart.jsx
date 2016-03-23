@@ -7,6 +7,15 @@ var d3 = require('d3');
 
 var RefugeeMapTimeBarChart = React.createClass({
 
+  propTypes: {
+    country: React.PropTypes.string,
+    countryFigures: React.PropTypes.object,
+    mapModel: React.PropTypes.object,
+    refugeeCountsModel: React.PropTypes.object,
+    timeRange: React.PropTypes.arrayOf(React.PropTypes.number),
+    width: React.PropTypes.number,
+    onTimeRangeChange: React.PropTypes.func
+  },
 
 
   getHeight: function() {
@@ -15,16 +24,21 @@ var RefugeeMapTimeBarChart = React.createClass({
 
 
   getMargins: function() {
-    return {top: 30, right: 30, bottom: 50, left: 60};
+    return {
+      top: 30,
+      right: 30,
+      bottom: 50,
+      left: 60
+    };
   },
 
 
   isEuroCountrySelected: function() {
-      if (!this.props.country) {
-        return false;
-      }
-      return this.props.countryFigures[this.props.country].continent == 'Europe'
-        && this.props.country != 'RUS';
+    if (!this.props.country) {
+      return false;
+    }
+    return this.props.countryFigures[this.props.country].continent == 'Europe'
+      && this.props.country != 'RUS';
   },
 
 
@@ -37,26 +51,27 @@ var RefugeeMapTimeBarChart = React.createClass({
 
       if (countryCount > 0) {
         if (countryCount > 5) {
-          missingDataText = "Dataa puuttuu: " +
-            countryList.slice(0, 4).join(', ') + " ja " +
-            (countryCount - 4) + " muuta maata";
+          missingDataText = 'Dataa puuttuu: ' +
+            countryList.slice(0, 4).join(', ') + ' ja ' +
+            (countryCount - 4) + ' muuta maata';
         } else {
-          missingDataText = "Dataa puuttuu: ";
+          missingDataText = 'Dataa puuttuu: ';
           if (countryCount > 1) {
             missingDataText += countryList.slice(0, countryCount - 1).join(', ') +
-              " ja ";
+              ' ja ';
           }
           missingDataText += countryList[countryCount - 1];
         }
       }
 
-      return "Eurooppaan saapuneet turvapaikanhakijat <span class='missing-data-real'>" + missingDataText + "</span>";
+      return 'Eurooppaan saapuneet turvapaikanhakijat <span class="missing-data-real">' +
+        missingDataText + '</span>';
     }.bind(this);
 
     var tooltipForCountryList = function(countryList) {
 
       if (countryList.length > 0) {
-        return "Dataa puuttuu seuraavista maista: " + countryList.join(', ');
+        return 'Dataa puuttuu seuraavista maista: ' + countryList.join(', ');
       } else {
         return '';
       }
@@ -65,14 +80,12 @@ var RefugeeMapTimeBarChart = React.createClass({
 
     if (this.isEuroCountrySelected()) {
       this.labelSelection
-        .attr('title', "Maahan " + this.props.mapModel.getFriendlyNameForCountry(this.props.country) + " turvapaikkahakemuksen jättäneet")
-        .html("Maahan <b>" + this.props.mapModel.getFriendlyNameForCountry(this.props.country) + "</b> turvapaikkahakemuksen jättäneet");
+        .attr('title', 'Maahan ' + this.props.mapModel.getFriendlyNameForCountry(this.props.country) + ' turvapaikkahakemuksen jättäneet')
+        .html('Maahan <b>' + this.props.mapModel.getFriendlyNameForCountry(this.props.country) + '</b> turvapaikkahakemuksen jättäneet');
     } else {
       var countriesWithMissingData = this.props.refugeeCountsModel
         .getDestinationCountriesWithMissingDataForTimeRange(timeRange)
-        .map(item => {
-            return this.props.mapModel.getFriendlyNameForCountry(item);
-        });
+        .map(item => this.props.mapModel.getFriendlyNameForCountry(item));
 
       this.labelSelection
         .attr('title', tooltipForCountryList(countriesWithMissingData))
@@ -96,7 +109,7 @@ var RefugeeMapTimeBarChart = React.createClass({
 
   getSourceData: function() {
     if (!this.isEuroCountrySelected()) {
-        return this.props.refugeeCountsModel.getGlobalArrivingPerMonth();
+      return this.props.refugeeCountsModel.getGlobalArrivingPerMonth();
     }
     return this.props.refugeeCountsModel.getGlobalArrivingPerMonthForCountry(this.props.country);
   },
@@ -120,31 +133,32 @@ var RefugeeMapTimeBarChart = React.createClass({
     data = data.map(function(d) {
       return {
         date: d.date.toDate(),
-        asylumApplications: d.asylumApplications };
-      });
+        asylumApplications: d.asylumApplications
+      };
+    });
 
     this.xScale = d3.time.scale();
     this.yScale = d3.scale.linear().range([this.height, 0]);
 
     this.xAxis = d3.svg.axis()
-        .orient("bottom")
-        .tickFormat(d3.time.format("%Y"))
+        .orient('bottom')
+        .tickFormat(d3.time.format('%Y'))
         .ticks(d3.time.months, 12)
         .tickSize(5, 5);
 
     this.yAxis = d3.svg.axis()
         .scale(this.yScale)
-        .orient("left")
+        .orient('left')
         .tickFormat(d3.format('s'))
         .ticks(3)
         .tickSize(4, 0);
 
     this.svg = d3.select(React.findDOMNode(this.refs.chart))
-        .attr("width", this.width + margin.left + margin.right)
-        .attr("height", this.height + margin.top + margin.bottom)
-      .append("g")
-        .attr("transform",
-              "translate(" + margin.left + "," + margin.top + ")");
+        .attr('width', this.width + margin.left + margin.right)
+        .attr('height', this.height + margin.top + margin.bottom)
+      .append('g')
+        .attr('transform',
+              'translate(' + margin.left + ',' + margin.top + ')');
 
     this.svg
         .append('defs')
@@ -158,13 +172,13 @@ var RefugeeMapTimeBarChart = React.createClass({
           .attr('stroke', 'rgb(0, 111, 185)')
           .attr('stroke-width', 2);
 
-    this.svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + this.height + ")")
+    this.svg.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(0,' + this.height + ')')
         .call(this.xAxis);
 
-    this.svg.append("g")
-        .attr("class", "y axis")
+    this.svg.append('g')
+        .attr('class', 'y axis')
         .call(this.yAxis);
 
     this.updateWithData(data);
@@ -174,7 +188,7 @@ var RefugeeMapTimeBarChart = React.createClass({
   updateWithData: function(data) {
     var margin = this.getMargins();
     this.width = this.props.width - margin.left - margin.right;
-    this.svg.attr("width", this.width + margin.left + margin.right);
+    this.svg.attr('width', this.width + margin.left + margin.right);
 
     // Kludge ahead: because data contains Dates that are at the beginning of
     // each month, we need to extend the domain to the end of the last month
@@ -194,18 +208,18 @@ var RefugeeMapTimeBarChart = React.createClass({
     this.svg.select('.y')
       .call(this.yAxis);
 
-    var rects = this.svg.selectAll(".timebar")
+    var rects = this.svg.selectAll('.timebar')
         .data(data);
 
-    rects.enter().append("rect")
-        .attr("class", "timebar");
+    rects.enter().append('rect')
+        .attr('class', 'timebar');
 
     // appending after enter() selection is both enter() + append() selections
-    rects.attr("y", d => this.yScale(d.asylumApplications))
-         .attr("x", d => this.xScale(d.date))
-         .attr("width", Math.ceil(this.width/data.length))
-         .attr("height", d => this.height - this.yScale(d.asylumApplications))
-         .attr("fill", d => {
+    rects.attr('y', d => this.yScale(d.asylumApplications))
+         .attr('x', d => this.xScale(d.date))
+         .attr('width', Math.ceil(this.width/data.length))
+         .attr('height', d => this.height - this.yScale(d.asylumApplications))
+         .attr('fill', d => {
            if (!this.isEuroCountrySelected()) {
              var beginningOfIncompleteData = this.getDataMissingStartMoment();
              if (beginningOfIncompleteData.isBefore(moment(d.date))) {
@@ -236,27 +250,27 @@ var RefugeeMapTimeBarChart = React.createClass({
     this.brush = d3.svg.brush()
       .x(this.xScale)
       .extent(this.props.timeRange.map(function(d) { return new Date(d * 1000); }))
-      .on("brush", this.brushed);
+      .on('brush', this.brushed);
 
-    var gBrush = this.svg.append("g")
-      .attr("class", "brush")
+    var gBrush = this.svg.append('g')
+      .attr('class', 'brush')
       .call(this.brush);
 
-    gBrush.selectAll("rect")
-      .attr("height", this.getHeight() - this.getMargins().top - this.getMargins().bottom + 10)
-      .attr("transform", "translate(0, -5)");
+    gBrush.selectAll('rect')
+      .attr('height', this.getHeight() - this.getMargins().top - this.getMargins().bottom + 10)
+      .attr('transform', 'translate(0, -5)');
   },
 
 
   updateBrush: function() {
     this.brush.x(this.xScale);
-    d3.select(".brush")
+    d3.select('.brush')
         .call(this.brush.extent(this.props.timeRange.map(function(d) { return new Date(d * 1000); })));
   },
 
 
   handleTimeRangeChange: function(stampRange) {
-    d3.select(".brush")
+    d3.select('.brush')
         .call(this.brush.extent(stampRange.map(function(d) { return new Date(d * 1000); })));
 
     this.updateCountriesWithMissingData(stampRange);
@@ -273,7 +287,7 @@ var RefugeeMapTimeBarChart = React.createClass({
       roundedDateExtent;
 
     // if dragging, preserve the width of the extent
-    if (d3.event.mode === "move") {
+    if (d3.event.mode === 'move') {
       var monthsDiff = dateExtent[1].getMonth() - dateExtent[0].getMonth() +
         (12 * (dateExtent[1].getYear() - dateExtent[0].getYear()));
 

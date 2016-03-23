@@ -19,7 +19,7 @@ var RefugeeMultiplesSegment = React.createClass({
   },
 
 
- handleCheckBoxChange: function() {
+  handleCheckBoxChange: function() {
     this.setState({relativeToPopulation: !this.state.relativeToPopulation});
   },
 
@@ -31,18 +31,18 @@ var RefugeeMultiplesSegment = React.createClass({
 
   getFriendlyPopulationDivider: function() {
     // "," means enable thousands separator
-    return LucifyUtils.d3FiLocale.numberFormat(",")(this.getPopulationDivider());
+    return LucifyUtils.d3FiLocale.numberFormat(',')(this.getPopulationDivider());
   },
 
 
   getInstructionsText: function() {
     if (this.state.relativeToPopulation) {
-      return "Seuraavat kuvaajat esittävät turvapaikanhakijoiden " +
-        "kuukausittaisia määriä kohdemaittain " + this.getFriendlyPopulationDivider() +
-        " asukasta kohden.";
+      return 'Seuraavat kuvaajat esittävät turvapaikanhakijoiden ' +
+        'kuukausittaisia määriä kohdemaittain ' + this.getFriendlyPopulationDivider() +
+        ' asukasta kohden.';
     } else {
-      return "Seuraavat kuvaajat esittävät turvapaikanhakijoiden " +
-        "kuukausittaisia määriä ajan funktiona kohdemaittain.";
+      return 'Seuraavat kuvaajat esittävät turvapaikanhakijoiden ' +
+        'kuukausittaisia määriä ajan funktiona kohdemaittain.';
     }
   },
 

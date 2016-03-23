@@ -22,24 +22,24 @@ var RefugeeMapCountryLabelsLayer = React.createClass({
 
 
   renderCountryLabels: function() {
-  	var items = [];
+    var items = [];
 
     if (this.props.country === null) {
       return items;
     }
 
-  	items.push(this.renderCountryLabel(this.props.country, "highlighted"))
+    items.push(this.renderCountryLabel(this.props.country, 'highlighted'));
 
     if (this.props.width > refugeeConstants.labelShowBreakPoint) {
       _.difference(this.props.destinationCountries, refugeeConstants.disableLabels)
         .forEach(function(country) {
-        items.push(this.renderCountryLabel(country, "destination"));
-      }.bind(this));
+          items.push(this.renderCountryLabel(country, 'destination'));
+        }.bind(this));
 
       _.difference(this.props.originCountries, refugeeConstants.disableLabels)
         .forEach(function(country) {
-        items.push(this.renderCountryLabel(country, "origin"));
-      }.bind(this));
+          items.push(this.renderCountryLabel(country, 'origin'));
+        }.bind(this));
     }
 
     return items;
@@ -49,24 +49,23 @@ var RefugeeMapCountryLabelsLayer = React.createClass({
   // and destinationCountries in refugee-map's state
   // regularly when stamps are updated, so any changes
   // will trigger a render as appropriate
-  shouldComponentUpdate: function(nextProps, nextState) {
-      return nextProps.country !== this.props.country
-        || nextProps.originCountries.length !== this.props.originCountries.length
-        || nextProps.destinationCountries.length !== this.props.destinationCountries.length
-        || nextProps.width !== this.props.width
-        || this.props.projection !== nextProps.projection;
+  shouldComponentUpdate: function(nextProps, _nextState) {
+    return nextProps.country !== this.props.country
+      || nextProps.originCountries.length !== this.props.originCountries.length
+      || nextProps.destinationCountries.length !== this.props.destinationCountries.length
+      || nextProps.width !== this.props.width
+      || this.props.projection !== nextProps.projection;
   },
 
 
   render: function() {
-		return (
-  		 <svg className="refugee-map-country-labels-layer"
-  		    style={{width: this.props.width, height: this.props.height}}>
-  		    {this.renderCountryLabels()}
-  		 </svg>
-		)
+    return (
+      <svg className="refugee-map-country-labels-layer"
+        style={{width: this.props.width, height: this.props.height}}>
+        {this.renderCountryLabels()}
+      </svg>
+    );
   }
-
 
 });
 

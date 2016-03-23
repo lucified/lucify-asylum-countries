@@ -7,32 +7,31 @@ var ComponentWidthMixin = require('lucify-commons/src/js/components/container-wi
 
 var ResponsiveRefugeeMap = React.createClass({
 
-	mixins: [ComponentWidthMixin],
+  mixins: [ComponentWidthMixin],
 
 
-	getWidth: function() {
-		return this.state.componentWidth;
-	},
+  getWidth: function() {
+    return this.state.componentWidth;
+  },
 
 
-	getHeight: function() {
-		return this.state.componentWidth;
-	},
+  getHeight: function() {
+    return this.state.componentWidth;
+  },
 
-	updateForTimeRange: function(timeRange) {
-		this.refs.rmap.updateForTimeRange(timeRange);
-	},
+  updateForTimeRange: function(timeRange) {
+    this.refs.rmap.updateForTimeRange(timeRange);
+  },
 
-	render: function() {
-		return (
-			<div>
-				<RefugeeMap ref="rmap" {...this.props}
-					width={this.getWidth()}
-					height={this.getHeight()} />
-			</div>
-		);
-	},
-
+  render: function() {
+    return (
+      <div>
+        <RefugeeMap ref="rmap" {...this.props}
+          width={this.getWidth()}
+          height={this.getHeight()} />
+      </div>
+    );
+  }
 
 });
 

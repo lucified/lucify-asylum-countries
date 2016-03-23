@@ -41,7 +41,7 @@ var RefugeeMap = React.createClass({
   },
 
 
-  componentWillUpdate: function(nextProps, nextState) {
+  componentWillUpdate: function(nextProps, _nextState) {
     if (this.props.width !== nextProps.width || this.props.la !== nextProps.la) {
       this._projection = null;
     }
@@ -58,8 +58,7 @@ var RefugeeMap = React.createClass({
     var graphHeight = this.getGraphHeight();
     var chromeHeight = 100;
     if (screen.height > graphHeight * 2 + chromeHeight) {
-        //console.log(sprintf("here %d %d", screen.height - chromeHeight - graphHeight, height));
-        return Math.min(screen.height - chromeHeight - graphHeight, height);
+      return Math.min(screen.height - chromeHeight - graphHeight, height);
     }
   },
 
@@ -187,15 +186,13 @@ var RefugeeMap = React.createClass({
 
 
   getCountBarsLayer: function() {
-      return (
-        <CountBarsLayer
-         ref="countBars"
-         {...this.getStandardLayerParams()}
-         highlightedCountry={this.getHighlightedCountry()}
-         refugeeCountsModel={this.props.refugeeCountsModel} />
-      );
-
-    return null;
+    return (
+      <CountBarsLayer
+       ref="countBars"
+       {...this.getStandardLayerParams()}
+       highlightedCountry={this.getHighlightedCountry()}
+       refugeeCountsModel={this.props.refugeeCountsModel} />
+    );
   },
 
 
@@ -216,7 +213,7 @@ var RefugeeMap = React.createClass({
   },
 
   getHighlightedCountry: function() {
-      return this.props.country;
+    return this.props.country;
   },
 
   render: function() {

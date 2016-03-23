@@ -7,7 +7,7 @@ var names = require('date-names/fi');
 var RefugeeTimeRangeIndicator = React.createClass({
 
   getMonthString: function(mom) {
-    return names.abbreviated_months[mom.month()] + " " + mom.format("YYYY");
+    return names.abbreviated_months[mom.month()] + ' ' + mom.format('YYYY');
   },
 
   displayTimeRange: function(timeRange) {
@@ -18,7 +18,7 @@ var RefugeeTimeRangeIndicator = React.createClass({
         startMoment.year() == endMoment.year()) {
       return this.getMonthString(startMoment);
     } else {
-      return this.getMonthString(startMoment) + " - " +
+      return this.getMonthString(startMoment) + ' - ' +
         this.getMonthString(endMoment);
     }
   },
