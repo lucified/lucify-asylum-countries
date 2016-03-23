@@ -255,6 +255,13 @@ var SmallMultiples = function(mapModel) {
 
 var RefugeeSmallMultiplees = React.createClass({
 
+  propTypes: {
+    refugeeCountsModel: React.PropTypes.object,
+    mapModel: React.PropTypes.object,
+    relativeToPopulation: React.PropTypes.bool,
+    countryFigures: React.PropTypes.object,
+    populationDivider: React.PropTypes.number
+  },
 
   getSourceData: function() {
     var data = this.props.refugeeCountsModel.getEuroFigures(this.props.countryFigures, 25);

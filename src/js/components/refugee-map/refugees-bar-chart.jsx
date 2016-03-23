@@ -8,11 +8,21 @@ var d3 = require('d3');
 
 var RefugeesBarChart = React.createClass({
 
+  propTypes: {
+    refugeeCountsModel: React.PropTypes.object,
+    format: React.PropTypes.func,
+    getValue: React.PropTypes.func,
+    countryFigures: React.PropTypes.object,
+    mapModel: React.PropTypes.object,
+    max: React.PropTypes.number
+  },
+
 
   getDataValues: function() {
     if (!this.props.refugeeCountsModel) {
       return null;
     }
+
     return this.getEuroFigures().map(this.props.getValue);
   },
 

@@ -7,6 +7,17 @@ var refugeeConstants = require('../../model/refugee-constants.js');
 
 var RefugeeMapCountBar = React.createClass({
 
+  propTypes: {
+    country: React.PropTypes.string,
+    refugeeCountsModel: React.PropTypes.object,
+    mapModel: React.PropTypes.object,
+    scale: React.PropTypes.func,
+    projection: React.PropTypes.func,
+    height: React.PropTypes.number,
+    width: React.PropTypes.number,
+    timeRange: React.PropTypes.arrayOf(React.PropTypes.number)
+  },
+
   // for some reason Safari
   // slows down a lot when these
   // updates are rendered with
@@ -67,6 +78,15 @@ var RefugeeMapCountBar = React.createClass({
 
 var RefugeeMapCountBarsLayer = React.createClass({
 
+  propTypes: {
+    refugeeCountsModel: React.PropTypes.object,
+    height: React.PropTypes.number,
+    width: React.PropTypes.number,
+    projection: React.PropTypes.func,
+    mapModel: React.PropTypes.object,
+    timeRange: React.PropTypes.arrayOf(React.PropTypes.number),
+    highlightedCountry: React.PropTypes.string
+  },
 
   getTotal: function() {
     if (!this._total) {

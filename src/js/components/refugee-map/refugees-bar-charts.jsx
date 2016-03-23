@@ -8,6 +8,12 @@ var RefugeesBarChart = require('./refugees-bar-chart.jsx');
 
 var PerPopulationBarChart = React.createClass({
 
+  propTypes: {
+    refugeeCountsModel: React.PropTypes.object,
+    timeRange: React.PropTypes.arrayOf(React.PropTypes.number),
+    staticScale: React.PropTypes.bool
+  },
+
   getValue: function(item) {
     var counts = this.props.refugeeCountsModel
       .getTotalDestinationCounts(item.country, this.props.timeRange);

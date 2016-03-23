@@ -27,6 +27,10 @@ var choroplethColors = [
 
 var ColorsLegend = React.createClass({
 
+  propTypes: {
+    countData: React.PropTypes.object
+  },
+
   getInitialProps: function() {
     return {
       padding: 10,
@@ -95,6 +99,18 @@ var ColorsLegend = React.createClass({
 
 var RefugeeMapBorder = React.createClass({
 
+  propTypes: {
+    subunitClass: React.PropTypes.string,
+    origin: React.PropTypes.bool,
+    destination: React.PropTypes.bool,
+    projection: React.PropTypes.func,
+    onMouseOver: React.PropTypes.func.isRequired,
+    onMouseLeave: React.PropTypes.func.isRequired,
+    country: React.PropTypes.string,
+    path: React.PropTypes.func,
+    feature: React.PropTypes.object,
+    enableOverlay: React.PropTypes.bool
+  },
 
   componentDidMount: function() {
     this.sel = d3.select(React.findDOMNode(this.refs.subunit));
@@ -215,6 +231,25 @@ var RefugeeMapBorder = React.createClass({
 
 
 var RefugeeMapBordersLayer = React.createClass({
+
+  propTypes: {
+    subunitClass: React.PropTypes.string,
+    updatesEnabled: React.PropTypes.bool,
+    onMouseOver: React.PropTypes.func,
+    onMouseLeave: React.PropTypes.func,
+    onClick: React.PropTypes.func,
+    country: React.PropTypes.string,
+    destinationCountries: React.PropTypes.arrayOf(React.PropTypes.string),
+    originCountries: React.PropTypes.arrayOf(React.PropTypes.string),
+    timeRange: React.PropTypes.arrayOf(React.PropTypes.number),
+    refugeeCountsModel: React.PropTypes.object,
+    mapModel: React.PropTypes.object,
+    projection: React.PropTypes.func,
+    enableOverlay: React.PropTypes.bool,
+    width: React.PropTypes.number,
+    height: React.PropTypes.number,
+    clickedCountry: React.PropTypes.string
+  },
 
 
   getDefaultProps: function() {

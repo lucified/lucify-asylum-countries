@@ -6,6 +6,10 @@ var names = require('date-names/fi');
 
 var RefugeeTimeRangeIndicator = React.createClass({
 
+  propTypes: {
+    timeRange: React.PropTypes.arrayOf(React.PropTypes.number)
+  },
+
   getMonthString: function(mom) {
     return names.abbreviated_months[mom.month()] + ' ' + mom.format('YYYY');
   },

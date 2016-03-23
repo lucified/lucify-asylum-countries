@@ -14,6 +14,12 @@ var UberProtection = require('lucify-commons/src/js/components/uber-protection.j
 
 var RefugeeMainContent = React.createClass({
 
+  propTypes: {
+    mapEnabled: React.PropTypes.bool,
+    loaded: React.PropTypes.bool,
+    loadProgress: React.PropTypes.number
+  },
+
   getDefaultProps: function() {
     return {
       mapEnabled: true

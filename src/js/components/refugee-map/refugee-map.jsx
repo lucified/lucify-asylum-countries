@@ -13,15 +13,34 @@ var RefugeeConstants = require('../../model/refugee-constants.js');
 
 var RefugeeMap = React.createClass({
 
+  propTypes: {
+    width: React.PropTypes.number,
+    height: React.PropTypes.number,
+    interactionsEnabled: React.PropTypes.bool,
+    lo: React.PropTypes.number,
+    la: React.PropTypes.number,
+    scale: React.PropTypes.number,
+    preferredHeightWidthRatio: React.PropTypes.number,
+    showDataUpdated: React.PropTypes.bool,
+    mapModel: React.PropTypes.object,
+    refugeeCountsModel: React.PropTypes.object,
+    timeRange: React.PropTypes.arrayOf(React.PropTypes.number),
+    countryFigures: React.PropTypes.object,
+    onMouseOver: React.PropTypes.func,
+    onMouseLeave: React.PropTypes.func,
+    onMapClick: React.PropTypes.func,
+    clickedCountry: React.PropTypes.string,
+    country: React.PropTypes.string,
+    originCountries: React.PropTypes.arrayOf(React.PropTypes.string),
+    destinationCountries: React.PropTypes.arrayOf(React.PropTypes.string)
+  },
+
 
   getDefaultProps: function() {
     return {
       width: 1200,
       height: 1200,
       interactionsEnabled: true,
-      //lo: 22.2206322 - 9,
-      //la: 34.0485818 + 15,
-      //scale: 1.4,
       lo: 22.2206322,
       la: 34.0485818,
       scale: 0.85,
