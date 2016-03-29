@@ -7,6 +7,12 @@ var RefugeeDataUpdated = React.createClass({
     return false;
   },
 
+
+  propTypes: {
+    updatedAt: React.PropTypes.object.isRequired
+  },
+
+
   render: function() {
     return (
       <div className="refugee-updated-at">

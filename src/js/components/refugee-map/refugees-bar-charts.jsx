@@ -1,15 +1,18 @@
 
 var React = require('react');
-var _ = require('underscore');
 var sprintf = require('sprintf');
 
 var DividedCols = require('lucify-commons/src/js/components/divided-cols.jsx');
 var RefugeesBarChart = require('./refugees-bar-chart.jsx');
 
-var utils = require('../../utils.js');
-
 
 var PerPopulationBarChart = React.createClass({
+
+  propTypes: {
+    refugeeCountsModel: React.PropTypes.object,
+    timeRange: React.PropTypes.arrayOf(React.PropTypes.number),
+    staticScale: React.PropTypes.bool
+  },
 
   getValue: function(item) {
     var counts = this.props.refugeeCountsModel
@@ -18,8 +21,8 @@ var PerPopulationBarChart = React.createClass({
     return totalCount / item.population;
   },
 
-  format: function(v, id, i, j) {
-    return sprintf("%.0f", v*100000);
+  format: function(v, _id, _i, _j) {
+    return sprintf('%.0f', v*100000);
   },
 
   getMax: function() {
@@ -43,6 +46,12 @@ var PerPopulationBarChart = React.createClass({
 
 var TotalsBarChart = React.createClass({
 
+  propTypes: {
+    refugeeCountsModel: React.PropTypes.object,
+    timeRange: React.PropTypes.arrayOf(React.PropTypes.number),
+    staticScale: React.PropTypes.bool
+  },
+
   getValue: function(item) {
     var counts = this.props.refugeeCountsModel
       .getTotalDestinationCounts(item.country, this.props.timeRange);
@@ -50,8 +59,8 @@ var TotalsBarChart = React.createClass({
     return totalCount;
   },
 
-  format: function(v, id, i, j) {
-    return sprintf("%.0fk", v/1000);
+  format: function(v, _id, _i, _j) {
+    return sprintf('%.0fk', v/1000);
   },
 
   getMax: function() {
@@ -72,69 +81,6 @@ var TotalsBarChart = React.createClass({
 
 });
 
-
-var TotalsMonthlyAverageBarChart = React.createClass({
-
-  getValue: function(item) {
-    var counts = this.props.refugeeCountsModel
-      .getTotalDestinationCounts(item.country, this.props.timeRange);
-    var totalCount = counts.asylumApplications;
-    return totalCount / utils.timeRangeInMonths(this.props.timeRange);
-  },
-
-  format: function(v, id, i, j) {
-    return sprintf("%.0f", v);
-  },
-
-  getMax: function() {
-    if (this.props.staticScale) {
-      return 200000;
-    }
-    return null;
-  },
-
-  render: function() {
-    return (
-      <RefugeesBarChart {...this.props}
-        format={this.format}
-        getValue={this.getValue}
-        max={this.getMax()} />
-    );
-  }
-
-});
-
-
-var PerPopulationMonthlyAverageBarChart = React.createClass({
-
-  getValue: function(item) {
-    var counts = this.props.refugeeCountsModel
-      .getTotalDestinationCounts(item.country, this.props.timeRange);
-    var totalCount = counts.asylumApplications;
-    return totalCount / item.population / utils.timeRangeInMonths(this.props.timeRange);
-  },
-
-  format: function(v, id, i, j) {
-    return sprintf("%.0f", v*100000);
-  },
-
-  getMax: function() {
-    if (this.props.staticScale) {
-      return 0.007;
-    }
-    return null;
-  },
-
-  render: function() {
-    return (
-      <RefugeesBarChart {...this.props}
-        format={this.format}
-        getValue={this.getValue}
-        max={this.getMax()} />
-    );
-  }
-
-});
 
 
 var RefugeesBarCharts = React.createClass({
@@ -168,11 +114,11 @@ var RefugeesBarCharts = React.createClass({
 
           <DividedCols
             first={
-                <div>
-                  <h3>Hakemuksia 100 000 asukasta kohden</h3>
-                  <PerPopulationBarChart {...this.props}
-                  staticScale={this.state.staticScale} />
-                </div>
+              <div>
+                <h3>Hakemuksia 100 000 asukasta kohden</h3>
+                <PerPopulationBarChart {...this.props}
+                staticScale={this.state.staticScale} />
+              </div>
             }
             second={
               <div>

@@ -9,10 +9,10 @@ var RefugeeHighlightMixin = {
 
 
   getInitialState: function() {
-  	return {
-  		hoveredCountry: null,
-  		clickedCountry: null
-  	};
+    return {
+      hoveredCountry: null,
+      clickedCountry: null
+    };
   },
 
 
@@ -34,7 +34,7 @@ var RefugeeHighlightMixin = {
   },
 
 
-  handleMouseLeave: function(country) {
+  handleMouseLeave: function(_country) {
     this.pendingHoverOut = true;
     window.setTimeout(function() {
       if (this.pendingHoverOut) {
@@ -54,10 +54,10 @@ var RefugeeHighlightMixin = {
 
 
   getHighlightedCountry: function() {
-  	if (this.state.clickedCountry != null) {
-  		return this.state.clickedCountry;
-  	}
-  	return this.state.hoveredCountry;
+    if (this.state.clickedCountry != null) {
+      return this.state.clickedCountry;
+    }
+    return this.state.hoveredCountry;
   },
 
 

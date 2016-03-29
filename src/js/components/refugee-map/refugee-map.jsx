@@ -1,5 +1,4 @@
 
-var _ = require('underscore');
 var React = require('react');
 var d3 = require('d3');
 
@@ -8,14 +7,33 @@ var CountryCountsLayer = require('./refugee-map-country-counts-layer.jsx');
 var CountryLabelsLayer = require('./refugee-map-country-labels-layer.jsx');
 var CountBarsLayer = require('./refugee-map-count-bars-layer.jsx');
 var SimpleBordersLayer = require('./refugee-map-simple-borders-layer.jsx');
-var RefugeeHighlightMixin = require('./refugee-highlight-mixin.js');
 var DataUpdated = require('../refugee-data-updated.jsx');
 var RefugeeConstants = require('../../model/refugee-constants.js');
 
-var lucifyUtils = require('lucify-commons/src/js/lucify-utils.jsx');
-
 
 var RefugeeMap = React.createClass({
+
+  propTypes: {
+    width: React.PropTypes.number,
+    height: React.PropTypes.number,
+    interactionsEnabled: React.PropTypes.bool,
+    lo: React.PropTypes.number,
+    la: React.PropTypes.number,
+    scale: React.PropTypes.number,
+    preferredHeightWidthRatio: React.PropTypes.number,
+    showDataUpdated: React.PropTypes.bool,
+    mapModel: React.PropTypes.object,
+    refugeeCountsModel: React.PropTypes.object,
+    timeRange: React.PropTypes.arrayOf(React.PropTypes.number),
+    countryFigures: React.PropTypes.object,
+    onMouseOver: React.PropTypes.func,
+    onMouseLeave: React.PropTypes.func,
+    onMapClick: React.PropTypes.func,
+    clickedCountry: React.PropTypes.string,
+    country: React.PropTypes.string,
+    originCountries: React.PropTypes.arrayOf(React.PropTypes.string),
+    destinationCountries: React.PropTypes.arrayOf(React.PropTypes.string)
+  },
 
 
   getDefaultProps: function() {
@@ -23,9 +41,6 @@ var RefugeeMap = React.createClass({
       width: 1200,
       height: 1200,
       interactionsEnabled: true,
-      //lo: 22.2206322 - 9,
-      //la: 34.0485818 + 15,
-      //scale: 1.4,
       lo: 22.2206322,
       la: 34.0485818,
       scale: 0.85,
@@ -45,7 +60,7 @@ var RefugeeMap = React.createClass({
   },
 
 
-  componentWillUpdate: function(nextProps, nextState) {
+  componentWillUpdate: function(nextProps, _nextState) {
     if (this.props.width !== nextProps.width || this.props.la !== nextProps.la) {
       this._projection = null;
     }
@@ -62,8 +77,7 @@ var RefugeeMap = React.createClass({
     var graphHeight = this.getGraphHeight();
     var chromeHeight = 100;
     if (screen.height > graphHeight * 2 + chromeHeight) {
-        //console.log(sprintf("here %d %d", screen.height - chromeHeight - graphHeight, height));
-        return Math.min(screen.height - chromeHeight - graphHeight, height);
+      return Math.min(screen.height - chromeHeight - graphHeight, height);
     }
   },
 
@@ -191,15 +205,13 @@ var RefugeeMap = React.createClass({
 
 
   getCountBarsLayer: function() {
-      return (
-        <CountBarsLayer
-         ref="countBars"
-         {...this.getStandardLayerParams()}
-         highlightedCountry={this.getHighlightedCountry()}
-         refugeeCountsModel={this.props.refugeeCountsModel} />
-      );
-
-    return null;
+    return (
+      <CountBarsLayer
+       ref="countBars"
+       {...this.getStandardLayerParams()}
+       highlightedCountry={this.getHighlightedCountry()}
+       refugeeCountsModel={this.props.refugeeCountsModel} />
+    );
   },
 
 
@@ -220,7 +232,7 @@ var RefugeeMap = React.createClass({
   },
 
   getHighlightedCountry: function() {
-      return this.props.country;
+    return this.props.country;
   },
 
   render: function() {

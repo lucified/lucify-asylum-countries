@@ -1,22 +1,28 @@
 
 var React = require('react');
 var _ = require('underscore');
-var sprintf = require('sprintf');
 var extend = require('object-extend');
 
 var C3Chart = require('lucify-commons/src/js/components/react-c3/c3-chart.jsx');
-var theme = require('lucify-commons/src/js/lucify-theme.jsx');
 var d3 = require('d3');
 
-var refugeeConstants = require('../../model/refugee-constants.js');
-
 var RefugeesBarChart = React.createClass({
+
+  propTypes: {
+    refugeeCountsModel: React.PropTypes.object,
+    format: React.PropTypes.func,
+    getValue: React.PropTypes.func,
+    countryFigures: React.PropTypes.object,
+    mapModel: React.PropTypes.object,
+    max: React.PropTypes.number
+  },
 
 
   getDataValues: function() {
     if (!this.props.refugeeCountsModel) {
       return null;
     }
+
     return this.getEuroFigures().map(this.props.getValue);
   },
 
@@ -26,7 +32,7 @@ var RefugeesBarChart = React.createClass({
     var baseData = {
       columns: [],
       types: {
-          data1: 'bar',
+        data1: 'bar'
       },
       labels: {
         show: true,
@@ -56,27 +62,26 @@ var RefugeesBarChart = React.createClass({
 
 
   getCategories: function() {
-      var friendlyNames = {};
-      var ret = this.getEuroFigures().map(item => {
-        return this.props.mapModel.getFriendlyNameForCountry(item.country);
-      });
-      return ret;
+    var ret = this.getEuroFigures().map(item => {
+      return this.props.mapModel.getFriendlyNameForCountry(item.country);
+    });
+    return ret;
   },
 
 
   componentDidUpdate: function() {
     d3.select(this.getDOMNode())
       .selectAll('.c3-text')
-      .style("font-size", "14px")
-      .attr("dx", "2px")
-      .attr("fill", "black");
+      .style('font-size', '14px')
+      .attr('dx', '2px')
+      .attr('fill', 'black');
   },
 
 
   getMax: function() {
     if (!this.props.max) {
       return _.reduce(this.getDataValues(), function(prev, curr) {
-          return Math.max(prev, curr);
+        return Math.max(prev, curr);
       }, 0);
     }
     return this.props.max;
@@ -133,16 +138,16 @@ var RefugeesBarChart = React.createClass({
     var spec = this.getSpec();
 
     return (
-        <div className="refugees-bar-chart">
-          <C3Chart
-                ref="theChart"
-                data={data}
-                onUpdateData={this.adjustY}
-                slowUpdateDebounceTime={0}
-                fastUpdateDebounceTime={0}
-                spec={spec} aspectRatio={1.0} />
-        </div>
-      );
+      <div className="refugees-bar-chart">
+        <C3Chart
+          ref="theChart"
+          data={data}
+          onUpdateData={this.adjustY}
+          slowUpdateDebounceTime={0}
+          fastUpdateDebounceTime={0}
+          spec={spec} aspectRatio={1.0} />
+      </div>
+    );
 
   }
 

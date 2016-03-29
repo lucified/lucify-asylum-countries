@@ -1,26 +1,14 @@
 
 var React = require('react');
 var d3 = require('d3');
-var moment = require('moment');
-var classNames = require('classnames');
 var _ = require('underscore');
-var sprintf = require('sprintf');
-var console = require("console-browserify");
+var console = require('console-browserify');
 
 var legend = require('d3-svg-legend/no-extend');
-var approx = require('approximate-number');
 
 // the d3-svg-legend components for some
 // reason seems to need a global d3
 window.d3 = d3;
-
-var getFullCount = function(counts) {
-  if (!counts) {
-    return 0;
-  }
-
-  return counts.asylumApplications;
-};
 
 var zeroColor = 'rgb(255,255,255)';
 
@@ -34,17 +22,21 @@ var choroplethColors = [
   'rgb(33,113,181)',
   'rgb(8,81,156)',
   'rgb(8,48,107)'
-]
+];
 
 
 var ColorsLegend = React.createClass({
 
+  propTypes: {
+    countData: React.PropTypes.object
+  },
+
   getInitialProps: function() {
-      return {
-        padding: 10,
-        shapeHeight: 30,
-        count: 9
-      }
+    return {
+      padding: 10,
+      shapeHeight: 30,
+      count: 9
+    };
   },
 
   componentDidUpdate: function() {
@@ -62,10 +54,10 @@ var ColorsLegend = React.createClass({
     }
 
     var format = function(value) {
-        return Math.round(value);
-        //console.log(value + " " + approx(value));
-        //return approx(Math.round(value));
-    }
+      return Math.round(value);
+      //console.log(value + ' ' + approx(value));
+      //return approx(Math.round(value));
+    };
 
     var colorLegend = legend.color()
         .labelFormat(format)
@@ -85,16 +77,16 @@ var ColorsLegend = React.createClass({
 
     return (
       <div className="colors-legend">
-          <div className="colors-legend__inner">
-            <div className="colors-legend__title">
-              Hakijoita / 100 000 asukasta
-            </div>
-            <div className="colors-legend-boxes">
-              <svg style={{width: 110, height: 270}}>
-                <g ref="legend" />
-              </svg>
-            </div>
+        <div className="colors-legend__inner">
+          <div className="colors-legend__title">
+            Hakijoita / 100 000 asukasta
           </div>
+          <div className="colors-legend-boxes">
+            <svg style={{width: 110, height: 270}}>
+              <g ref="legend" />
+            </svg>
+          </div>
+        </div>
       </div>
     );
 
@@ -107,6 +99,18 @@ var ColorsLegend = React.createClass({
 
 var RefugeeMapBorder = React.createClass({
 
+  propTypes: {
+    subunitClass: React.PropTypes.string,
+    origin: React.PropTypes.bool,
+    destination: React.PropTypes.bool,
+    projection: React.PropTypes.func,
+    onMouseOver: React.PropTypes.func.isRequired,
+    onMouseLeave: React.PropTypes.func.isRequired,
+    country: React.PropTypes.string,
+    path: React.PropTypes.func,
+    feature: React.PropTypes.object,
+    enableOverlay: React.PropTypes.bool
+  },
 
   componentDidMount: function() {
     this.sel = d3.select(React.findDOMNode(this.refs.subunit));
@@ -126,38 +130,38 @@ var RefugeeMapBorder = React.createClass({
     }
 
     if (this.sel != null) {
-        this.sel
-          .classed('subunit--destination', nextProps.destination)
-          .classed('subunit--origin', nextProps.origin);
+      this.sel
+        .classed('subunit--destination', nextProps.destination)
+        .classed('subunit--origin', nextProps.origin);
     }
 
     this.updateWithCountDetails(nextProps.countDetails, nextProps.feature);
   },
 
 
-  componentWillReceiveProps: function(nextProps, nextState) {
+  componentWillReceiveProps: function(nextProps, _nextState) {
     this.updateStyles(nextProps);
   },
 
 
-  updateWithCountDetails: function(details, countryFeatures) {
+  updateWithCountDetails: function(details, _countryFeatures) {
     if (this.props.subunitClass == 'subunit-invisible') {
       return;
     }
 
     var fill = 'rgba(255,255,255,1)';
 
-    if (details != null && this.props.origin && getFullCount(details.originCounts) > 0) {
-
-    } else if (details != null && this.props.destination && details.destinationCounts && details.destinationCounts > 0) {
-       var v = details.destinationCounts
-       fill = v > 0 ? details.destinationScale(v) : zeroColor;
+    if (details != null && this.props.destination &&
+      details.destinationCounts && details.destinationCounts > 0) {
+      var v = details.destinationCounts;
+      fill = v > 0 ? details.destinationScale(v) : zeroColor;
     }
+
     this.sel.style('fill', fill);
   },
 
 
-  shouldComponentUpdate: function(nextProps, nextState) {
+  shouldComponentUpdate: function(nextProps, _nextState) {
     // it is important to prevent an expensive diff of the svg path
     // a react render will only be needed if we need to resize
     return this.props.projection !== nextProps.projection;
@@ -177,22 +181,22 @@ var RefugeeMapBorder = React.createClass({
   render: function() {
 
     // round pixels using a custom rendering context
-    var d = "";
+    var d = '';
     var context = {
       beginPath: function() {
-        d += "";
+        d += '';
       },
       moveTo: function(x, y) {
-        d += "M" + Math.round(x) + "," + Math.round(y);
+        d += 'M' + Math.round(x) + ',' + Math.round(y);
       },
       lineTo: function(x, y) {
-        d += "L" + Math.round(x) + "," + Math.round(y);
+        d += 'L' + Math.round(x) + ',' + Math.round(y);
       },
       closePath: function() {
-        d += "Z";
+        d += 'Z';
       },
       arc: function() {
-        d += "";
+        d += '';
       }
     };
 
@@ -200,23 +204,22 @@ var RefugeeMapBorder = React.createClass({
     path.context(context);
     path(this.props.feature);
 
-    var country = this.props.country;
     var overlay = this.props.enableOverlay ? (
-        <path key="p2" ref="overlay"
-              className="subunit--overlay"
-              onMouseOver={this.onMouseOver}
-              onMouseLeave={this.onMouseLeave}
-              d={d} />
-      ) : null;
+      <path key="p2" ref="overlay"
+            className="subunit--overlay"
+            onMouseOver={this.onMouseOver}
+            onMouseLeave={this.onMouseLeave}
+            d={d} />
+    ) : null;
 
     return (
       <g>
         <path key="p1"
-           ref="subunit"
-           className={this.props.subunitClass}
-           d={d}
-           onMouseOver={this.onMouseOver}
-           onMouseLeave={this.onMouseLeave} />
+          ref="subunit"
+          className={this.props.subunitClass}
+          d={d}
+          onMouseOver={this.onMouseOver}
+          onMouseLeave={this.onMouseLeave} />
         {overlay}
       </g>
     );
@@ -229,6 +232,25 @@ var RefugeeMapBorder = React.createClass({
 
 var RefugeeMapBordersLayer = React.createClass({
 
+  propTypes: {
+    subunitClass: React.PropTypes.string,
+    updatesEnabled: React.PropTypes.bool,
+    onMouseOver: React.PropTypes.func,
+    onMouseLeave: React.PropTypes.func,
+    onClick: React.PropTypes.func,
+    country: React.PropTypes.string,
+    destinationCountries: React.PropTypes.arrayOf(React.PropTypes.string),
+    originCountries: React.PropTypes.arrayOf(React.PropTypes.string),
+    timeRange: React.PropTypes.arrayOf(React.PropTypes.number),
+    refugeeCountsModel: React.PropTypes.object,
+    mapModel: React.PropTypes.object,
+    projection: React.PropTypes.func,
+    enableOverlay: React.PropTypes.bool,
+    width: React.PropTypes.number,
+    height: React.PropTypes.number,
+    clickedCountry: React.PropTypes.string
+  },
+
 
   getDefaultProps: function() {
     return {
@@ -239,36 +261,36 @@ var RefugeeMapBordersLayer = React.createClass({
 
   onMouseOver: function(country) {
     if (this.props.onMouseOver) {
-       this.props.onMouseOver(country);
+      this.props.onMouseOver(country);
     }
   },
 
   onMouseLeave: function(country) {
     if (this.props.onMouseLeave) {
-       this.props.onMouseLeave(country);
+      this.props.onMouseLeave(country);
     }
   },
 
 
   onClick: function() {
     if (this.props.onClick) {
-       this.props.onClick();
+      this.props.onClick();
     }
   },
 
 
   getHighlightParams: function(country) {
     if (!this.props.country) {
-        return {
-          destination: true,
-          origin: false
-        }
-    };
+      return {
+        destination: true,
+        origin: false
+      };
+    }
 
     return {
-       hovered: this.props.country == country,
-       destination: this.props.destinationCountries.indexOf(country) != -1,
-       origin: this.props.originCountries.indexOf(country) != -1
+      hovered: this.props.country == country,
+      destination: this.props.destinationCountries.indexOf(country) != -1,
+      origin: this.props.originCountries.indexOf(country) != -1
     };
   },
 
@@ -287,9 +309,9 @@ var RefugeeMapBordersLayer = React.createClass({
     var timeRange = this.props.timeRange;
 
     var getMaxCount = function(counts) {
-       return _.values(counts).reduce(function(prev, item) {
-          return Math.max(prev, item.asylumApplications);
-       },0);
+      return _.values(counts).reduce(function(prev, item) {
+        return Math.max(prev, item.asylumApplications);
+      }, 0);
     };
 
     var countData = null;
@@ -315,57 +337,52 @@ var RefugeeMapBordersLayer = React.createClass({
         originScale: originScale,
         destinationScale: destinationScale
       };
-    } else {
-
     }
+
     return countData;
   },
 
 
   getGlobalCountData: function() {
-      var perHowMany = 100000
-      var max = 0
-      var destinationCounts = this.props.refugeeCountsModel
-        .computePerCountry(this.props.timeRange, (country, total) => {
-          var features = _.find(this.props.mapModel.featureData.features, f => f.properties.ADM0_A3 === country)
-          var p = features ? this.getPerCapitaCount(total.asylumApplications, features, perHowMany) : 0
-          max = p > max ? p : max
-          return p
-        });
-      var destinationScale = d3.scale.quantize()
-        .domain([0, max])
-        .range(choroplethColors);
+    var perHowMany = 100000;
+    var max = 0;
+    var destinationCounts = this.props.refugeeCountsModel
+      .computePerCountry(this.props.timeRange, (country, total) => {
+        var features = _.find(this.props.mapModel.featureData.features, f => f.properties.ADM0_A3 === country);
+        var p = features ? this.getPerCapitaCount(total.asylumApplications, features, perHowMany) : 0;
+        max = p > max ? p : max;
+        return p;
+      });
+    var destinationScale = d3.scale.quantize()
+      .domain([0, max])
+      .range(choroplethColors);
 
-      var countData = {
-        max: max,
-        originCounts: {},
-        destinationCounts: destinationCounts,
-        originScale: null,
-        destinationScale: destinationScale
-      };
-      return countData;
+    return {
+      max: max,
+      originCounts: {},
+      destinationCounts: destinationCounts,
+      originScale: null,
+      destinationScale: destinationScale
+    };
   },
 
   getPerCapitaCount: (applications, features, perHowMany) => {
-    return applications / (features.properties.POP_EST / perHowMany)
+    return applications / (features.properties.POP_EST / perHowMany);
   },
 
   getMaxCount: function(counts) {
     return _.values(counts).reduce(function(prev, item) {
-        return Math.max(prev, item.asylumApplications);
+      return Math.max(prev, item.asylumApplications);
     }, 0);
   },
 
 
   getCountData: function() {
-      if (!this.props.refugeeCountsModel) {
-        return null;
-      }
+    if (!this.props.refugeeCountsModel) {
+      return null;
+    }
 
-      // if (this.props.country != null) {
-      //     return this.getCountrySpecificCountData();
-      // }
-      return this.getGlobalCountData();
+    return this.getGlobalCountData();
   },
 
 
@@ -388,10 +405,9 @@ var RefugeeMapBordersLayer = React.createClass({
 
     return this.props.mapModel.featureData.features.map(feature => {
       var country = feature.properties.ADM0_A3;
-      var hparams = this.getHighlightParams(country);
 
       if (countries[country]) {
-        console.log("duplicate for " + country);
+        console.log("duplicate for " + country); // eslint-disable-line
       }
       countries[country] = true;
 
@@ -429,7 +445,7 @@ var RefugeeMapBordersLayer = React.createClass({
   },
 
 
-  shouldComponentUpdate: function(nextProps, nextState) {
+  shouldComponentUpdate: function(nextProps, _nextState) {
     if (this.props.width !== nextProps.width
       || this.props.projection !== nextProps.projection) {
       return true;
@@ -453,9 +469,7 @@ var RefugeeMapBordersLayer = React.createClass({
 
 
   getDefs: function() {
-      return '<pattern id="diagonal-stripe-4" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9JzInLz4KPC9zdmc+" x="0" y="0" width="10" height="10"> </image> </pattern>';
-      //return '<pattern id="diagonal-stripe-4" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9JzEnLz4KPC9zdmc+Cg==" x="0" y="0" width="10" height="10"> </image> </pattern>';
-      //return '<pattern id="diagonal-stripe-4" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSdibGFjaycvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J3doaXRlJyBzdHJva2Utd2lkdGg9JzMnLz4KPC9zdmc+" x="0" y="0" width="10" height="10"> </image> </pattern>';
+    return '<pattern id="diagonal-stripe-4" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9JzInLz4KPC9zdmc+" x="0" y="0" width="10" height="10"> </image> </pattern>';
   },
 
 
@@ -466,17 +480,15 @@ var RefugeeMapBordersLayer = React.createClass({
     return (
       <div style={{width: this.props.width, height: this.props.height}}>
         <svg className="refugee-map-borders-layer"
-            style={{width: this.props.width, height: this.props.height}}
-            onClick={this.onClick}>
-            <defs dangerouslySetInnerHTML={{__html: this.getDefs()}} />
-            {this.getPaths(countData)}
+          style={{width: this.props.width, height: this.props.height}}
+          onClick={this.onClick}>
+          <defs dangerouslySetInnerHTML={{__html: this.getDefs()}} />
+          {this.getPaths(countData)}
         </svg>
         <ColorsLegend countData={countData} width={this.props.width} height={this.props.height} />
       </div>
     );
-  },
-
-
+  }
 
 });
 

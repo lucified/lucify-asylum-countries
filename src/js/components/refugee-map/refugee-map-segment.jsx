@@ -120,9 +120,9 @@ var RefugeeMapSegment = React.createClass({
                   </p>
 
                   <p className="last">
-                      Valitse hiirellä vetämällä kuvaajasta ajanjakso,
-                      jota haluat tarkastella. Huomaa, että voit myös
-                      muuttaa ajanjakson pituutta.
+                    Valitse hiirellä vetämällä kuvaajasta ajanjakso,
+                    jota haluat tarkastella. Huomaa, että voit myös
+                    muuttaa ajanjakson pituutta.
                   </p>
                 </div>
               }
@@ -146,36 +146,36 @@ var RefugeeMapSegment = React.createClass({
 
         <div className="refugee-map-segment__tabs">
           <Tabs>
-              <Tabs.Panel title="Euroopan kartta">
-                <RefugeeMap ref="rmap"
-                  {...this.props}
-                  {...this.getHighlightLayerParams()}
-                  onMouseOver={this.handleMouseOver}
-                  onMouseLeave={this.handleMouseLeave}
-                  onMapClick={this.handleMapClick}
-                  lo={22.2206322 - 9}
-                  la={34.0485818 + 18.5}
-                  scale={1.706}
-                  preferredHeightWidthRatio={0.82}
-                  timeRange={this.state.timeRange}
-                  interactionsEnabled={this.interactionsEnabled()} />
-              </Tabs.Panel>
+            <Tabs.Panel title="Euroopan kartta">
+              <RefugeeMap ref="rmap"
+                {...this.props}
+                {...this.getHighlightLayerParams()}
+                onMouseOver={this.handleMouseOver}
+                onMouseLeave={this.handleMouseLeave}
+                onMapClick={this.handleMapClick}
+                lo={22.2206322 - 9}
+                la={34.0485818 + 18.5}
+                scale={1.706}
+                preferredHeightWidthRatio={0.82}
+                timeRange={this.state.timeRange}
+                interactionsEnabled={this.interactionsEnabled()} />
+            </Tabs.Panel>
 
-              <Tabs.Panel title="Euroopan ja lähtömaiden kartta">
-                  <RefugeeMap ref="rmap"
-                    {...this.props}
-                    {...this.getHighlightLayerParams()}
-                    onMouseOver={this.handleMouseOver}
-                    onMouseLeave={this.handleMouseLeave}
-                    onMapClick={this.handleMapClick}
-                    timeRange={this.state.timeRange}
-                    interactionsEnabled={this.interactionsEnabled()} />
-              </Tabs.Panel>
+            <Tabs.Panel title="Euroopan ja lähtömaiden kartta">
+              <RefugeeMap ref="rmap"
+                {...this.props}
+                {...this.getHighlightLayerParams()}
+                onMouseOver={this.handleMouseOver}
+                onMouseLeave={this.handleMouseLeave}
+                onMapClick={this.handleMapClick}
+                timeRange={this.state.timeRange}
+                interactionsEnabled={this.interactionsEnabled()} />
+            </Tabs.Panel>
 
-              <Tabs.Panel title="Pylväskaaviona">
-                <RefugeesBarCharts {...this.props}
-                  timeRange={this.state.timeRange} />
-              </Tabs.Panel>
+            <Tabs.Panel title="Pylväskaaviona">
+              <RefugeesBarCharts {...this.props}
+                timeRange={this.state.timeRange} />
+            </Tabs.Panel>
           </Tabs>
           <RefugeeTimeRangeIndicator
             timeRange={this.state.timeRange} />
