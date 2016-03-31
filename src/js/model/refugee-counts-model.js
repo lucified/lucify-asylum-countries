@@ -117,20 +117,24 @@ RefugeeCountsModel.prototype._calculateMissingData = function() {
     'FRA', 'GBR', 'GRC', 'HUN', 'ITA', 'NOR', 'NLD', 'SWE'
   ];
   var originCountriesToCheck = ['SYR', 'IRQ', 'UKR'];
-  var year = 3; // only check 2015
+  var yearsToCheck = [2015, 2016]; // TODO: remove 2015 after the next data update if no missing countries
 
   for (var month = 0; month < 12; month++) {
-    _.forEach(destinationCountriesToCheck, function(destinationCountry) {
-      var countryData = this.pairCountsByDestination[destinationCountry];
-      var originCountriesWithDataCount = 0;
-      _.forEach(originCountriesToCheck, function(originCountry) {
-        if (countryData[originCountry] && countryData[originCountry][year][month].count > 0) {
-          originCountriesWithDataCount++;
+    yearsToCheck.forEach(function(year) {
+      var yearIndex = year - refugeeConstants.DATA_START_YEAR;
+
+      destinationCountriesToCheck.forEach(function(destinationCountry) {
+        var countryData = this.pairCountsByDestination[destinationCountry];
+        var originCountriesWithDataCount = 0;
+        originCountriesToCheck.forEach(function(originCountry) {
+          if (countryData[originCountry] && countryData[originCountry][yearIndex][month].count > 0) {
+            originCountriesWithDataCount++;
+          }
+        });
+        if (originCountriesWithDataCount === 0) {
+          this.destinationCountriesWithMissingData[yearIndex][month].push(destinationCountry);
         }
-      });
-      if (originCountriesWithDataCount === 0) {
-        this.destinationCountriesWithMissingData[year][month].push(destinationCountry);
-      }
+      }.bind(this));
     }.bind(this));
   }
 };
