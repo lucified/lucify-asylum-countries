@@ -1,9 +1,12 @@
 
 var React = require('react');
-
-var refugeeConstants = require('../../model/refugee-constants.js');
 var moment = require('moment');
 var d3 = require('d3');
+
+var BarChartRangeSelector = require('lucify-bar-chart-range-selector').default;
+var DataTools = require('lucify-data-tools');
+
+var refugeeConstants = require('../../model/refugee-constants.js');
 
 var RefugeeMapTimeBarChart = React.createClass({
 
@@ -19,13 +22,13 @@ var RefugeeMapTimeBarChart = React.createClass({
 
 
   getHeight: function() {
-    return 160;
+    return 200;
   },
 
 
   getMargins: function() {
     return {
-      top: 30,
+      top: 50,
       right: 30,
       bottom: 50,
       left: 60
@@ -43,9 +46,7 @@ var RefugeeMapTimeBarChart = React.createClass({
 
 
   updateCountriesWithMissingData: function(timeRange) {
-
     var textForCountryList = function(countryList) {
-
       var missingDataText = '';
       var countryCount = countryList.length;
 
@@ -69,19 +70,21 @@ var RefugeeMapTimeBarChart = React.createClass({
     }.bind(this);
 
     var tooltipForCountryList = function(countryList) {
-
       if (countryList.length > 0) {
         return 'Dataa puuttuu seuraavista maista: ' + countryList.join(', ');
       } else {
         return '';
       }
-
     }.bind(this);
 
     if (this.isEuroCountrySelected()) {
       this.labelSelection
-        .attr('title', 'Maahan ' + this.props.mapModel.getFriendlyNameForCountry(this.props.country) + ' turvapaikkahakemuksen jättäneet')
-        .html('Maahan <b>' + this.props.mapModel.getFriendlyNameForCountry(this.props.country) + '</b> turvapaikkahakemuksen jättäneet');
+        .attr('title', 'Maahan ' +
+          this.props.mapModel.getFriendlyNameForCountry(this.props.country) +
+          ' turvapaikkahakemuksen jättäneet')
+        .html('Maahan <b>' +
+          this.props.mapModel.getFriendlyNameForCountry(this.props.country) +
+          '</b> turvapaikkahakemuksen jättäneet');
     } else {
       var countriesWithMissingData = this.props.refugeeCountsModel
         .getDestinationCountriesWithMissingDataForTimeRange(timeRange)
@@ -108,23 +111,41 @@ var RefugeeMapTimeBarChart = React.createClass({
 
 
   getSourceData: function() {
+    var data;
+
     if (!this.isEuroCountrySelected()) {
-      return this.props.refugeeCountsModel.getGlobalArrivingPerMonth();
+      data = this.props.refugeeCountsModel.getGlobalArrivingPerMonth();
+    } else {
+      data = this.props.refugeeCountsModel.getGlobalArrivingPerMonthForCountry(this.props.country);
     }
-    return this.props.refugeeCountsModel.getGlobalArrivingPerMonthForCountry(this.props.country);
+
+    return data.map(function(d) {
+      return {
+        key: DataTools.dateToMonthIndex(d.date),
+        total: d.asylumApplications,
+        values: [
+          {
+            key: 'asylum applications',
+            values: d.asylumApplications
+          }
+        ]
+      };
+    });
   },
 
 
   componentDidMount: function() {
-    this.labelSelection = d3.select(React.findDOMNode(this.refs.missingData));
+    this.labelSelection = d3.select(this.refs.missingData.getDOMNode());
     this.updateCountriesWithMissingData(this.props.timeRange);
-
-    this.initializeChart(this.getSourceData());
-    this.initializeSelectionHandlers();
   },
 
 
-  initializeChart: function(data) {
+  componentDidUpdate: function() {
+    this.updateCountriesWithMissingData(this.props.timeRange);
+  },
+
+
+/*  initializeChart: function(data) {
     var margin = this.getMargins();
     this.height = this.getHeight() - margin.top - margin.bottom;
     this.width = this.props.width - margin.left - margin.right;
@@ -232,97 +253,37 @@ var RefugeeMapTimeBarChart = React.createClass({
            }
          });
   },
+*/
 
-
-  shouldComponentUpdate: function() {
-    return true;
+  ticks: function() {
+    return d3.range(2012, 2017).map(DataTools.firstMonthIndexOfYear);
   },
 
 
-  componentDidUpdate: function() {
-    this.updateWithData(this.getSourceData());
-    this.updateCountriesWithMissingData(this.props.timeRange);
-    this.updateBrush();
+  tickFormat: function(monthIndex) {
+    return 1900 + DataTools.monthIndexToDate(monthIndex).getYear();
   },
 
 
-  initializeSelectionHandlers: function() {
-    this.brush = d3.svg.brush()
-      .x(this.xScale)
-      .extent(this.props.timeRange.map(function(d) { return new Date(d * 1000); }))
-      .on('brush', this.brushed);
-
-    var gBrush = this.svg.append('g')
-      .attr('class', 'brush')
-      .call(this.brush);
-
-    gBrush.selectAll('rect')
-      .attr('height', this.getHeight() - this.getMargins().top - this.getMargins().bottom + 10)
-      .attr('transform', 'translate(0, -5)');
+  getMonthIndexRange: function() {
+    return this.props.timeRange.map(function(secondsSinceEpoch) {
+      return DataTools.dateToMonthIndex(new Date(secondsSinceEpoch * 1000));
+    });
   },
 
 
-  updateBrush: function() {
-    this.brush.x(this.xScale);
-    d3.select('.brush')
-        .call(this.brush.extent(this.props.timeRange.map(function(d) { return new Date(d * 1000); })));
-  },
+  handleTimeRangeChange: function(indexRange) {
+    // timeRange needs to be in seconds since epoch
+    var timeRange = indexRange.map(function(monthIndex) {
+      return DataTools.monthIndexToDate(monthIndex).getTime() / 1000;
+    });
 
+    this.updateCountriesWithMissingData(timeRange);
 
-  handleTimeRangeChange: function(stampRange) {
-    d3.select('.brush')
-        .call(this.brush.extent(stampRange.map(function(d) { return new Date(d * 1000); })));
-
-    this.updateCountriesWithMissingData(stampRange);
 
     if (this.props.onTimeRangeChange) {
-      this.props.onTimeRangeChange(stampRange);
+      this.props.onTimeRangeChange(timeRange);
     }
-  },
-
-
-  // based on http://bl.ocks.org/mbostock/6232620
-  brushed: function() {
-    var dateExtent = this.brush.extent(),
-      roundedDateExtent;
-
-    // if dragging, preserve the width of the extent
-    if (d3.event.mode === 'move') {
-      var monthsDiff = dateExtent[1].getMonth() - dateExtent[0].getMonth() +
-        (12 * (dateExtent[1].getYear() - dateExtent[0].getYear()));
-
-      if (monthsDiff == 0) {
-        return;
-      }
-
-      var d0 = d3.time.month.round(dateExtent[0]),
-          d1 = d3.time.month.offset(d0, monthsDiff);
-
-      //console.log(sprintf('%d %d %d %d %d %d %d', monthsDiff, dateExtent[0].getMonth(),
-      //  dateExtent[1].getMonth(), dateExtent[0].getYear(), dateExtent[1].getYear(),
-      //  d0.getMonth(), d1.getMonth()));
-
-      roundedDateExtent = [d0, d1];
-    }
-
-    // otherwise, if resizing, round both dates
-    else {
-      roundedDateExtent = dateExtent.map(d3.time.month.round);
-
-      // if empty when rounded, use floor & ceil instead
-      if (roundedDateExtent[0] >= roundedDateExtent[1]) {
-        roundedDateExtent[0] = d3.time.month.floor(dateExtent[0]);
-        roundedDateExtent[1] = d3.time.month.ceil(dateExtent[1]);
-      }
-    }
-
-    // d3 rounds to the first day of the following month. DATA_END_MOMENT
-    // is the last day of the previous month. moment.js's endOf('month')
-    // seems to do this, i.e. remove one second
-    roundedDateExtent[1] = d3.time.second.offset(roundedDateExtent[1], -1);
-
-    var roundedStampExtent = roundedDateExtent.map(function(date) { return date.getTime() / 1000; });
-    this.handleTimeRangeChange(roundedStampExtent);
   },
 
 
@@ -330,7 +291,16 @@ var RefugeeMapTimeBarChart = React.createClass({
     return (
       <div className='refugee-map-time'>
         <span ref="missingData" className="refugee-map-time__missing-data" />
-        <svg ref='chart' className='refugee-map-time__chart' />
+        <BarChartRangeSelector className='refugee-map-time__chart'
+          xTickFormat={this.tickFormat}
+          xTickValues={this.ticks()}
+          rangeFormat={DataTools.formatMonthIndex}
+          onChange={this.handleTimeRangeChange}
+          selectedRange={this.getMonthIndexRange()}
+          data={this.getSourceData()}
+          height={this.getHeight()}
+          width={this.props.width}
+          margin={this.getMargins()} />
       </div>
     );
   }
