@@ -121,7 +121,7 @@ var RefugeeMapTimeBarChart = React.createClass({
 
     return data.map(function(d) {
       return {
-        key: DataTools.dateToMonthIndex(d.date),
+        key: DataTools.dateToMonthIndex(d.date.toDate()),
         total: d.asylumApplications,
         values: [
           {
@@ -265,6 +265,9 @@ var RefugeeMapTimeBarChart = React.createClass({
   },
 
 
+  // this.props.timeRange is in the format of seconds since the epoch (i.e.
+  // moment.unix()). The first date is the beginning of the month, while the
+  // last is the last second the of the last month.
   getMonthIndexRange: function() {
     return this.props.timeRange.map(function(secondsSinceEpoch) {
       return DataTools.dateToMonthIndex(new Date(secondsSinceEpoch * 1000));
@@ -272,14 +275,21 @@ var RefugeeMapTimeBarChart = React.createClass({
   },
 
 
+  // We need to return the beginning of the month for the start time and
+  // end of the month for the end time.
+  getTimeRangeForMonthIndexRange: function(indexRange) {
+    return [
+      DataTools.monthIndexToDate(indexRange[0]).getTime() / 1000,
+      moment(DataTools.monthIndexToDate(indexRange[1])).endOf('month').unix()
+    ];
+  },
+
+
   handleTimeRangeChange: function(indexRange) {
-    // timeRange needs to be in seconds since epoch
-    var timeRange = indexRange.map(function(monthIndex) {
-      return DataTools.monthIndexToDate(monthIndex).getTime() / 1000;
-    });
+    var timeRange = this.getTimeRangeForMonthIndexRange(indexRange);
+
 
     this.updateCountriesWithMissingData(timeRange);
-
 
     if (this.props.onTimeRangeChange) {
       this.props.onTimeRangeChange(timeRange);
