@@ -70,7 +70,7 @@ describe('RefugeeCountsModel', function() {
       assert.equal(model.getGlobalArrivingFor(moment([2013, 0])).asylumApplications, 31092);
     });
     it('correct total for August 2015 (only European destinations)', function() {
-      assert.equal(model.getGlobalArrivingFor(moment([2015, 7])).asylumApplications, 183895);
+      assert.equal(model.getGlobalArrivingFor(moment([2015, 7])).asylumApplications, 183774);
     });
   });
 
