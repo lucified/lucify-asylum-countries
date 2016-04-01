@@ -22,7 +22,7 @@ var RefugeeMapTimeBarChart = React.createClass({
 
 
   getHeight: function() {
-    return 200;
+    return 180;
   },
 
 
@@ -30,7 +30,7 @@ var RefugeeMapTimeBarChart = React.createClass({
     return {
       top: 50,
       right: 30,
-      bottom: 50,
+      bottom: 30,
       left: 60
     };
   },
