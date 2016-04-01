@@ -2,20 +2,18 @@
 
 .refugee-small-multiples {
   //position: relative;
-
-  svg[class^="line-chart"] {
-
-    path[class^="line-chart__area"] {
-      fill: lighten($teas-blue, 0);
-    }
-
-    path[class^="line-chart__line"] {
-      stroke: darken($teas-blue, 20);
-    }
-
-  }
 }
 
+
+svg[class^="line-chart"] {
+  path[class^="line-chart__area"] {
+    fill: lighten($teas-blue, 0);
+  }
+
+  path[class^="line-chart__line"] {
+    stroke: darken($teas-blue, 20);
+  }
+}
 
 .refugee-small-multiples__item-title {
   text-align: center;
