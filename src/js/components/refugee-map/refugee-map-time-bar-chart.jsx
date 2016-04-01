@@ -97,16 +97,22 @@ var RefugeeMapTimeBarChart = React.createClass({
   },
 
 
-  getDataMissingStartMoment: function() {
-    var timestamp = moment(refugeeConstants.DATA_END_MOMENT);
-    var countriesWithMissingData = this.props.refugeeCountsModel.getDestinationCountriesWithMissingData(timestamp);
+  getIncompleteDataIndices: function() {
+    if (this.isEuroCountrySelected()) return [];
 
-    while (countriesWithMissingData.length > 0) {
+    var timestamp = moment(refugeeConstants.DATA_END_MOMENT);
+    var missingDataIndices = [];
+
+    while (timestamp.isAfter(refugeeConstants.DATA_START_MOMENT)) {
+      if (this.props.refugeeCountsModel
+        .getDestinationCountriesWithMissingData(timestamp).length > 0) {
+        missingDataIndices.push(DataTools.dateToMonthIndex(timestamp.toDate()));
+      }
+
       timestamp.subtract(1, 'months');
-      countriesWithMissingData = this.props.refugeeCountsModel.getDestinationCountriesWithMissingData(timestamp);
     }
 
-    return timestamp.endOf('month');
+    return missingDataIndices;
   },
 
 
@@ -308,6 +314,7 @@ var RefugeeMapTimeBarChart = React.createClass({
           onChange={this.handleTimeRangeChange}
           selectedRange={this.getMonthIndexRange()}
           data={this.getSourceData()}
+          incompleteDataIndices={this.getIncompleteDataIndices()}
           height={this.getHeight()}
           width={this.props.width}
           margin={this.getMargins()} />
