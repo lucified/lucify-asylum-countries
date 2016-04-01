@@ -21,7 +21,7 @@ var RefugeeMapTimeLayer = React.createClass({
 
     return (
       <div className='refugee-map-time-layer'>
-        <RefugeeMapTimeBarChart {...this.props} timeRange={this.props.timeRange} />
+        <RefugeeMapTimeBarChart {...this.props} />
       </div>
     );
   }
