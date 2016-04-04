@@ -1,16 +1,14 @@
 
 var React = require('react');
 
+var Loading = require('lucify-commons/src/js/components/loading.jsx');
+var UberProtection = require('lucify-commons/src/js/components/uber-protection.jsx');
 var HideableContainer = require('lucify-commons/src/js/components/hideable-container.jsx');
 
 var Decorator = require('./refugee-context-decorator.jsx');
 var RefugeeMapSegment = require('./refugee-map/refugee-map-segment.jsx');
 var RefugeeMultiplesSegment = require('./refugee-map/refugee-multiples-segment.jsx');
-
-var Loading = require('lucify-commons/src/js/components/loading.jsx');
-
-var UberProtection = require('lucify-commons/src/js/components/uber-protection.jsx');
-
+var Footer = require('./footer.jsx');
 
 var RefugeeMainContent = React.createClass({
 
@@ -77,6 +75,7 @@ var RefugeeMainContent = React.createClass({
         {this.getLoadingSegment()}
         {this.getMapSegment()}
         {this.getMultiplesSegment()}
+        <Footer />
       </div>
     );
 
