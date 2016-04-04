@@ -45,58 +45,6 @@ var RefugeeMapTimeBarChart = React.createClass({
   },
 
 
-  updateCountriesWithMissingData: function(timeRange) {
-    var textForCountryList = function(countryList) {
-      var missingDataText = '';
-      var countryCount = countryList.length;
-
-      if (countryCount > 0) {
-        if (countryCount > 5) {
-          missingDataText = 'Dataa puuttuu: ' +
-            countryList.slice(0, 4).join(', ') + ' ja ' +
-            (countryCount - 4) + ' muuta maata';
-        } else {
-          missingDataText = 'Dataa puuttuu: ';
-          if (countryCount > 1) {
-            missingDataText += countryList.slice(0, countryCount - 1).join(', ') +
-              ' ja ';
-          }
-          missingDataText += countryList[countryCount - 1];
-        }
-      }
-
-      return 'Eurooppaan saapuneet turvapaikanhakijat <span class="missing-data-real">' +
-        missingDataText + '</span>';
-    }.bind(this);
-
-    var tooltipForCountryList = function(countryList) {
-      if (countryList.length > 0) {
-        return 'Dataa puuttuu seuraavista maista: ' + countryList.join(', ');
-      } else {
-        return '';
-      }
-    }.bind(this);
-
-    if (this.isEuroCountrySelected()) {
-      this.labelSelection
-        .attr('title', 'Maahan ' +
-          this.props.mapModel.getFriendlyNameForCountry(this.props.country) +
-          ' turvapaikkahakemuksen jättäneet')
-        .html('Maahan <b>' +
-          this.props.mapModel.getFriendlyNameForCountry(this.props.country) +
-          '</b> turvapaikkahakemuksen jättäneet');
-    } else {
-      var countriesWithMissingData = this.props.refugeeCountsModel
-        .getDestinationCountriesWithMissingDataForTimeRange(timeRange)
-        .map(item => this.props.mapModel.getFriendlyNameForCountry(item));
-
-      this.labelSelection
-        .attr('title', tooltipForCountryList(countriesWithMissingData))
-        .html(textForCountryList(countriesWithMissingData));
-    }
-  },
-
-
   getIncompleteDataIndices: function() {
     if (this.isEuroCountrySelected()) return [];
 
@@ -140,17 +88,6 @@ var RefugeeMapTimeBarChart = React.createClass({
   },
 
 
-  componentDidMount: function() {
-    this.labelSelection = d3.select(this.refs.missingData.getDOMNode());
-    this.updateCountriesWithMissingData(this.props.timeRange);
-  },
-
-
-  componentDidUpdate: function() {
-    this.updateCountriesWithMissingData(this.props.timeRange);
-  },
-
-
   ticks: function() {
     return d3.range(2012, 2017).map(DataTools.firstMonthIndexOfYear);
   },
@@ -181,13 +118,69 @@ var RefugeeMapTimeBarChart = React.createClass({
   },
 
 
+  getCountriesWithMissingData: function() {
+    var formattedCountryList = function(countryList) {
+      var missingDataText = '';
+      var countryCount = countryList.length;
+
+      if (countryCount > 0) {
+        missingDataText = 'Dataa puuttuu: ';
+
+        if (countryCount > 5) {
+          missingDataText += countryList.slice(0, 4).join(', ') + ' ja ' +
+            (countryCount - 4) + ' muuta maata';
+        } else {
+          if (countryCount > 1) {
+            missingDataText += countryList.slice(0, countryCount - 1).join(', ') +
+              ' ja ';
+          }
+          missingDataText += countryList[countryCount - 1];
+        }
+      }
+
+      return missingDataText;
+    };
+
+    var tooltipForCountryList = function(countryList) {
+      if (countryList.length > 0) {
+        return 'Dataa puuttuu seuraavista maista: ' + countryList.join(', ');
+      } else {
+        return '';
+      }
+    };
+
+    if (this.isEuroCountrySelected()) {
+      var countryName = this.props.mapModel.getFriendlyNameForCountry(this.props.country);
+
+      return (
+        <span className="refugee-map-time__missing-data"
+          title={`Maahan ${countryName} turvapaikkahakemuksen jättäneet`}
+        >
+          Maahan <b>{countryName}</b> turvapaikkahakemuksen jättäneet
+        </span>
+      );
+    }
+
+    var countriesWithMissingData = this.props.refugeeCountsModel
+      .getDestinationCountriesWithMissingDataForTimeRange(this.props.timeRange)
+      .map(item => this.props.mapModel.getFriendlyNameForCountry(item));
+
+    return (
+      <span className="refugee-map-time__missing-data"
+        title={tooltipForCountryList(countriesWithMissingData)}
+      >
+        Eurooppaan saapuneet turvapaikanhakijat
+        <span className="missing-data-real">
+          {formattedCountryList(countriesWithMissingData)}
+        </span>
+      </span>
+    );
+  },
+
+
   handleTimeRangeChange: function(indexRange) {
-    var timeRange = this.getTimeRangeForMonthIndexRange(indexRange);
-
-
-    this.updateCountriesWithMissingData(timeRange);
-
     if (this.props.onTimeRangeChange) {
+      var timeRange = this.getTimeRangeForMonthIndexRange(indexRange);
       this.props.onTimeRangeChange(timeRange);
     }
   },
@@ -196,7 +189,7 @@ var RefugeeMapTimeBarChart = React.createClass({
   render: function() {
     return (
       <div className='refugee-map-time'>
-        <span ref="missingData" className="refugee-map-time__missing-data" />
+        {this.getCountriesWithMissingData()}
         <BarChartRangeSelector className='refugee-map-time__chart'
           xTickFormat={this.tickFormat}
           xTickValues={this.ticks()}
