@@ -1,36 +1,7 @@
 
 .refugee-map-time__chart {
-  position: absolute;
-  top: 20px;
-  left: 0;
-  width: 100%;
-  rect {
-    transition: height 0.25s ease-in-out, y 0.25s ease-in-out;
-  }
-}
 
 
-.axis {
-  font: 10px sans-serif;
-}
-
-.timebar {
-  stroke: rgba(255, 255, 255, 1.0);
-  stroke-width: 1px;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: rgba(0, 0, 0, 0.9);
-  shape-rendering: crispEdges;
-}
-
-.brush .extent {
-  //stroke: #000;
-  fill-opacity: .125;
-  shape-rendering: crispEdges;
-  z-index: 2;
 }
 
 .refugee-map-time__missing-data {
@@ -42,8 +13,5 @@
   padding-right: 4em; // don't go on top of the time chart at small screen sizes
 }
 
-.tick text {
-  font-size: 0.7rem;
-}
 
 
