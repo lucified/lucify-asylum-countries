@@ -64,74 +64,53 @@ var RefugeeMapSegment = React.createClass({
   },
 
 
-  getInteractionsInstruction: function() {
-    if (this.interactionsEnabled() && false) {
-      return (
-        <div>
-          <p className="first">
-            Hover over countries to
-            show details. Click on a country to
-            lock the selection.
-            {' '}{this.getCountsInstruction()}
-          </p>
+  getInstructions: function() {
+    return (
+      <Inputs>
+        <div className="lucify-container">
+          <DividedCols
+            first={
+              <div className="inputs__instructions">
+                <p className="first">
+                  Tällä työkalulla voit tarkastella
+                  eri näkökulmista Euroopan valtioihin
+                  tehtyjen turvapaikkahakemusten määrää.
+                  Luvut perustuvat UNHCR:n koostamiin tilastoihin.
+                </p>
 
-          <p className="last">
-            The line chart displays the total rate of
-            asylum seekers over time. Drag over the chart
-            to change the selected time period.
-          </p>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <p className="first">
-            Osoita hiirellä maata nähdäksesi maata koskevia lisätietoja.
-            Klikkaa maata lukitaksesi valinnan.
-          </p>
+                <p className="last">
+                  Valitse hiirellä vetämällä kuvaajasta ajanjakso,
+                  jota haluat tarkastella. Huomaa, että voit myös
+                  muuttaa ajanjakson pituutta.
+                </p>
+              </div>
+            }
+            second={
+              <div className="inputs__instructions">
+                <p className="first">
+                  Osoita hiirellä maata nähdäksesi maata koskevia lisätietoja.
+                  Klikkaa maata lukitaksesi valinnan.
+                </p>
 
-          <p className="last">
-            Valitun maan päällä oleva numero vastaa joko
-            maahan jätettyjen tai maasta peräisin olevien
-            hakemusten määrää valittuna ajanjaksona.
-            Valitessasi maan näet myös eri maista tulleiden ja
-            eri maihin jätettyjen hakemusten määrät.
-          </p>
+                <p className="last">
+                  Valitun maan päällä oleva numero vastaa joko
+                  maahan jätettyjen tai maasta peräisin olevien
+                  hakemusten määrää valittuna ajanjaksona.
+                  Valitessasi maan näet myös eri maista tulleiden ja
+                  eri maihin jätettyjen hakemusten määrät.
+                </p>
+              </div>
+            } />
         </div>
-      );
-    }
+      </Inputs>
+    );
   },
 
 
   render: function() {
     return (
       <div className="refugee-map-segment">
-        <Inputs>
-          <div className="lucify-container">
-            <DividedCols
-              first={
-                <div className="inputs__instructions">
-                  <p className="first">
-                    Tällä työkalulla voit tarkastella
-                    eri näkökulmista Euroopan valtioihin
-                    tehtyjen turvapaikkahakemusten määrää.
-                    Luvut perustuvat UNHCR:n koostamiin tilastoihin.
-                  </p>
-
-                  <p className="last">
-                    Valitse hiirellä vetämällä kuvaajasta ajanjakso,
-                    jota haluat tarkastella. Huomaa, että voit myös
-                    muuttaa ajanjakson pituutta.
-                  </p>
-                </div>
-              }
-              second={
-                <div className="inputs__instructions">
-                  {this.getInteractionsInstruction()}
-                </div>
-              } />
-          </div>
-        </Inputs>
+        {this.getInstructions()}
 
         <TimeLayer
           country={this.getHighlightedCountry()}
