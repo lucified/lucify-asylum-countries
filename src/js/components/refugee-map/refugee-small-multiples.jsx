@@ -8,19 +8,10 @@ var dataTools = require('lucify-data-tools');
 var ResponsiveDecorator = require('lucify-commons/src/js/decorators/responsive-decorator.jsx');
 var ResponsiveLineChart = ResponsiveDecorator(LineChart);
 
+var utils = require('../../utils.js');
+
 
 var RefugeeSmallMultiplees = React.createClass({
-
-  getInitialState: function() {
-    return {
-      selectedX: null
-    };
-  },
-
-
-  handleSelectedChange: function(x) {
-    this.setState({selectedX: x});
-  },
 
   propTypes: {
     refugeeCountsModel: React.PropTypes.object,
@@ -31,15 +22,10 @@ var RefugeeSmallMultiplees = React.createClass({
     locale: React.PropTypes.string
   },
 
-  getSourceData: function() {
-    var data = this.props.refugeeCountsModel
-      .getEuroFigures(this.props.countryFigures, 25);
-    return data.map(item => {
-      return {
-        country: item.country,
-        values: this.props.refugeeCountsModel.getGlobalArrivingPerMonthForCountry(item.country)
-      };
-    });
+  getInitialState: function() {
+    return {
+      selectedX: null
+    };
   },
 
 
@@ -49,6 +35,23 @@ var RefugeeSmallMultiplees = React.createClass({
       this._data = null;
       this._maxY = null;
     }
+  },
+
+
+  handleSelectedChange: function(x) {
+    this.setState({selectedX: x});
+  },
+
+
+  getSourceData: function() {
+    var data = this.props.refugeeCountsModel
+      .getEuroFigures(this.props.countryFigures, 25);
+    return data.map(item => {
+      return {
+        country: item.country,
+        values: this.props.refugeeCountsModel.getGlobalArrivingPerMonthForCountry(item.country)
+      };
+    });
   },
 
 
@@ -74,6 +77,7 @@ var RefugeeSmallMultiplees = React.createClass({
 
   _getData: function() {
     var data = this.getSourceData();
+
     data.forEach(countryItem => {
       countryItem.chartData = countryItem.values.map(valueItem => {
         var asylumApplications = valueItem.asylumApplications;
@@ -86,6 +90,7 @@ var RefugeeSmallMultiplees = React.createClass({
         return [dataTools.dateToMonthIndex(valueItem.date), asylumApplications];
       });
     });
+
     return data;
   },
 
@@ -103,19 +108,29 @@ var RefugeeSmallMultiplees = React.createClass({
 
 
   getLineCharts: function() {
+    var chartProps = {
+      xTickFormat: this.xTickFormat,
+      xFormat: this.xFormat,
+      minY: 0,
+      maxY: this.getMaxY(),
+      onSelectedChange: this.handleSelectedChange,
+      selectedX: this.state.selectedX,
+      aspectRatio: 0.8
+    };
+
+    if (this.props.locale === 'fi') {
+      chartProps.locale = utils.d3FiLocale;
+    }
+
     return this.getData().map(item => {
       return (
         <div key={item.country}
-          className="refugee-small-multiples__item col-xs-6 col-sm-4 col-md-3 col-lg-2">
+          className="refugee-small-multiples__item col-xs-6 col-sm-4 col-md-3 col-lg-2"
+        >
           <ResponsiveLineChart
-            xTickFormat={this.xTickFormat}
-            xFormat={this.xFormat}
-            minY={0}
-            maxY={this.getMaxY()}
-            onSelectedChange={this.handleSelectedChange}
             data={item.chartData}
-            selectedX={this.state.selectedX}
-            aspectRatio={0.8} />
+            {...chartProps}
+          />
           <div className="refugee-small-multiples__item-title">
             {this.props.mapModel.getFriendlyNameForCountry(item.country, this.props.locale)}
           </div>
