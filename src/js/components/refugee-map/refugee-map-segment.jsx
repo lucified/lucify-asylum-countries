@@ -8,7 +8,6 @@ var ComponentWidthMixin = require('lucify-commons/src/js/components/container-wi
 
 var RefugeeMap = require('./responsive-refugee-map.jsx');
 var TimeLayer = require('./refugee-map-time-layer.jsx');
-var refugeeConstants = require('../../model/refugee-constants.js');
 var RefugeeTimeRangeIndicator = require('./refugee-time-range-indicator.jsx');
 
 var RefugeesBarCharts = require('./refugees-bar-charts.jsx');
@@ -47,20 +46,6 @@ var RefugeeMapSegment = React.createClass({
 
   interactionsEnabled: function() {
     return true;
-  },
-
-
-  getCountsInstruction: function() {
-    if (refugeeConstants.labelShowBreakPoint < this.componentWidth) {
-      return (
-        <span>
-          The counts shown on hover represent the number
-          of people who have left or arrived in a country
-          during the selected time period.
-        </span>
-      );
-    }
-    return null;
   },
 
 

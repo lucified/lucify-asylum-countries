@@ -42,24 +42,6 @@ var RefugeeSmallMultiplees = React.createClass({
   },
 
 
-  getData: function() {
-    var data = this.getSourceData();
-
-    if (this.props.relativeToPopulation) {
-      data.forEach(countryItem => {
-        countryItem.values.forEach(valueItem => {
-          valueItem.asylumApplications =
-            Math.round(valueItem.asylumApplications /
-              this.props.countryFigures[countryItem.country].population *
-              this.props.populationDivider);
-        });
-      });
-    }
-
-    return data;
-  },
-
-
   componentWillReceiveProps: function(nextProps) {
     if (this.props.relativeToPopulation !== nextProps.relativeToPopulation
       || this.props.populationDivider !== nextProps.populationDivider) {
