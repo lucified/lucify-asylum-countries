@@ -1,8 +1,8 @@
 module.exports = {
   asylum_countries: {
     // refugee-map-segment
-    description: 'Use this visualisation to compare the amount of asylum applications left in European countries from different perspectives. The underlying data is from the UNHCR.',
-    instructions_time_selection: 'Select the desired time range that you wish to inspect using your mouse.', // TODO: What about touch screens?
+    description: 'This visualisation provides different perspectives into the number of asylum applications in European countries. The underlying data is from the UNHCR.',
+    instructions_time_selection: 'Select the time range you wish to inspect from the bar charts at the top.',
     instructions_country_selection: 'Hover on a country to dig deeper into country-specific data. Click on a country to lock the selection.',
     instructions_numbers: 'The number displayed on top of a country shows either the received number of asylum applications or the number of asylum seekers originating from that country during the selected time period.',
     map_of_europe: 'Map of Europe',
@@ -21,7 +21,7 @@ module.exports = {
     seekers_per_hundred_thousand: 'Seekers / 100,000 inhabitants',
 
     // refugee-multiples-segment
-    monthly_applications_proportional: 'The following charts show monthly received asylum applications per %(count)s inhabitants in each country',
+    monthly_applications_proportional: 'The following charts show monthly received asylum applications per %(count)s inhabitants',
     monthly_applications: 'The following charts show monthly received asylum applications in each country',
     proportional_to_country_population: 'Proportional to country population',
 
