@@ -11,7 +11,7 @@ module.exports = {
 
     // footer
     project_background: 'This interactive visualisation has been built as part of the <b>In-house Information Design</b> pilot for the Yhtäköyttä project. The project is a part of the Prime Minister\'s Office of Finland\'s analysis, assessment and research activities.',
-    project_author: 'The visualisation has been built by Lucify.',
+    project_author: 'The visualisation has been built by <a href="http://www.lucify.com/">Lucify</a>.',
     project_goal: 'The goal of the project is to pilot different tools and techniques that support holistic data-driven leadership and more effective use of background materials in decision-making.',
 
     // refugee-data-updated

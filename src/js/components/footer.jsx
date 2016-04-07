@@ -22,6 +22,7 @@ var Footer = React.createClass({
                 <Translate component="p"
                   className="last"
                   content="asylum_countries.project_author"
+                  unsafe
                 />
               </div>
             }

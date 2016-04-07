@@ -11,7 +11,7 @@ module.exports = {
 
     // footer
     project_background: 'Tämä vuorovaikutteinen visualisaatio on luotu osana valtioneuvoston vuoden 2015 selvitys- ja tutkimussuunnitelman toimeenpanoon kuuluvan Yhtäköyttä-hankkeen <b>Informaatiomuotoilija talossa</b> -kokeilua.',
-    project_author: 'Visualisaation on laatinut Lucify Oy.',
+    project_author: 'Visualisaation on laatinut <a href="http://www.lucify.com/">Lucify</a>.',
     project_goal: 'Hankkeessa selvitetään kokeilutoimintaa hyödyntäen, millaisilla erilaisilla välineillä ja toimintatavoilla voidaan tukea kokonaisvaltaista tiedolla johtamista ja tutkimusaineistojen parempaa hyödyntämistä päätöksenteossa.',
 
     // refugee-data-updated
