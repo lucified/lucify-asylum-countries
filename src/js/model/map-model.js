@@ -62,26 +62,34 @@ MapModel.prototype.getLabelPointForCountry = function(country) {
 };
 
 
-// MapModel.prototype.getLabelFeatureForCountry = function(country) {
-//   if (this._labelFeatureCache[country]) return this._labelFeatureCache[country];
-//   var feature = _.find(
-//     this.labelFeatureData.features,
-//     function(f) { return f.properties.sr_su_a3 == country; });
-//   return feature;
-// };
-
-
-MapModel.prototype.getFriendlyNameForCountry = function(country) {
-  switch(country) {
-    case 'SYR': return 'Syyria';
-    case 'MKD': return 'Makedonia';
-    case 'IRN': return 'Iran';
-    case 'LBY': return 'Libya';
-    case 'RUS': return 'Venäjä';
-    case 'RCB': return 'Kongo';
-    case 'COD': return 'Kongo';
-    case 'GBR': return 'Iso-Britannia';
-    default: return countries.getName(country, 'fi');
+// Currently only support fi and en. Falls back to en
+MapModel.prototype.getFriendlyNameForCountry = function(country, locale) {
+  switch (locale) {
+    case 'fi':
+      switch(country) {
+        case 'SYR': return 'Syyria';
+        case 'MKD': return 'Makedonia';
+        case 'IRN': return 'Iran';
+        case 'LBY': return 'Libya';
+        case 'RUS': return 'Venäjä';
+        case 'RCB': return 'Kongo';
+        case 'COD': return 'Kongo';
+        case 'GBR': return 'Iso-Britannia';
+        default: return countries.getName(country, 'fi');
+      }
+    case 'en':
+    default:
+      switch(country) {
+        case 'MDA': return 'Moldova';
+        case 'SYR': return 'Syria';
+        case 'MKD': return 'Macedonia';
+        case 'IRN': return 'Iran';
+        case 'LBY': return 'Libya';
+        case 'RUS': return 'Russia';
+        case 'RCB': return 'Congo';
+        case 'COD': return 'Congo';
+        default: return countries.getName(country, 'en');
+      }
   }
 };
 

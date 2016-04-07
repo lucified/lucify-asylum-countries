@@ -1,5 +1,6 @@
 
 var React = require('react');
+var Translate = require('react-translate-component');
 
 var Inputs = require('lucify-commons/src/js/components/inputs.jsx');
 var DividedCols = require('lucify-commons/src/js/components/divided-cols.jsx');
@@ -13,26 +14,23 @@ var Footer = React.createClass({
           <DividedCols
             first={
               <div className="inputs__instructions">
-                <p className="first">
-                  Tämä vuorovaikutteinen visualisaatio on luotu osana
-                  valtioneuvoston vuoden 2015 selvitys- ja
-                  tutkimussuunnitelman toimeenpanoon kuuluvan
-                  Yhtäköyttä-hankkeen <b>Informaatiomuotoilija
-                  talossa</b> -kokeilua.
-                </p>
-                <p className="last">
-                  Visualisaation on laatinut Lucify Oy.
-                </p>
+                <Translate component="p"
+                  className="first"
+                  content="asylum_countries.project_background"
+                  unsafe // allows content to include HTML
+                />
+                <Translate component="p"
+                  className="last"
+                  content="asylum_countries.project_author"
+                />
               </div>
             }
             second={
               <div className="inputs__instructions">
-                <p className="first last">
-                  Hankkeessa selvitetään kokeilutoimintaa hyödyntäen,
-                  millaisilla erilaisilla välineillä ja toimintatavoilla
-                  voidaan tukea kokonaisvaltaista tiedolla johtamista ja
-                  tutkimusaineistojen parempaa hyödyntämistä päätöksenteossa.
-                </p>
+                <Translate component="p"
+                  className="first last"
+                  content="asylum_countries.project_goal"
+                />
               </div>
             }
           />

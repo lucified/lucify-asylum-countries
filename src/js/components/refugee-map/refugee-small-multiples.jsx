@@ -27,7 +27,8 @@ var RefugeeSmallMultiplees = React.createClass({
     mapModel: React.PropTypes.object,
     relativeToPopulation: React.PropTypes.bool,
     countryFigures: React.PropTypes.object,
-    populationDivider: React.PropTypes.number
+    populationDivider: React.PropTypes.number,
+    locale: React.PropTypes.string
   },
 
   getSourceData: function() {
@@ -116,7 +117,7 @@ var RefugeeSmallMultiplees = React.createClass({
             selectedX={this.state.selectedX}
             aspectRatio={0.8} />
           <div className="refugee-small-multiples__item-title">
-            {this.props.mapModel.getFriendlyNameForCountry(item.country)}
+            {this.props.mapModel.getFriendlyNameForCountry(item.country, this.props.locale)}
           </div>
         </div>
       );

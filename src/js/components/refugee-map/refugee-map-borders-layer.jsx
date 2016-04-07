@@ -1,5 +1,7 @@
 
 var React = require('react');
+var Translate = require('react-translate-component');
+
 var d3 = require('d3');
 var _ = require('underscore');
 var console = require('console-browserify');
@@ -78,9 +80,11 @@ var ColorsLegend = React.createClass({
     return (
       <div className="colors-legend">
         <div className="colors-legend__inner">
-          <div className="colors-legend__title">
-            Hakijoita / 100 000 asukasta
-          </div>
+          <Translate
+            component="div"
+            className="colors-legend__title"
+            content="asylum_countries.seekers_per_hundred_thousand"
+          />
           <div className="colors-legend-boxes">
             <svg style={{width: 110, height: 270}}>
               <g ref="legend" />
