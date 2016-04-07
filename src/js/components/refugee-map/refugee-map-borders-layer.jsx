@@ -57,15 +57,12 @@ var ColorsLegend = React.createClass({
 
     var format = function(value) {
       return Math.round(value);
-      //console.log(value + ' ' + approx(value));
-      //return approx(Math.round(value));
     };
 
     var colorLegend = legend.color()
         .labelFormat(format)
-        //.orient('horizontal')
+        .labelDelimiter('–')
         .useClass(false)
-        //.shapeWidth(100)
         .shapeHeight(30)
         .shapePadding(0)
         .scale(this.props.countData.destinationScale);
