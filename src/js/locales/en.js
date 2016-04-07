@@ -7,12 +7,12 @@ module.exports = {
     instructions_numbers: 'The number displayed on top of a country shows either the received number of asylum applications or the number of asylum seekers originating from that country during the selected time period.',
     map_of_europe: 'Map of Europe',
     map_of_europe_and_origin_countries: 'Map of Europe and origin countries',
-    bar_charts: 'In bar charts',
+    bar_charts: 'As bar charts',
 
     // footer
     project_background: 'This interactive visualisation has been built as part of the <b>In-house Information Design</b> pilot for the Yhtäköyttä project. The project is a part of the Prime Minister\'s Office of Finland\'s analysis, assessment and research activities.',
     project_author: 'The visualisation has been built by Lucify.',
-    project_goal: 'The goal of the project is to pilot different tools and techniques that support holistic data-driven leadership and more efficient use of background material in decision-making.',
+    project_goal: 'The goal of the project is to pilot different tools and techniques that support holistic data-driven leadership and more effective use of background materials in decision-making.',
 
     // refugee-data-updated
     data_updated: 'Data updated',
@@ -35,8 +35,8 @@ module.exports = {
     data_missing_following_countries: 'Data missing from the following countries',
     other_countries: 'other countries',
     and: 'and',
-    left_applications_in_country: 'Asylum applications left in %(country)s',
-    left_applications_in_country_bolded: 'Asylum applications left in <b>%(country)s</b>',
+    left_applications_in_country: 'Asylum applications received in %(country)s',
+    left_applications_in_country_bolded: 'Asylum applications received in <b>%(country)s</b>',
     asylum_seekers_arrived_in_europe: 'Asylum seekers arriving in Europe'
   }
 };
