@@ -20,8 +20,7 @@ var RefugeeMainContent = React.createClass({
   propTypes: {
     mapEnabled: React.PropTypes.bool,
     loaded: React.PropTypes.bool,
-    loadProgress: React.PropTypes.number,
-    locale: React.PropTypes.string
+    loadProgress: React.PropTypes.number
   },
 
 
