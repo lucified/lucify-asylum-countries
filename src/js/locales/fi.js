@@ -21,7 +21,7 @@ module.exports = {
     seekers_per_hundred_thousand: 'Hakijoita / 100 000 asukasta',
 
     // refugee-multiples-segment
-    monthly_applications_proportional: 'Seuraavat kuvaajat esittävät turvapaikanhakijoiden kuukausittaisia määriä kohdemaittain %(count)s asukasta kohden.',
+    monthly_applications_proportional: 'Seuraavat kuvaajat esittävät turvapaikanhakijoiden kuukausittaisia määriä kohdemaittain %(number)s asukasta kohden.',
     monthly_applications: 'Seuraavat kuvaajat esittävät turvapaikanhakijoiden kuukausittaisia määriä ajan funktiona kohdemaittain.',
     proportional_to_country_population: 'Suhteuta maiden väkilukuihin',
 

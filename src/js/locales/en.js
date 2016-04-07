@@ -21,7 +21,7 @@ module.exports = {
     seekers_per_hundred_thousand: 'Seekers / 100,000 inhabitants',
 
     // refugee-multiples-segment
-    monthly_applications_proportional: 'The following charts show monthly received asylum applications per %(count)s inhabitants',
+    monthly_applications_proportional: 'The following charts show monthly received asylum applications per %(number)s inhabitants',
     monthly_applications: 'The following charts show monthly received asylum applications in each country',
     proportional_to_country_population: 'Proportional to country population',
 

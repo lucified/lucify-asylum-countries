@@ -49,7 +49,7 @@ var RefugeeMultiplesSegment = React.createClass({
         <Translate component="p"
           className="first last"
           content="asylum_countries.monthly_applications_proportional"
-          count={this.getFriendlyPopulationDivider()}
+          number={this.getFriendlyPopulationDivider()}
         />
       );
     } else {
