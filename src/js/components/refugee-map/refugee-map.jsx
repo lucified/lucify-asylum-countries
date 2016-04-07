@@ -179,7 +179,8 @@ var RefugeeMap = React.createClass({
           ref="countryLabels"
           locale={this.props.locale}
           {...this.getStandardLayerParams()}
-          {...this.getHighlightLayerParams()} />
+          {...this.getHighlightLayerParams()}
+        />
       );
     }
   },
@@ -207,8 +208,8 @@ var RefugeeMap = React.createClass({
     return (
       <div
         className="refugee-map__overlay-layer"
-        style={{width: this.getWidth(), height: this.getHeight()}}>
-      </div>
+        style={{width: this.getWidth(), height: this.getHeight()}}
+      />
     );
   },
 
