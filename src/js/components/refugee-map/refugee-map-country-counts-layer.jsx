@@ -1,6 +1,9 @@
 
 var React = require('react');
 var _ = require('underscore');
+var d3 = require('d3');
+
+var utils = require('../../utils.js');
 
 var refugeeConstants = require('../../model/refugee-constants.js');
 
@@ -16,7 +19,14 @@ var RefugeeMapCountryCountsLayer = React.createClass({
     width: React.PropTypes.number,
     height: React.PropTypes.number,
     originCountries: React.PropTypes.arrayOf(React.PropTypes.string),
-    destinationCountries: React.PropTypes.arrayOf(React.PropTypes.string)
+    destinationCountries: React.PropTypes.arrayOf(React.PropTypes.string),
+    locale: React.PropTypes.string
+  },
+
+  componentWillMount() {
+    this.format = (this.props.locale === 'fi') ?
+      utils.d3FiLocale.numberFormat('n') :
+      d3.format('n');
   },
 
   renderText: function(country, count, type) {
@@ -28,7 +38,7 @@ var RefugeeMapCountryCountsLayer = React.createClass({
 
     return (
       <text key={country} x={point[0]} y={point[1] + 30} className={type}>
-        {count}
+        {this.format(count)}
       </text>
     );
   },

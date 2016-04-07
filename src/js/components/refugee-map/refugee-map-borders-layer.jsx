@@ -8,6 +8,8 @@ var console = require('console-browserify');
 
 var legend = require('d3-svg-legend/no-extend');
 
+var utils = require('../../utils.js');
+
 // the d3-svg-legend components for some
 // reason seems to need a global d3
 window.d3 = d3;
@@ -30,24 +32,27 @@ var choroplethColors = [
 var ColorsLegend = React.createClass({
 
   propTypes: {
-    countData: React.PropTypes.object
+    countData: React.PropTypes.object,
+    locale: React.PropTypes.string
   },
 
-  getInitialProps: function() {
-    return {
-      padding: 10,
-      shapeHeight: 30,
-      count: 9
-    };
+
+  componentWillMount() {
+    this.format = (this.props.locale === 'fi') ?
+      utils.d3FiLocale.numberFormat('n') :
+      d3.format('n');
   },
+
 
   componentDidUpdate: function() {
     this.update();
   },
 
+
   componentDidMount: function() {
     this.update();
   },
+
 
 
   update: function() {
@@ -55,12 +60,8 @@ var ColorsLegend = React.createClass({
       return;
     }
 
-    var format = function(value) {
-      return Math.round(value);
-    };
-
     var colorLegend = legend.color()
-        .labelFormat(format)
+        .labelFormat(value => this.format(Math.round(value)))
         .labelDelimiter('–')
         .useClass(false)
         .shapeHeight(30)
@@ -249,7 +250,8 @@ var RefugeeMapBordersLayer = React.createClass({
     enableOverlay: React.PropTypes.bool,
     width: React.PropTypes.number,
     height: React.PropTypes.number,
-    clickedCountry: React.PropTypes.string
+    clickedCountry: React.PropTypes.string,
+    locale: React.PropTypes.string
   },
 
 
@@ -482,11 +484,17 @@ var RefugeeMapBordersLayer = React.createClass({
       <div style={{width: this.props.width, height: this.props.height}}>
         <svg className="refugee-map-borders-layer"
           style={{width: this.props.width, height: this.props.height}}
-          onClick={this.onClick}>
+          onClick={this.onClick}
+        >
           <defs dangerouslySetInnerHTML={{__html: this.getDefs()}} />
           {this.getPaths(countData)}
         </svg>
-        <ColorsLegend countData={countData} width={this.props.width} height={this.props.height} />
+        <ColorsLegend
+          countData={countData}
+          width={this.props.width}
+          height={this.props.height}
+          locale={this.props.locale}
+        />
       </div>
     );
   }
