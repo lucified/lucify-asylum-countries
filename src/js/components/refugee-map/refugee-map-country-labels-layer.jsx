@@ -22,9 +22,9 @@ var RefugeeMapCountryLabelsLayer = React.createClass({
       this.props.mapModel.getCenterPointOfCountry(country));
 
     return (
-    <text key={country + type} x={point[0]} y={point[1] + 15} className={type}>
-      {this.props.mapModel.getFriendlyNameForCountry(country)}
-    </text>
+      <text key={country + type} x={point[0]} y={point[1] + 15} className={type}>
+        {this.props.mapModel.getFriendlyNameForCountry(country)}
+      </text>
     );
   },
 

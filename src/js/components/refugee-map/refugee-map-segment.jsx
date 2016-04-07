@@ -120,7 +120,8 @@ var RefugeeMapSegment = React.createClass({
           timeRange={this.state.timeRange}
           refugeeCountsModel={this.props.refugeeCountsModel}
           countryFigures={this.props.countryFigures}
-          mapModel={this.props.mapModel} />
+          mapModel={this.props.mapModel}
+        />
 
         <div className="refugee-map-segment__tabs">
           <Tabs>
@@ -136,7 +137,8 @@ var RefugeeMapSegment = React.createClass({
                 scale={1.706}
                 preferredHeightWidthRatio={0.82}
                 timeRange={this.state.timeRange}
-                interactionsEnabled={this.interactionsEnabled()} />
+                interactionsEnabled={this.interactionsEnabled()}
+              />
             </Tabs.Panel>
 
             <Tabs.Panel title="Euroopan ja lähtömaiden kartta">
@@ -147,12 +149,15 @@ var RefugeeMapSegment = React.createClass({
                 onMouseLeave={this.handleMouseLeave}
                 onMapClick={this.handleMapClick}
                 timeRange={this.state.timeRange}
-                interactionsEnabled={this.interactionsEnabled()} />
+                interactionsEnabled={this.interactionsEnabled()}
+              />
             </Tabs.Panel>
 
             <Tabs.Panel title="Pylväskaaviona">
-              <RefugeesBarCharts {...this.props}
-                timeRange={this.state.timeRange} />
+              <RefugeesBarCharts
+                {...this.props}
+                timeRange={this.state.timeRange}
+              />
             </Tabs.Panel>
           </Tabs>
           <RefugeeTimeRangeIndicator

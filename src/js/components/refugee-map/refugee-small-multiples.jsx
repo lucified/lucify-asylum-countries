@@ -32,7 +32,7 @@ var RefugeeSmallMultiplees = React.createClass({
 
   getSourceData: function() {
     var data = this.props.refugeeCountsModel
-    .getEuroFigures(this.props.countryFigures, 25);
+      .getEuroFigures(this.props.countryFigures, 25);
     return data.map(item => {
       return {
         country: item.country,
