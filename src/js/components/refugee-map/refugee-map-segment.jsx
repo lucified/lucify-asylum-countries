@@ -1,6 +1,8 @@
 
 var React = require('react');
 var moment = require('moment');
+var Translate = require('react-translate-component');
+var translate = require('counterpart');
 
 var Inputs = require('lucify-commons/src/js/components/inputs.jsx');
 var DividedCols = require('lucify-commons/src/js/components/divided-cols.jsx');
@@ -56,34 +58,26 @@ var RefugeeMapSegment = React.createClass({
           <DividedCols
             first={
               <div className="inputs__instructions">
-                <p className="first">
-                  Tällä työkalulla voit tarkastella
-                  eri näkökulmista Euroopan valtioihin
-                  tehtyjen turvapaikkahakemusten määrää.
-                  Luvut perustuvat UNHCR:n koostamiin tilastoihin.
-                </p>
-
-                <p className="last">
-                  Valitse hiirellä vetämällä kuvaajasta ajanjakso,
-                  jota haluat tarkastella. Huomaa, että voit myös
-                  muuttaa ajanjakson pituutta.
-                </p>
+                <Translate component="p"
+                  className="first"
+                  content="asylum_countries.description"
+                />
+                <Translate component="p"
+                  className="last"
+                  content="asylum_countries.instructions_time_selection"
+                />
               </div>
             }
             second={
               <div className="inputs__instructions">
-                <p className="first">
-                  Osoita hiirellä maata nähdäksesi maata koskevia lisätietoja.
-                  Klikkaa maata lukitaksesi valinnan.
-                </p>
-
-                <p className="last">
-                  Valitun maan päällä oleva numero vastaa joko
-                  maahan jätettyjen tai maasta peräisin olevien
-                  hakemusten määrää valittuna ajanjaksona.
-                  Valitessasi maan näet myös eri maista tulleiden ja
-                  eri maihin jätettyjen hakemusten määrät.
-                </p>
+                <Translate component="p"
+                  className="first"
+                  content="asylum_countries.instructions_country_selection"
+                />
+                <Translate component="p"
+                  className="last"
+                  content="asylum_countries.instructions_numbers"
+                />
               </div>
             } />
         </div>
@@ -106,11 +100,12 @@ var RefugeeMapSegment = React.createClass({
           refugeeCountsModel={this.props.refugeeCountsModel}
           countryFigures={this.props.countryFigures}
           mapModel={this.props.mapModel}
+          locale={this.props.locale}
         />
 
         <div className="refugee-map-segment__tabs">
           <Tabs>
-            <Tabs.Panel title="Euroopan kartta">
+            <Tabs.Panel title={translate('asylum_countries.map_of_europe')}>
               <RefugeeMap ref="rmap"
                 {...this.props}
                 {...this.getHighlightLayerParams()}
@@ -126,7 +121,7 @@ var RefugeeMapSegment = React.createClass({
               />
             </Tabs.Panel>
 
-            <Tabs.Panel title="Euroopan ja lähtömaiden kartta">
+            <Tabs.Panel title={translate('asylum_countries.map_of_europe_and_origin_countries')}>
               <RefugeeMap ref="rmap"
                 {...this.props}
                 {...this.getHighlightLayerParams()}
@@ -138,7 +133,7 @@ var RefugeeMapSegment = React.createClass({
               />
             </Tabs.Panel>
 
-            <Tabs.Panel title="Pylväskaaviona">
+            <Tabs.Panel title={translate('asylum_countries.bar_charts')}>
               <RefugeesBarCharts
                 {...this.props}
                 timeRange={this.state.timeRange}
@@ -146,7 +141,9 @@ var RefugeeMapSegment = React.createClass({
             </Tabs.Panel>
           </Tabs>
           <RefugeeTimeRangeIndicator
-            timeRange={this.state.timeRange} />
+            timeRange={this.state.timeRange}
+            locale={this.props.locale}
+          />
         </div>
 
       </div>

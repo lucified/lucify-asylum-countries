@@ -1,17 +1,25 @@
 
 var React = require('react');
 var moment = require('moment');
-var names = require('date-names/fi');
 
 
 var RefugeeTimeRangeIndicator = React.createClass({
 
   propTypes: {
-    timeRange: React.PropTypes.arrayOf(React.PropTypes.number)
+    timeRange: React.PropTypes.arrayOf(React.PropTypes.number),
+    locale: React.PropTypes.string
+  },
+
+  componentWillMount() {
+    if (this.props.locale === 'fi') {
+      this.dateNames = require('date-names/fi');
+    } else {
+      this.dateNames = require('date-names/en');
+    }
   },
 
   getMonthString: function(mom) {
-    return names.abbreviated_months[mom.month()] + ' ' + mom.format('YYYY');
+    return this.dateNames.abbreviated_months[mom.month()] + ' ' + mom.format('YYYY');
   },
 
   displayTimeRange: function(timeRange) {
@@ -29,9 +37,9 @@ var RefugeeTimeRangeIndicator = React.createClass({
 
   render: function() {
     return (
-        <div className="refugee-time-range-indicator">
-          {this.displayTimeRange(this.props.timeRange)}
-        </div>
+      <div className="refugee-time-range-indicator">
+        {this.displayTimeRange(this.props.timeRange)}
+      </div>
     );
   }
 

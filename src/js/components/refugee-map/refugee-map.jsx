@@ -32,7 +32,8 @@ var RefugeeMap = React.createClass({
     clickedCountry: React.PropTypes.string,
     country: React.PropTypes.string,
     originCountries: React.PropTypes.arrayOf(React.PropTypes.string),
-    destinationCountries: React.PropTypes.arrayOf(React.PropTypes.string)
+    destinationCountries: React.PropTypes.arrayOf(React.PropTypes.string),
+    locale: React.PropTypes.string
   },
 
 
@@ -45,7 +46,8 @@ var RefugeeMap = React.createClass({
       la: 34.0485818,
       scale: 0.85,
       preferredHeightWidthRatio: 0.6,
-      showDataUpdated: true
+      showDataUpdated: true,
+      locale: 'en'
     };
   },
 
@@ -141,7 +143,9 @@ var RefugeeMap = React.createClass({
           {...this.getHighlightLayerParams()}
           refugeeCountsModel={this.props.refugeeCountsModel}
           countryFigures={this.props.countryFigures}
-          subunitClass="subunit" />
+          subunitClass="subunit"
+          locale={this.props.locale}
+        />
       );
     } else {
       return <SimpleBordersLayer {...this.getStandardLayerParams()} />;
@@ -160,7 +164,9 @@ var RefugeeMap = React.createClass({
           subunitClass="subunit-invisible"
           onMouseOver={this.props.onMouseOver}
           onMouseLeave={this.props.onMouseLeave}
-          onClick={this.props.onMapClick} />
+          onClick={this.props.onMapClick}
+          locale={this.props.locale}
+        />
       );
     }
   },
@@ -171,8 +177,10 @@ var RefugeeMap = React.createClass({
       return (
         <CountryLabelsLayer
           ref="countryLabels"
+          locale={this.props.locale}
           {...this.getStandardLayerParams()}
-          {...this.getHighlightLayerParams()} />
+          {...this.getHighlightLayerParams()}
+        />
       );
     }
   },
@@ -185,7 +193,9 @@ var RefugeeMap = React.createClass({
           ref="countsLayer"
           {...this.getStandardLayerParams()}
           {...this.getHighlightLayerParams()}
-          refugeeCountsModel={this.props.refugeeCountsModel} />
+          refugeeCountsModel={this.props.refugeeCountsModel}
+          locale={this.props.locale}
+        />
       );
     }
   },
@@ -198,8 +208,8 @@ var RefugeeMap = React.createClass({
     return (
       <div
         className="refugee-map__overlay-layer"
-        style={{width: this.getWidth(), height: this.getHeight()}}>
-      </div>
+        style={{width: this.getWidth(), height: this.getHeight()}}
+      />
     );
   },
 
@@ -207,17 +217,23 @@ var RefugeeMap = React.createClass({
   getCountBarsLayer: function() {
     return (
       <CountBarsLayer
-       ref="countBars"
-       {...this.getStandardLayerParams()}
-       highlightedCountry={this.getHighlightedCountry()}
-       refugeeCountsModel={this.props.refugeeCountsModel} />
+        ref="countBars"
+        {...this.getStandardLayerParams()}
+        highlightedCountry={this.getHighlightedCountry()}
+        refugeeCountsModel={this.props.refugeeCountsModel}
+      />
     );
   },
 
 
   getDataUpdated: function() {
     if (this.props.showDataUpdated) {
-      return <DataUpdated updatedAt={RefugeeConstants.ASYLUM_APPLICANTS_DATA_UPDATED_MOMENT} />;
+      return (
+        <DataUpdated
+          locale={this.props.locale}
+          updatedAt={RefugeeConstants.ASYLUM_APPLICANTS_DATA_UPDATED_MOMENT}
+        />
+      );
     }
   },
 

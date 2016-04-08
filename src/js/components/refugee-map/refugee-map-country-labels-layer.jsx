@@ -14,7 +14,8 @@ var RefugeeMapCountryLabelsLayer = React.createClass({
     destinationCountries: React.PropTypes.arrayOf(React.PropTypes.string),
     originCountries: React.PropTypes.arrayOf(React.PropTypes.string),
     width: React.PropTypes.number,
-    height: React.PropTypes.number
+    height: React.PropTypes.number,
+    locale: React.PropTypes.string
   },
 
   renderCountryLabel: function(country, type) {
@@ -23,7 +24,7 @@ var RefugeeMapCountryLabelsLayer = React.createClass({
 
     return (
       <text key={country + type} x={point[0]} y={point[1] + 15} className={type}>
-        {this.props.mapModel.getFriendlyNameForCountry(country)}
+        {this.props.mapModel.getFriendlyNameForCountry(country, this.props.locale)}
       </text>
     );
   },

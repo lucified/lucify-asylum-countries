@@ -14,7 +14,8 @@ var RefugeesBarChart = React.createClass({
     getValue: React.PropTypes.func,
     countryFigures: React.PropTypes.object,
     mapModel: React.PropTypes.object,
-    max: React.PropTypes.number
+    max: React.PropTypes.number,
+    locale: React.PropTypes.string
   },
 
 
@@ -62,10 +63,9 @@ var RefugeesBarChart = React.createClass({
 
 
   getCategories: function() {
-    var ret = this.getEuroFigures().map(item => {
-      return this.props.mapModel.getFriendlyNameForCountry(item.country);
-    });
-    return ret;
+    return this.getEuroFigures().map(item =>
+      this.props.mapModel.getFriendlyNameForCountry(item.country, this.props.locale)
+    );
   },
 
 

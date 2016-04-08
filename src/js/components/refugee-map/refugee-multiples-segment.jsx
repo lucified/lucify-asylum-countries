@@ -1,5 +1,7 @@
 
 var React = require('react');
+var Translate = require('react-translate-component');
+var d3 = require('d3');
 
 var Inputs = require('lucify-commons/src/js/components/inputs.jsx');
 var DividedCols = require('lucify-commons/src/js/components/divided-cols.jsx');
@@ -11,6 +13,9 @@ var LucifyUtils = require('../../utils.js');
 
 var RefugeeMultiplesSegment = React.createClass({
 
+  propTypes: {
+    locale: React.PropTypes.string
+  },
 
   getInitialState: function(){
     return {
@@ -30,19 +35,30 @@ var RefugeeMultiplesSegment = React.createClass({
 
 
   getFriendlyPopulationDivider: function() {
+    var formatter = (this.props.locale === 'fi') ?
+      LucifyUtils.d3FiLocale.numberFormat : d3.format;
+
     // "," means enable thousands separator
-    return LucifyUtils.d3FiLocale.numberFormat(',')(this.getPopulationDivider());
+    return formatter(',')(this.getPopulationDivider());
   },
 
 
   getInstructionsText: function() {
     if (this.state.relativeToPopulation) {
-      return 'Seuraavat kuvaajat esittävät turvapaikanhakijoiden ' +
-        'kuukausittaisia määriä kohdemaittain ' + this.getFriendlyPopulationDivider() +
-        ' asukasta kohden.';
+      return (
+        <Translate component="p"
+          className="first last"
+          content="asylum_countries.monthly_applications_proportional"
+          number={this.getFriendlyPopulationDivider()}
+        />
+      );
     } else {
-      return 'Seuraavat kuvaajat esittävät turvapaikanhakijoiden ' +
-        'kuukausittaisia määriä ajan funktiona kohdemaittain.';
+      return (
+        <Translate component="p"
+          className="first last"
+          content="asylum_countries.monthly_applications"
+        />
+      );
     }
   },
 
@@ -55,28 +71,30 @@ var RefugeeMultiplesSegment = React.createClass({
             <DividedCols
               first={
                 <div className="inputs__instructions">
-                  <p className="first last">
-                    {this.getInstructionsText()}
-                  </p>
+                  {this.getInstructionsText()}
                 </div>
               }
               second={
                 <div className="inputs__instructions">
                   <input type="checkbox" id="staticScale"
                     onChange={this.handleCheckBoxChange}
-                    checked={this.state.relativeToPopulation} />
-                  <label htmlFor="staticScale">
-                    Suhteuta maiden väkilukuihin
-                  </label>
+                    checked={this.state.relativeToPopulation}
+                  />
+                  <Translate component="label"
+                    htmlFor="staticScale"
+                    content="asylum_countries.proportional_to_country_population"
+                  />
                 </div>
-              } />
+              }
+            />
           </div>
         </Inputs>
 
         <div className="lucify-container">
           <RefugeeSmallMultiples {...this.props}
             relativeToPopulation={this.state.relativeToPopulation}
-            populationDivider={this.getPopulationDivider()} />
+            populationDivider={this.getPopulationDivider()}
+          />
         </div>
       </div>
 
@@ -85,7 +103,6 @@ var RefugeeMultiplesSegment = React.createClass({
   }
 
 });
-
 
 
 module.exports = RefugeeMultiplesSegment;

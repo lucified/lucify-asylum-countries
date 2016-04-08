@@ -1,5 +1,7 @@
 
 var React = require('react');
+var Translate = require('react-translate-component');
+
 var sprintf = require('sprintf');
 
 var DividedCols = require('lucify-commons/src/js/components/divided-cols.jsx');
@@ -11,7 +13,8 @@ var PerPopulationBarChart = React.createClass({
   propTypes: {
     refugeeCountsModel: React.PropTypes.object,
     timeRange: React.PropTypes.arrayOf(React.PropTypes.number),
-    staticScale: React.PropTypes.bool
+    staticScale: React.PropTypes.bool,
+    locale: React.PropTypes.string
   },
 
   getValue: function(item) {
@@ -22,7 +25,7 @@ var PerPopulationBarChart = React.createClass({
   },
 
   format: function(v, _id, _i, _j) {
-    return sprintf('%.0f', v*100000);
+    return sprintf('%.0f', v * 100000);
   },
 
   getMax: function() {
@@ -37,7 +40,8 @@ var PerPopulationBarChart = React.createClass({
       <RefugeesBarChart {...this.props}
         format={this.format}
         getValue={this.getValue}
-        max={this.getMax()} />
+        max={this.getMax()}
+      />
     );
   }
 
@@ -60,7 +64,7 @@ var TotalsBarChart = React.createClass({
   },
 
   format: function(v, _id, _i, _j) {
-    return sprintf('%.0fk', v/1000);
+    return sprintf('%.0fk', v / 1000);
   },
 
   getMax: function() {
@@ -75,7 +79,8 @@ var TotalsBarChart = React.createClass({
       <RefugeesBarChart {...this.props}
         format={this.format}
         getValue={this.getValue}
-        max={this.getMax()} />
+        max={this.getMax()}
+      />
     );
   }
 
@@ -106,28 +111,32 @@ var RefugeesBarCharts = React.createClass({
           <div className="refugees-bar-chart__fix-scale">
             <input type="checkbox" id="staticScale"
               onChange={this.handleCheckBoxChange}
-              checked={this.state.staticScale} />
-              <label htmlFor="staticScale">
-                Pidä skaala ajan muuttuessa vakiona
-              </label>
+              checked={this.state.staticScale}
+            />
+            <Translate component="label"
+              htmlFor="staticScale"
+              content="asylum_countries.constant_scale_time_changes"
+            />
           </div>
 
           <DividedCols
             first={
               <div>
-                <h3>Hakemuksia 100 000 asukasta kohden</h3>
+                <Translate component="h3" content="asylum_countries.applications_per_hundred_thousand" />
                 <PerPopulationBarChart {...this.props}
-                staticScale={this.state.staticScale} />
+                  staticScale={this.state.staticScale}
+                />
               </div>
             }
             second={
               <div>
-                <h3>Hakemuksia yhteensä</h3>
+                <Translate component="h3" content="asylum_countries.total_applications" />
                 <TotalsBarChart {...this.props}
-                  staticScale={this.state.staticScale} />
+                  staticScale={this.state.staticScale}
+                />
               </div>
-            } />
-
+            }
+          />
         </div>
       </div>
     );
