@@ -9,7 +9,6 @@ var HideableContainer = require('lucify-commons/src/js/components/hideable-conta
 var Decorator = require('./refugee-context-decorator.jsx');
 var RefugeeMapSegment = require('./refugee-map/refugee-map-segment.jsx');
 var RefugeeMultiplesSegment = require('./refugee-map/refugee-multiples-segment.jsx');
-var Footer = require('./footer.jsx');
 
 counterpart.registerTranslations('fi', require('../locales/fi'));
 counterpart.registerTranslations('en', require('../locales/en'));
@@ -96,7 +95,6 @@ var RefugeeMainContent = React.createClass({
         {this.getLoadingSegment()}
         {this.getMapSegment()}
         {this.getMultiplesSegment()}
-        <Footer />
       </div>
     );
 
