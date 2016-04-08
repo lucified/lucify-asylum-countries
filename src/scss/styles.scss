@@ -71,8 +71,8 @@ span.missing-data-real {
   font-size: 0.8rem;
   font-style: italic;
   color: rgba(150,150,150, 1.0);
-}
 
-.refugee-time-range-indicator {
-  top: 1.3rem;
+  @media screen and (max-width: 600px) {
+    display: none;
+  }
 }
