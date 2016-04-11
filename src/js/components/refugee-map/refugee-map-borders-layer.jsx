@@ -1,14 +1,11 @@
 
 var React = require('react');
-var Translate = require('react-translate-component');
 
 var d3 = require('d3');
 var _ = require('underscore');
 var console = require('console-browserify');
 
-var legend = require('d3-svg-legend/no-extend');
-
-var utils = require('../../utils.js');
+var ColorsLegend = require('./colors-legend.jsx');
 
 // the d3-svg-legend components for some
 // reason seems to need a global d3
@@ -27,75 +24,6 @@ var choroplethColors = [
   'rgb(8,81,156)',
   'rgb(8,48,107)'
 ];
-
-
-var ColorsLegend = React.createClass({
-
-  propTypes: {
-    countData: React.PropTypes.object,
-    locale: React.PropTypes.string
-  },
-
-
-  componentWillMount() {
-    this.format = (this.props.locale === 'fi') ?
-      utils.d3FiLocale.numberFormat('n') :
-      d3.format('n');
-  },
-
-
-  componentDidUpdate: function() {
-    this.update();
-  },
-
-
-  componentDidMount: function() {
-    this.update();
-  },
-
-
-
-  update: function() {
-    if (!this.props.countData) {
-      return;
-    }
-
-    var colorLegend = legend.color()
-        .labelFormat(value => this.format(Math.round(value)))
-        .labelDelimiter('–')
-        .useClass(false)
-        .shapeHeight(30)
-        .shapePadding(0)
-        .scale(this.props.countData.destinationScale);
-
-    d3.select(React.findDOMNode(this.refs.legend))
-      .call(colorLegend);
-  },
-
-
-  render: function() {
-
-    return (
-      <div className="colors-legend">
-        <div className="colors-legend__inner">
-          <Translate
-            component="div"
-            className="colors-legend__title"
-            content="asylum_countries.seekers_per_hundred_thousand"
-          />
-          <div className="colors-legend-boxes">
-            <svg style={{width: 110, height: 270}}>
-              <g ref="legend" />
-            </svg>
-          </div>
-        </div>
-      </div>
-    );
-
-  }
-
-
-});
 
 
 
@@ -481,20 +409,30 @@ var RefugeeMapBordersLayer = React.createClass({
     var countData = this.getCountData();
 
     return (
-      <div style={{width: this.props.width, height: this.props.height}}>
-        <svg className="refugee-map-borders-layer"
-          style={{width: this.props.width, height: this.props.height}}
-          onClick={this.onClick}
-        >
-          <defs dangerouslySetInnerHTML={{__html: this.getDefs()}} />
-          {this.getPaths(countData)}
-        </svg>
-        <ColorsLegend
-          countData={countData}
-          width={this.props.width}
-          height={this.props.height}
-          locale={this.props.locale}
-        />
+      <div>
+        <div style={{width: this.props.width, height: this.props.height}}>
+          <svg className="refugee-map-borders-layer"
+            style={{width: this.props.width, height: this.props.height}}
+            onClick={this.onClick}
+          >
+            <defs dangerouslySetInnerHTML={{__html: this.getDefs()}} />
+            {this.getPaths(countData)}
+          </svg>
+          <ColorsLegend
+            className="on-map-legend"
+            countData={countData}
+            locale={this.props.locale}
+          />
+        </div>
+        <div className="lucify-container">
+          <ColorsLegend
+            className="after-map-legend"
+            orientation="horizontal"
+            countData={countData}
+            width={this.props.width}
+            locale={this.props.locale}
+          />
+        </div>
       </div>
     );
   }
