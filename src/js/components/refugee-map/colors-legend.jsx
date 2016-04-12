@@ -80,11 +80,11 @@ var ColorsLegend = React.createClass({
     return (
       <div className={'colors-legend ' + this.props.className}>
         <div className="colors-legend__inner">
-          <Translate
-            component="div"
-            className="colors-legend__title"
-            content="asylum_countries.seekers_per_hundred_thousand"
-          />
+          <div className="colors-legend__title">
+            <Translate content="asylum_countries.asylum_seekers_per" />
+            <br />
+            <Translate content="asylum_countries.hundred_thousand_inhabitants" />
+          </div>
           <div className="colors-legend-boxes">
             <svg style={style}>
               <g ref="legend" />
