@@ -190,11 +190,22 @@ var RefugeeMapBordersLayer = React.createClass({
     };
   },
 
+
+  componentWillReceiveProps(nextProps) {
+    // clear cache
+    if (nextProps.refugeeCountsModel !== this.props.refugeeCountsModel ||
+      nextProps.timeRange !== this.props.timeRange) {
+      this._globalCountData = null;
+    }
+  },
+
+
   onMouseOver: function(country) {
     if (this.props.onMouseOver) {
       this.props.onMouseOver(country);
     }
   },
+
 
   onMouseLeave: function(country) {
     if (this.props.onMouseLeave) {
@@ -226,7 +237,6 @@ var RefugeeMapBordersLayer = React.createClass({
   },
 
 
-
    /*
     * Get count data for current
     * this.props.country within this.props.timeRange
@@ -236,7 +246,6 @@ var RefugeeMapBordersLayer = React.createClass({
     *   destinationCounts   -- array of counts of by destinationCountry
     */
   getCountrySpecificCountData: function() {
-
     var timeRange = this.props.timeRange;
 
     var getMaxCount = function(counts) {
@@ -281,7 +290,7 @@ var RefugeeMapBordersLayer = React.createClass({
       .computePerCountry(this.props.timeRange, (country, total) => {
         var features = _.find(this.props.mapModel.featureData.features, f => f.properties.ADM0_A3 === country);
         var p = features ? this.getPerCapitaCount(total.asylumApplications, features, perHowMany) : 0;
-        max = p > max ? p : max;
+        max = Math.max(p, max);
         return p;
       });
     var destinationScale = d3.scale.quantize()
@@ -297,9 +306,11 @@ var RefugeeMapBordersLayer = React.createClass({
     };
   },
 
+
   getPerCapitaCount: (applications, features, perHowMany) => {
     return applications / (features.properties.POP_EST / perHowMany);
   },
+
 
   getMaxCount: function(counts) {
     return _.values(counts).reduce(function(prev, item) {
@@ -313,7 +324,11 @@ var RefugeeMapBordersLayer = React.createClass({
       return null;
     }
 
-    return this.getGlobalCountData();
+    if (!this._globalCountData) {
+      this._globalCountData = this.getGlobalCountData();
+    }
+
+    return this._globalCountData;
   },
 
 
@@ -321,7 +336,6 @@ var RefugeeMapBordersLayer = React.createClass({
     * Get paths representing map borders
     */
   getPaths: function(countData) {
-
     var countries = {};
 
     var missingDataCountries = [];
@@ -405,7 +419,6 @@ var RefugeeMapBordersLayer = React.createClass({
 
 
   render: function() {
-
     var countData = this.getCountData();
 
     return (

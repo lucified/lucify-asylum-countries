@@ -35,6 +35,14 @@ var ColorsLegend = React.createClass({
   },
 
 
+  shouldComponentUpdate(nextProps, _nextState) {
+    return nextProps.countData !== this.props.countData ||
+      nextProps.locale !== this.props.locale ||
+      nextProps.orientation !== this.props.orientation ||
+      nextProps.width !== this.props.width;
+  },
+
+
   componentDidUpdate: function() {
     this.update();
   },
