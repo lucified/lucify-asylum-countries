@@ -422,21 +422,19 @@ var RefugeeMapBordersLayer = React.createClass({
     var countData = this.getCountData();
 
     return (
-      <div>
-        <div style={{width: this.props.width, height: this.props.height}}>
-          <svg className="refugee-map-borders-layer"
-            style={{width: this.props.width, height: this.props.height}}
-            onClick={this.onClick}
-          >
-            <defs dangerouslySetInnerHTML={{__html: this.getDefs()}} />
-            {this.getPaths(countData)}
-          </svg>
-          <ColorsLegend
-            countData={countData}
-            locale={this.props.locale}
-            tightSpacing={this.props.width < 700}
-          />
-        </div>
+      <div style={{width: this.props.width, height: this.props.height}}>
+        <svg className="refugee-map-borders-layer"
+          style={{width: this.props.width, height: this.props.height}}
+          onClick={this.onClick}
+        >
+          <defs dangerouslySetInnerHTML={{__html: this.getDefs()}} />
+          {this.getPaths(countData)}
+        </svg>
+        <ColorsLegend
+          countData={countData}
+          locale={this.props.locale}
+          tightSpacing={this.props.width < 700}
+        />
       </div>
     );
   }
