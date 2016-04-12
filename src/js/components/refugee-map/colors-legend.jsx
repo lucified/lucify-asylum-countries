@@ -51,6 +51,15 @@ var ColorsLegend = React.createClass({
   },
 
 
+  getLegendItemHeight: function() {
+    return this.props.tightSpacing ? 15 : 30;
+  },
+
+
+  getLegendItemCount: function() {
+    return this.props.countData && this.props.countData.destinationScale.range().length;
+  },
+
 
   update: function() {
     if (!this.props.countData) {
@@ -61,7 +70,7 @@ var ColorsLegend = React.createClass({
         .labelFormat(value => this.format(Math.round(value)))
         .labelDelimiter('–')
         .useClass(false)
-        .shapeHeight(this.props.tightSpacing ? 15 : 30)
+        .shapeHeight(this.getLegendItemHeight())
         .shapePadding(0)
         .scale(this.props.countData.destinationScale);
 
@@ -71,8 +80,8 @@ var ColorsLegend = React.createClass({
 
 
   render: function() {
-    var style = this.props.tightSpacing ?
-      { width: 90, height: 135 } : { width: 110, height: 270 };
+    var svgWidth = this.props.tightSpacing ? 90 : 110;
+    var svgHeight = this.getLegendItemHeight() * this.getLegendItemCount();
 
     return (
       <div className={'colors-legend ' + this.props.className}>
@@ -83,7 +92,7 @@ var ColorsLegend = React.createClass({
             <Translate content="asylum_countries.hundred_thousand_inhabitants" />
           </div>
           <div className="colors-legend-boxes">
-            <svg style={style}>
+            <svg style={{ width: svgWidth, height: svgHeight }}>
               <g ref="legend" />
             </svg>
           </div>
