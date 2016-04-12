@@ -75,6 +75,7 @@ MapModel.prototype.getFriendlyNameForCountry = function(country, locale) {
         case 'RCB': return 'Kongo';
         case 'COD': return 'Kongo';
         case 'GBR': return 'Iso-Britannia';
+        case 'KOS': return 'Kosovo';
         default: return countries.getName(country, 'fi');
       }
     case 'en':
@@ -88,6 +89,7 @@ MapModel.prototype.getFriendlyNameForCountry = function(country, locale) {
         case 'RUS': return 'Russia';
         case 'RCB': return 'Congo';
         case 'COD': return 'Congo';
+        case 'KOS': return 'Kosovo';
         default: return countries.getName(country, 'en');
       }
   }
