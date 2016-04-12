@@ -37,15 +37,3 @@
   padding-top: 3.0rem;
   padding-bottom: 3.0rem;
 }
-
-
-span.missing-data-real {
-  margin-left: 0.5rem;
-  font-size: 0.8rem;
-  font-style: italic;
-  color: rgba(150,150,150, 1.0);
-
-  @media screen and (max-width: 600px) {
-    display: none;
-  }
-}
