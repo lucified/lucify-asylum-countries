@@ -168,7 +168,7 @@ var RefugeeMapTimeBarChart = React.createClass({
         );
       }
 
-      console.log('Unknown country:', this.props.country);
+      console.log('Unknown country:', this.props.country); // eslint-disable-line
       return null;
     }
 

@@ -57,7 +57,7 @@ MapModel.prototype.getLabelPointForCountry = function(country) {
     return feature.geometry.coordinates;
   }
 
-  console.log('could not find label point for ' + country);
+  console.log('could not find label point for ' + country); // eslint-disable-line
   return [0, 0];
 };
 
@@ -148,7 +148,7 @@ MapModel.prototype.getRandomPointForCountryBorder = function(country, coordinate
   } while (!inside([la, lo], coordinates) && count < 100);
 
   if (count == 100) {
-    console.log('could not create random point for ' + country);
+    console.log('could not create random point for ' + country); // eslint-disable-line
     return [0, 0];
   }
   return [la, lo];
