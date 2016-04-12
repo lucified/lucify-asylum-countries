@@ -1,14 +1,11 @@
 
 var React = require('react');
-var Translate = require('react-translate-component');
 
 var d3 = require('d3');
 var _ = require('underscore');
 var console = require('console-browserify');
 
-var legend = require('d3-svg-legend/no-extend');
-
-var utils = require('../../utils.js');
+var ColorsLegend = require('./colors-legend.jsx');
 
 // the d3-svg-legend components for some
 // reason seems to need a global d3
@@ -27,75 +24,6 @@ var choroplethColors = [
   'rgb(8,81,156)',
   'rgb(8,48,107)'
 ];
-
-
-var ColorsLegend = React.createClass({
-
-  propTypes: {
-    countData: React.PropTypes.object,
-    locale: React.PropTypes.string
-  },
-
-
-  componentWillMount() {
-    this.format = (this.props.locale === 'fi') ?
-      utils.d3FiLocale.numberFormat('n') :
-      d3.format('n');
-  },
-
-
-  componentDidUpdate: function() {
-    this.update();
-  },
-
-
-  componentDidMount: function() {
-    this.update();
-  },
-
-
-
-  update: function() {
-    if (!this.props.countData) {
-      return;
-    }
-
-    var colorLegend = legend.color()
-        .labelFormat(value => this.format(Math.round(value)))
-        .labelDelimiter('–')
-        .useClass(false)
-        .shapeHeight(30)
-        .shapePadding(0)
-        .scale(this.props.countData.destinationScale);
-
-    d3.select(React.findDOMNode(this.refs.legend))
-      .call(colorLegend);
-  },
-
-
-  render: function() {
-
-    return (
-      <div className="colors-legend">
-        <div className="colors-legend__inner">
-          <Translate
-            component="div"
-            className="colors-legend__title"
-            content="asylum_countries.seekers_per_hundred_thousand"
-          />
-          <div className="colors-legend-boxes">
-            <svg style={{width: 110, height: 270}}>
-              <g ref="legend" />
-            </svg>
-          </div>
-        </div>
-      </div>
-    );
-
-  }
-
-
-});
 
 
 
@@ -123,12 +51,14 @@ var RefugeeMapBorder = React.createClass({
 
 
   updateStyles: function(nextProps) {
-
     if (this.overlaySel != null) {
       this.overlaySel
         .classed('subunit--hovered', nextProps.hovered && this.props.subunitClass == 'subunit-invisible')
         .classed('subunit--clicked', nextProps.clicked && this.props.subunitClass == 'subunit-invisible')
-        .classed('subunit--missing-data', nextProps.missingData);
+        .classed('subunit--missing-data', nextProps.missingData)
+        // We need to set the fill dynamically (vs. CSS) due to Firefox:
+        // http://stackoverflow.com/questions/15842224/firefox-svg-with-fillurlid-style-in-external-stylesheet-broken-inline-style
+        .style('fill', nextProps.missingData ? 'url(#diagonal-stripe-4)' : 'transparent');
     }
 
     if (this.sel != null) {
@@ -262,11 +192,22 @@ var RefugeeMapBordersLayer = React.createClass({
     };
   },
 
+
+  componentWillReceiveProps(nextProps) {
+    // clear cache
+    if (nextProps.refugeeCountsModel !== this.props.refugeeCountsModel ||
+      nextProps.timeRange !== this.props.timeRange) {
+      this._globalCountData = null;
+    }
+  },
+
+
   onMouseOver: function(country) {
     if (this.props.onMouseOver) {
       this.props.onMouseOver(country);
     }
   },
+
 
   onMouseLeave: function(country) {
     if (this.props.onMouseLeave) {
@@ -298,7 +239,6 @@ var RefugeeMapBordersLayer = React.createClass({
   },
 
 
-
    /*
     * Get count data for current
     * this.props.country within this.props.timeRange
@@ -308,7 +248,6 @@ var RefugeeMapBordersLayer = React.createClass({
     *   destinationCounts   -- array of counts of by destinationCountry
     */
   getCountrySpecificCountData: function() {
-
     var timeRange = this.props.timeRange;
 
     var getMaxCount = function(counts) {
@@ -353,7 +292,7 @@ var RefugeeMapBordersLayer = React.createClass({
       .computePerCountry(this.props.timeRange, (country, total) => {
         var features = _.find(this.props.mapModel.featureData.features, f => f.properties.ADM0_A3 === country);
         var p = features ? this.getPerCapitaCount(total.asylumApplications, features, perHowMany) : 0;
-        max = p > max ? p : max;
+        max = Math.max(p, max);
         return p;
       });
     var destinationScale = d3.scale.quantize()
@@ -369,9 +308,11 @@ var RefugeeMapBordersLayer = React.createClass({
     };
   },
 
+
   getPerCapitaCount: (applications, features, perHowMany) => {
     return applications / (features.properties.POP_EST / perHowMany);
   },
+
 
   getMaxCount: function(counts) {
     return _.values(counts).reduce(function(prev, item) {
@@ -385,7 +326,11 @@ var RefugeeMapBordersLayer = React.createClass({
       return null;
     }
 
-    return this.getGlobalCountData();
+    if (!this._globalCountData) {
+      this._globalCountData = this.getGlobalCountData();
+    }
+
+    return this._globalCountData;
   },
 
 
@@ -393,7 +338,6 @@ var RefugeeMapBordersLayer = React.createClass({
     * Get paths representing map borders
     */
   getPaths: function(countData) {
-
     var countries = {};
 
     var missingDataCountries = [];
@@ -477,7 +421,6 @@ var RefugeeMapBordersLayer = React.createClass({
 
 
   render: function() {
-
     var countData = this.getCountData();
 
     return (
@@ -491,9 +434,8 @@ var RefugeeMapBordersLayer = React.createClass({
         </svg>
         <ColorsLegend
           countData={countData}
-          width={this.props.width}
-          height={this.props.height}
           locale={this.props.locale}
+          tightSpacing={this.props.width < 700}
         />
       </div>
     );

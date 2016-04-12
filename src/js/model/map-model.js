@@ -57,7 +57,7 @@ MapModel.prototype.getLabelPointForCountry = function(country) {
     return feature.geometry.coordinates;
   }
 
-  console.log('could not find label point for ' + country);
+  console.log('could not find label point for ' + country); // eslint-disable-line
   return [0, 0];
 };
 
@@ -75,6 +75,7 @@ MapModel.prototype.getFriendlyNameForCountry = function(country, locale) {
         case 'RCB': return 'Kongo';
         case 'COD': return 'Kongo';
         case 'GBR': return 'Iso-Britannia';
+        case 'KOS': return 'Kosovo';
         default: return countries.getName(country, 'fi');
       }
     case 'en':
@@ -88,6 +89,7 @@ MapModel.prototype.getFriendlyNameForCountry = function(country, locale) {
         case 'RUS': return 'Russia';
         case 'RCB': return 'Congo';
         case 'COD': return 'Congo';
+        case 'KOS': return 'Kosovo';
         default: return countries.getName(country, 'en');
       }
   }
@@ -146,7 +148,7 @@ MapModel.prototype.getRandomPointForCountryBorder = function(country, coordinate
   } while (!inside([la, lo], coordinates) && count < 100);
 
   if (count == 100) {
-    console.log('could not create random point for ' + country);
+    console.log('could not create random point for ' + country); // eslint-disable-line
     return [0, 0];
   }
   return [la, lo];

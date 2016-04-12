@@ -1,52 +1,42 @@
 
 .refugee-map-borders-layer {
 
-	.subunit {
-	  fill: transparent;
-	  stroke: rgba(darken($color: $teas-light-blue, $amount: 5), 0.7);
+  .subunit {
+    fill: transparent;
+    stroke: rgba(darken($color: $teas-light-blue, $amount: 5), 0.7);
     transition: fill 0.5s ease-in-out;
   }
 
-	.subunit--overlay {
-	  stroke-width: 3px;
+  .subunit--overlay {
+    stroke-width: 3px;
     opacity: 0;
     fill: transparent;
-	  transition: opacity 0.2s ease-in-out;
-	  //opacity: 0.99;
-	}
+    transition: opacity 0.2s ease-in-out;
+  }
 
-	.subunit--destination {
-	  //display: none;
-    //opacity: 0.5;
-    //display: none;
-	  //fill: rgba(95, 196, 114, 0.25);
-	}
+  .subunit--destination {
 
-	.subunit--origin {
+  }
+
+  .subunit--origin {
     display: none;
-	  //opacity: 1.0;
-	  //fill: rgba(190, 88, 179, 0.15);
-	}
+  }
 
-	.subunit--hovered {
+  .subunit--hovered {
     opacity: 0.5;
-    //stroke: rgb(251, 112,29);
     stroke: $teas-blue;
-	}
+  }
 
   .subunit--clicked {
     opacity: 0.5;
-    //stroke: rgb(251, 112,29);
     stroke: $teas-orange;
   }
 
-	.subunit-invisible {
-	  fill: transparent;
-	  //stroke: transparent;
-	}
+  .subunit-invisible {
+    fill: transparent;
+  }
 
   .subunit--missing-data {
-    fill: url(#diagonal-stripe-4);
     opacity: 0.12;
   }
 

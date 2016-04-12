@@ -12,8 +12,9 @@ module.exports = {
     // refugee-data-updated
     data_updated: 'Data updated',
 
-    // refugee-map-borders-layer
-    seekers_per_hundred_thousand: 'Seekers / 100,000 inhabitants',
+    // colors-legend
+    asylum_seekers_per: 'Asylum seekers per',
+    hundred_thousand_inhabitants: '100,000 inhabitants',
 
     // refugee-multiples-segment
     monthly_applications_proportional: 'The following charts show monthly received asylum applications per %(number)s inhabitants',

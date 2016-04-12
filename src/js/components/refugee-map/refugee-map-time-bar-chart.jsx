@@ -157,14 +157,19 @@ var RefugeeMapTimeBarChart = React.createClass({
     if (this.isEuroCountrySelected()) {
       var countryName = this.props.mapModel.getFriendlyNameForCountry(this.props.country, this.props.locale);
 
-      return (
-        <Translate className="refugee-map-time__missing-data"
-          attributes={{ title: 'asylum_countries.left_applications_in_country' }}
-          content='asylum_countries.left_applications_in_country_bolded'
-          country={countryName}
-          unsafe
-        />
-      );
+      if (countryName) {
+        return (
+          <Translate className="refugee-map-time__missing-data"
+            attributes={{ title: 'asylum_countries.left_applications_in_country' }}
+            content='asylum_countries.left_applications_in_country_bolded'
+            country={countryName}
+            unsafe
+          />
+        );
+      }
+
+      console.log('Unknown country:', this.props.country); // eslint-disable-line
+      return null;
     }
 
     var countriesWithMissingData = this.props.refugeeCountsModel

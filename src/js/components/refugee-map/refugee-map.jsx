@@ -78,9 +78,12 @@ var RefugeeMap = React.createClass({
     var height = Math.round(this.props.width * this.props.preferredHeightWidthRatio);
     var graphHeight = this.getGraphHeight();
     var chromeHeight = 100;
+
     if (screen.height > graphHeight * 2 + chromeHeight) {
       return Math.min(screen.height - chromeHeight - graphHeight, height);
     }
+
+    return height;
   },
 
 

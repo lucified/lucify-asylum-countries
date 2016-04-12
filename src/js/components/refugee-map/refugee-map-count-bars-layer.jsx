@@ -30,10 +30,13 @@ var RefugeeMapCountBar = React.createClass({
     var coordinates = this.props.projection(this.props.mapModel.getCenterPointOfCountry(country));
 
     this.asylumSel
-        .attr('y', coordinates[1] - asylumBarSize)
-        .attr('height', asylumBarSize)
-        .attr('x', coordinates[0] - 2)
-        .style('display', asylumBarSize > 0 ? 'inherit' : 'none');
+        .attr('y', coordinates[1] - asylumBarSize);
+    this.asylumSel
+        .attr('height', asylumBarSize);
+    this.asylumSel
+        .attr('x', coordinates[0] - 2);
+    this.asylumSel
+        .style('display', asylumBarSize > 0 ? 'initial' : 'none');
   },
 
   shouldComponentUpdate: function(nextProps) {

@@ -12,8 +12,10 @@ module.exports = {
     // refugee-data-updated
     data_updated: 'Data päivitetty',
 
-    // refugee-map-borders-layer
-    seekers_per_hundred_thousand: 'Hakijoita / 100 000 asukasta',
+
+    // colors-legend
+    asylum_seekers_per: 'Turvapaikanhakijoita',
+    hundred_thousand_inhabitants: 'per 100 000 asukasta',
 
     // refugee-multiples-segment
     monthly_applications_proportional: 'Seuraavat kuvaajat esittävät turvapaikanhakijoiden kuukausittaisia määriä kohdemaittain %(number)s asukasta kohden.',
