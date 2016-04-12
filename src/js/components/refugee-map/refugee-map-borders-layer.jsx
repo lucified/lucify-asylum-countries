@@ -437,15 +437,6 @@ var RefugeeMapBordersLayer = React.createClass({
             locale={this.props.locale}
           />
         </div>
-        <div className="lucify-container">
-          <ColorsLegend
-            className="after-map-legend"
-            orientation="horizontal"
-            countData={countData}
-            width={this.props.width}
-            locale={this.props.locale}
-          />
-        </div>
       </div>
     );
   }
