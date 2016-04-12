@@ -51,12 +51,14 @@ var RefugeeMapBorder = React.createClass({
 
 
   updateStyles: function(nextProps) {
-
     if (this.overlaySel != null) {
       this.overlaySel
         .classed('subunit--hovered', nextProps.hovered && this.props.subunitClass == 'subunit-invisible')
         .classed('subunit--clicked', nextProps.clicked && this.props.subunitClass == 'subunit-invisible')
-        .classed('subunit--missing-data', nextProps.missingData);
+        .classed('subunit--missing-data', nextProps.missingData)
+        // We need to set the fill dynamically (vs. CSS) due to Firefox:
+        // http://stackoverflow.com/questions/15842224/firefox-svg-with-fillurlid-style-in-external-stylesheet-broken-inline-style
+        .style('fill', nextProps.missingData ? 'url(#diagonal-stripe-4)' : 'transparent');
     }
 
     if (this.sel != null) {
