@@ -14,8 +14,8 @@ module.exports = {
 
 
     // colors-legend
-    asylum_seekers_per: 'Turvapaikanhakijoita per',
-    hundred_thousand_inhabitants: '100 000 asukasta',
+    asylum_seekers_per: 'Turvapaikanhakijoita',
+    hundred_thousand_inhabitants: 'per 100 000 asukasta',
 
     // refugee-multiples-segment
     monthly_applications_proportional: 'Seuraavat kuvaajat esittävät turvapaikanhakijoiden kuukausittaisia määriä kohdemaittain %(number)s asukasta kohden.',

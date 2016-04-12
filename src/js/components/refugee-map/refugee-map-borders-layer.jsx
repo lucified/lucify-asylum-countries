@@ -432,9 +432,9 @@ var RefugeeMapBordersLayer = React.createClass({
             {this.getPaths(countData)}
           </svg>
           <ColorsLegend
-            className="on-map-legend"
             countData={countData}
             locale={this.props.locale}
+            tightSpacing={this.props.width < 700}
           />
         </div>
       </div>

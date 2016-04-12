@@ -16,8 +16,7 @@ var ColorsLegend = React.createClass({
   propTypes: {
     countData: React.PropTypes.object,
     locale: React.PropTypes.string,
-    orientation: React.PropTypes.oneOf(['horizontal', 'vertical']),
-    width: React.PropTypes.number
+    tightSpacing: React.PropTypes.bool
   },
 
 
@@ -38,8 +37,7 @@ var ColorsLegend = React.createClass({
   shouldComponentUpdate(nextProps, _nextState) {
     return nextProps.countData !== this.props.countData ||
       nextProps.locale !== this.props.locale ||
-      nextProps.orientation !== this.props.orientation ||
-      nextProps.width !== this.props.width;
+      nextProps.tightSpacing !== this.props.tightSpacing;
   },
 
 
@@ -62,9 +60,8 @@ var ColorsLegend = React.createClass({
     var colorLegend = legend.color()
         .labelFormat(value => this.format(Math.round(value)))
         .labelDelimiter('–')
-        .orient(this.props.orientation)
         .useClass(false)
-        .shapeHeight(30)
+        .shapeHeight(this.props.tightSpacing ? 15 : 30)
         .shapePadding(0)
         .scale(this.props.countData.destinationScale);
 
@@ -74,8 +71,8 @@ var ColorsLegend = React.createClass({
 
 
   render: function() {
-    var style = (this.props.orientation === 'vertical') ?
-      { width: 110, height: 270 } : { width: this.props.width, height: 100 };
+    var style = this.props.tightSpacing ?
+      { width: 90, height: 135 } : { width: 110, height: 270 };
 
     return (
       <div className={'colors-legend ' + this.props.className}>
