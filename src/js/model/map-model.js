@@ -21,10 +21,11 @@ var MapModel = function(featureData) {
 
 MapModel.prototype.initialize = function() {
   // the centroid isn't always good. fix for these countries:
-  this._countryCentersCache['FRA'] = [2.449486512892406, 46.62237366531258];
+  this._countryCentersCache['FRA'] = [2.449486, 46.622373];
   this._countryCentersCache['SWE'] = [14.273817, 59.803497];
   this._countryCentersCache['FIN'] = [25.356445, 62.890593];
   this._countryCentersCache['NOR'] = [8.506239, 60.975869];
+  this._countryCentersCache['DEU'] = [9.703750, 50.998200];
   this._countryCentersCache['GBR'] = [-1.538086, 52.815213];
   this._countryCentersCache['GRC'] = [21.752930, 39.270271];
   this._countryCentersCache['RUS'] = [51.328125, 56.641127];
