@@ -13,6 +13,10 @@ svg[class^="line-chart"] {
   path[class^="line-chart__line"] {
     stroke: darken($teas-blue, 20);
   }
+
+  text[class^="line-chart__caption"] {
+    fill: darken($teas-gray, 20);
+  }
 }
 
 .refugee-small-multiples__item-title {
