@@ -2,7 +2,8 @@ module.exports = {
   asylum_countries: {
     // refugee-map-segment
     description: 'This visualisation provides different perspectives into the number of asylum applications in European countries. The underlying data is from the UNHCR.',
-    instructions_time_selection: 'Select the time range you wish to inspect from the bar charts at the top.',
+    instructions_map_colors: 'The color of each country represents the amount of people who have sought asylum from it within the selected time range, relative to its population.',
+    instructions_time_selection: 'Select the time range you wish to inspect from the bar chart at the top.',
     instructions_country_selection: 'Hover on a country to dig deeper into country-specific data. Click on a country to lock the selection.',
     instructions_numbers: 'The number displayed on top of a country shows either the received number of asylum applications or the number of asylum seekers originating from that country during the selected time period.',
     map_of_europe: 'Map of Europe',

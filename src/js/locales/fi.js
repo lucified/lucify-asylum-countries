@@ -2,6 +2,7 @@ module.exports = {
   asylum_countries: {
     // refugee-map-segment
     description: 'Tällä työkalulla voit tarkastella eri näkökulmista Euroopan valtioihin tehtyjen turvapaikkahakemusten määrää. Luvut perustuvat UNHCR:n koostamiin tilastoihin.',
+    instructions_map_colors: 'Kunkin maan väri kuvaa sinne saapuneiden turvapaikanhakijoiden määrää valittuja ajanjaksona, suhteessa sen väkilukuun.',
     instructions_time_selection: 'Valitse hiirellä vetämällä kuvaajasta ajanjakso, jota haluat tarkastella. Huomaa, että voit myös muuttaa ajanjakson pituutta.',
     instructions_country_selection: 'Osoita hiirellä maata nähdäksesi maata koskevia lisätietoja. Klikkaa maata lukitaksesi valinnan.',
     instructions_numbers: 'Valitun maan päällä oleva numero vastaa joko maahan jätettyjen tai maasta peräisin olevien hakemusten määrää valittuna ajanjaksona. Valitessasi maan näet myös eri maista tulleiden ja eri maihin jätettyjen hakemusten määrät.',
