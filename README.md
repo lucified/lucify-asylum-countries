@@ -69,7 +69,7 @@ Run the included download script:
 $ src/scripts/download-unhcr-data.sh
 ```
 
-Run `gulp prepare-data` to generate the JSON file for the visualization.
+Run `./prepare.sh` to generate the JSON file for the visualization.
 
 ### Manual download
 
@@ -81,7 +81,7 @@ If you prefer to download the data manually, open the UNHCR asylum applications 
 + Origin: All countries
 + Data item to display: Country of asylum, origin, year
 
-Save the resulting file as `data/unhcr_popstats_export_asylum_seekers_monthly.csv`, remove the first four (header) rows and run `gulp prepare-data` to generate the JSON file for the visualization.
+Save the resulting file as `data/unhcr_popstats_export_asylum_seekers_monthly.csv`, remove the first four (header) rows and run `./prepare.sh` to generate the JSON file for the visualization.
 
 
 ## Authors
