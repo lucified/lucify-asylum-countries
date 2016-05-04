@@ -1,7 +1,7 @@
 {
   "name": "lucify-asylum-countries",
   "version": "0.0.1",
-  "description": "React components for visualizing asylum seeker counts to European countries",
+  "description": "React components for visualising the amount of asylum seekers to European countries",
   "main": "gulpfile.js",
   "scripts": {
     "prepublish": "./prepare.sh",

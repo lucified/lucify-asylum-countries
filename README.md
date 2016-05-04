@@ -1,4 +1,4 @@
-# Visualising asylum seeker amounts to European countries
+# Visualising the amount of asylum seekers to European countries
 
 A visualization of the amount of asylum seekers to European countries from 2012 onwards. Based on UNHCR data. Built for the Finnish Prime Minister's Office.
 
