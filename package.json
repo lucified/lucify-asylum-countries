@@ -1,5 +1,5 @@
 {
-  "name": "vnk-asylum-countries",
+  "name": "lucify-asylum-countries",
   "version": "0.0.1",
   "description": "React components for visualizing asylum seeker counts to European countries",
   "main": "gulpfile.js",
@@ -21,7 +21,7 @@
   "engines": {
     "node": "~0.12.9"
   },
-  "homepage": "https://www.lucify.com/",
+  "homepage": "https://www.lucify.com/seeking-asylum-in-europe",
   "contributors": [
     {
       "name": "Juho Ojala",
@@ -38,7 +38,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/lucified/vnk-asylum-countries.git"
+    "url": "https://github.com/lucified/lucify-asylum-countries.git"
   },
   "bugs": {
     "email": "info@lucify.com"
