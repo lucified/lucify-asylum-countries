@@ -59,7 +59,7 @@ The build automatically creates a file called `embed-codes.html` alongside `inde
 
 [UNHCR monthly asylum applications](http://popstats.unhcr.org/en/asylum_seekers_monthly)
 
-If you update the data, you can change the time period during which the visualization runs by updating the values in `src/js/model/refugee-constants.js`. Note that changing these values has not been extensively tested, and might result in glitches.
+If you update the data, you can change the time period during which the visualization runs by updating the values in `src/js/model/refugee-constants.js`.
 
 ### Automatic download
 
