@@ -2,6 +2,8 @@
 
 A visualization of the amount of asylum seekers to European countries from 2012 onwards. It is based on [UNHCR data](#data-source). See the visualisation [online](http://www.lucify.com/seeking-asylum-in-europe).
 
+![Visualisation screenshot](https://raw.githubusercontent.com/lucified/lucify-asylum-countries/master/screenshot.png)
+
 This project was built for and funded by the In-house Information Design pilot for the [Yhtäköyttä](http://yhtakoytta.fi/) project. The project is a part of the Prime Minister's Office of Finland's analysis, assessment and research activities.
 
 This project uses a combination of [React](https://facebook.github.io/react/), [D3.js](http://d3js.org/) and [C3.js](http://c3js.org/).
