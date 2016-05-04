@@ -1,9 +1,10 @@
-# Visualising asylum seeker amounts to European countries
+# Visualising the amount of asylum seekers to European countries
 
-A visualization of the amount of asylum seekers to European countries from 2012 onwards. Based on UNHCR data. Built for the Finnish Prime Minister's Office.
+A visualization of the amount of asylum seekers to European countries from 2012 onwards. It is based on [UNHCR data](#data-source). See the visualisation [online](https://www.lucify.com/seeking-asylum-in-europe).
+
+This project was built for and funded by the In-house Information Design pilot for the [Yhtäköyttä](http://yhtakoytta.fi/) project. The project is a part of the Prime Minister's Office of Finland's analysis, assessment and research activities.
 
 This project uses a combination of [React](https://facebook.github.io/react/), [D3.js](http://d3js.org/) and [C3.js](http://c3js.org/).
-
 
 ## Development
 
@@ -23,7 +24,7 @@ Run the following in the project directory:
 2. `gulp` or `node ./node_modules/gulp/bin/gulp.js`
 
 This project requires gulp 4.0, which is installed by `npm install` under `node_modules`. To be able to use the plain `gulp` command as above, make sure you have gulp-cli version 0.4 installed:
-```
+```shell
 npm install gulpjs/gulp-cli#4.0 -g
 ```
 
@@ -31,19 +32,25 @@ For development, run `bundle install` as well.
 
 To regenerate the data, run `./prepare.sh`.
 
-### Distribution build
+### Distribution build and publishing
 
-A distribution is built by the command `gulp dist`.
+The project has been configured to build and deploy a distribution for the Lucify hosting environment. This can be changed by overriding some default settings in `lucify-opts.js`. Below is an example of how you might wish to modify `lucify-opts.js` to work with your environment:
 
-You will likely need to edit the `embedBaseUrl` and `assetContext` parameters in `gulpfile.babel.js` to match your hosting environment. If you are hosting the component at `http://www.example.com/static/refugees`, you should set embedBaseUrl to `http://www.example.com/` and `assetContext` to `static/refugees/`.
+```js
+module.exports = {
+  paths: ['node_modules/lucify-commons'],
+  assetContext: 'stuff/asylum-countries/'
+  baseUrl: 'http://www.example.com/'
+  bucket: 'my-s3-bucket',
+  maxAge: 7200
+};
+```
 
-### Publish to Amazon S3
+With the above configuration, running the command `gulp dist` in the project root will prepare a distribution targeted to be published to `http://www.example.com/stuff/asylum-countries` in the `dist` folder.
 
-The project includes a gulp task for publishing the project to Amazon S3. It will use credentials from the AWS credentials file (<http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html>).
+Running the command `npm run-script deploy` will build and deploy the distribution to the path `stuff/asylum-countries` in a S3 bucket called `my-bucket`. With the given configuration, it will set a `max-age` header of 7200 for all assets with content hashes. 
 
-In addition to setting up the credentials file, you should change the `defaultBucket` option in `gulfile.babel.js` to match the name of your S3 bucket. Additionally, you may wish to change the `maxAge` option, which affects the cache-control header of assets with filenames having content hashes.
-
-Run the publish task with `gulp s3-deploy`.
+The deploy command will use credentials from the AWS credentials file (<http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html>). Thus you should make sure that proper credentials for deploying to the bucket are in place.
 
 ### Unit tests
 
@@ -51,23 +58,23 @@ Run unit test with the command `mocha` in thr project directory.
 
 ### Embed codes
 
-The build automatically creates a file called `embed-codes.html` alongside `index.html`. It contains embed codes for embedding the visualisation into other pages through an iFrame.
+The build automatically creates a file called `embed-codes-custom.html` alongside `index.html`. It contains embed codes for embedding the visualisation into other pages through an iFrame.
 
 ## Data source
 
 [UNHCR monthly asylum applications](http://popstats.unhcr.org/en/asylum_seekers_monthly)
 
-If you update the data, you can change the time period during which the visualization runs by updating the values in `src/js/model/refugee-constants.js`. Note that changing these values has not been extensively tested, and might result in glitches.
+If you update the data, you can change the time period during which the visualization runs by updating the values in `src/js/model/refugee-constants.js`.
 
 ### Automatic download
 
 Run the included download script:
 
-```
-$ src/scripts/download-unhcr-data.sh
+```shell
+./src/scripts/download-unhcr-data.sh
 ```
 
-Run `gulp prepare-data` to generate the JSON file for the visualization.
+Run `./prepare.sh` to generate the JSON file for the visualization.
 
 ### Manual download
 
@@ -79,8 +86,7 @@ If you prefer to download the data manually, open the UNHCR asylum applications 
 + Origin: All countries
 + Data item to display: Country of asylum, origin, year
 
-Save the resulting file as `data/unhcr_popstats_export_asylum_seekers_monthly.csv`, remove the first four (header) rows and run `gulp prepare-data` to generate the JSON file for the visualization.
-
+Save the resulting file as `data/unhcr_popstats_export_asylum_seekers_monthly.csv`, remove the first four (header) rows and run `./prepare.sh` to generate the JSON file for the visualization.
 
 ## Authors
 
@@ -89,3 +95,7 @@ Have feedback? Contact us!
 - [Juho Ojala](https://github.com/juhoojala)
 - [Ville Saarinen](https://github.com/vsaarinen)
 - [Ville Väänänen](https://github.com/dennari)
+
+## Copyright and license
+
+Copyright 2016 Lucify Ltd. Code released under [the MIT license](LICENSE).
