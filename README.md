@@ -1,6 +1,6 @@
 # Visualising the amount of asylum seekers to European countries
 
-A visualization of the amount of asylum seekers to European countries from 2012 onwards. It is based on [UNHCR data](#data-source). See the visualisation [online](https://www.lucify.com/seeking-asylum-in-europe).
+A visualization of the amount of asylum seekers to European countries from 2012 onwards. It is based on [UNHCR data](#data-source). See the visualisation [online](http://www.lucify.com/seeking-asylum-in-europe).
 
 This project was built for and funded by the In-house Information Design pilot for the [Yhtäköyttä](http://yhtakoytta.fi/) project. The project is a part of the Prime Minister's Office of Finland's analysis, assessment and research activities.
 
@@ -48,7 +48,7 @@ module.exports = {
 
 With the above configuration, running the command `gulp dist` in the project root will prepare a distribution targeted to be published to `http://www.example.com/stuff/asylum-countries` in the `dist` folder.
 
-Running the command `npm run-script deploy` will build and deploy the distribution to the path `stuff/asylum-countries` in a S3 bucket called `my-bucket`. With the given configuration, it will set a `max-age` header of 7200 for all assets with content hashes. 
+Running the command `npm run-script deploy` will build and deploy the distribution to the path `stuff/asylum-countries` in a S3 bucket called `my-bucket`. With the given configuration, it will set a `max-age` header of 7200 for all assets with content hashes.
 
 The deploy command will use credentials from the AWS credentials file (<http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html>). Thus you should make sure that proper credentials for deploying to the bucket are in place.
 
