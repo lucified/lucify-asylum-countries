@@ -43,7 +43,7 @@
   "bugs": {
     "email": "info@lucify.com"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "devDependencies": {
     "babelify": "^6.4.0",
     "gulp": "gulpjs/gulp#4.0",

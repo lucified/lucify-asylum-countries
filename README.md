@@ -89,3 +89,7 @@ Have feedback? Contact us!
 - [Juho Ojala](https://github.com/juhoojala)
 - [Ville Saarinen](https://github.com/vsaarinen)
 - [Ville Väänänen](https://github.com/dennari)
+
+## Copyright and license
+
+Copyright 2016 Lucify Ltd. Code released under [the MIT license](LICENSE).
