@@ -10,7 +10,7 @@ module.exports.DATA_START_MOMENT = moment([
   module.exports.DATA_START_MONTH]).startOf('month');
 
 module.exports.DATA_END_YEAR = 2016;
-module.exports.DATA_END_MONTH = 1;
+module.exports.DATA_END_MONTH = 2;
 module.exports.DATA_END_MOMENT = moment([
   module.exports.DATA_END_YEAR,
   module.exports.DATA_END_MONTH]).endOf('month');
