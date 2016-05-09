@@ -63,15 +63,13 @@ var RefugeeMapSegment = React.createClass({
                   content="asylum_countries.description"
                 />
                 <p className="last">
-                <Translate component="span"
-                  className="last"
-                  content="asylum_countries.instructions_map_colors"
-                />
-                {' '}
-                <Translate component="span"
-                  className="last"
-                  content="asylum_countries.instructions_time_selection"
-                />
+                  <Translate component="span"
+                    content="asylum_countries.instructions_map_colors"
+                  />
+                  {' '}
+                  <Translate component="span"
+                    content="asylum_countries.instructions_time_selection"
+                  />
                 </p>
               </div>
             }
