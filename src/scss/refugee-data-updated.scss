@@ -4,8 +4,10 @@
   right: 0.5rem;
   bottom: 0.5rem;
   font-size: 0.8rem;
+  color: #777777;
+  text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
 
   @media screen and (max-width: 600px) {
-    font-size: 0.5rem;
+    font-size: 0.7rem;
   }
 }
