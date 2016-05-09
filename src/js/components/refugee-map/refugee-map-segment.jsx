@@ -14,6 +14,7 @@ var RefugeeTimeRangeIndicator = require('./refugee-time-range-indicator.jsx');
 
 var RefugeesBarCharts = require('./refugees-bar-charts.jsx');
 var RefugeeHighlightMixin = require('./refugee-highlight-mixin.js');
+var RefugeeConstants = require('../../model/refugee-constants.js');
 
 var Tabs = require('react-simpletabs');
 
@@ -52,6 +53,41 @@ var RefugeeMapSegment = React.createClass({
 
 
   getInstructions: function() {
+    if (this.componentWidth < RefugeeConstants.labelShowBreakPoint) {
+      return (
+        <Inputs>
+          <div className="lucify-container">
+            <DividedCols
+              first={
+                <div className="inputs__instructions">
+                  <Translate component="p"
+                    className="first"
+                    content="asylum_countries.description"
+                  />
+                  <Translate component="p"
+                    className="last"
+                    content="asylum_countries.instructions_country_selection"
+                  />
+                </div>
+              }
+              second={
+                <div className="inputs__instructions">
+                  <p className="first last">
+                    <Translate component="span"
+                      content="asylum_countries.instructions_map_colors"
+                    />
+                    {' '}
+                    <Translate component="span"
+                      content="asylum_countries.instructions_time_selection"
+                    />
+                  </p>
+                </div>
+              } />
+          </div>
+        </Inputs>
+      );
+    }
+
     return (
       <Inputs>
         <div className="lucify-container">
@@ -63,15 +99,13 @@ var RefugeeMapSegment = React.createClass({
                   content="asylum_countries.description"
                 />
                 <p className="last">
-                <Translate component="span"
-                  className="last"
-                  content="asylum_countries.instructions_map_colors"
-                />
-                {' '}
-                <Translate component="span"
-                  className="last"
-                  content="asylum_countries.instructions_time_selection"
-                />
+                  <Translate component="span"
+                    content="asylum_countries.instructions_map_colors"
+                  />
+                  {' '}
+                  <Translate component="span"
+                    content="asylum_countries.instructions_time_selection"
+                  />
                 </p>
               </div>
             }
