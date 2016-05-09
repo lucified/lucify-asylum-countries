@@ -8,7 +8,53 @@ var d3 = require('d3');
 var BarChartRangeSelector = require('lucify-bar-chart-range-selector').default;
 var DataTools = require('lucify-data-tools');
 
+var toolTipDecorator = require('../tooltip-decorator.jsx');
+
 var refugeeConstants = require('../../model/refugee-constants.js');
+
+
+/*
+ * Tooltip specific for time range selector
+ */
+var TimeRangeToolTip = React.createClass({
+
+  propTypes: {
+    item: React.PropTypes.object.isRequired
+  },
+
+  displayName: 'TimeRangeToolTip',
+
+
+  shouldComponentUpdate: function(nextProps, _nextState) {
+    return this.props.item !== nextProps.item;
+  },
+
+
+  render: function() {
+    var item = this.props.item;
+    var valueFormat = d3.format('n');
+    var monthDate = DataTools.monthIndexToDate(item.index);
+
+    return (
+      <div className="refugee-map-time__tooltip">
+        <div className="refugee-map-time__tooltip_time-period">
+          {monthDate.getMonth() + 1}/{monthDate.getFullYear()}
+        </div>
+        <div className="refugee-map-time__tooltip_count">
+          <span className="refugee-map-time__tooltip_count-number">
+            {valueFormat(item.value)}
+          </span>
+          <span className="refugee-map-time__tooltip_count-suffix">
+            {' '}<Translate content="asylum_countries.asylum_applications" />
+          </span>
+        </div>
+      </div>
+    );
+  }
+});
+
+
+var BarChartRangeSelectorWithToolTip = toolTipDecorator(BarChartRangeSelector, TimeRangeToolTip);
 
 var RefugeeMapTimeBarChart = React.createClass({
 
@@ -201,7 +247,8 @@ var RefugeeMapTimeBarChart = React.createClass({
     return (
       <div className='refugee-map-time'>
         {this.getCountriesWithMissingData()}
-        <BarChartRangeSelector className='refugee-map-time__chart'
+        <BarChartRangeSelectorWithToolTip
+          className='refugee-map-time__chart'
           xTickFormat={this.tickFormat}
           xTickValues={this.ticks()}
           rangeFormat={DataTools.formatMonthIndex}

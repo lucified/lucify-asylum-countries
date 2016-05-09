@@ -35,6 +35,7 @@ module.exports = {
     and: 'ja',
     left_applications_in_country: 'Maahan %(country)s turvapaikkahakemuksen jättäneet',
     left_applications_in_country_bolded: 'Maahan <b>%(country)s</b> turvapaikkahakemuksen jättäneet',
-    asylum_seekers_arrived_in_europe: 'Eurooppaan saapuneet turvapaikanhakijat'
+    asylum_seekers_arrived_in_europe: 'Eurooppaan saapuneet turvapaikanhakijat',
+    asylum_applications: 'hakemusta'
   }
 };

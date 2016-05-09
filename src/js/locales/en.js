@@ -34,6 +34,7 @@ module.exports = {
     and: 'and',
     left_applications_in_country: 'Asylum applications received in %(country)s',
     left_applications_in_country_bolded: 'Asylum applications received in <b>%(country)s</b>',
-    asylum_seekers_arrived_in_europe: 'Asylum seekers arriving in Europe'
+    asylum_seekers_arrived_in_europe: 'Asylum seekers arriving in Europe',
+    asylum_applications: 'applications'
   }
 };

@@ -24,3 +24,20 @@
     display: none;
   }
 }
+
+.refugee-map-time__tooltip {
+  border: 1px solid gray;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  background-color: rgba(255,255,255,0.9);
+  z-index: 2;
+}
+
+.refugee-map-time__tooltip_count {
+  margin-top: 0.5rem;
+  font-size: 1.0rem;
+}
+
+.refugee-map-time__tooltip_count-number {
+  font-weight: bold
+}
