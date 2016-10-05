@@ -19,7 +19,7 @@
     "Europe"
   ],
   "engines": {
-    "node": "~0.12.9"
+    "node": "^4.2.2"
   },
   "homepage": "https://www.lucify.com/seeking-asylum-in-europe",
   "contributors": [
@@ -48,7 +48,7 @@
     "babelify": "^6.4.0",
     "gulp": "gulpjs/gulp#4.0",
     "handlebars": "^4.0.5",
-    "lucify-component-builder": "~0.2.19",
+    "lucify-component-builder": "^0.2.20",
     "mkpath": "^1.0.0",
     "mocha": "^2.4.5",
     "simplify-geojson": "^1.0.2"
