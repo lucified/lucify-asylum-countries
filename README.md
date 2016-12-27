@@ -12,18 +12,17 @@ This project uses a combination of [React](https://facebook.github.io/react/), [
 
 ### Dependencies
 
-- Node + NPM
+- Node 4 + NPM
 - Development: Ruby + [RubyGems](https://rubygems.org/pages/download)
 - Development: Bundler: `gem install bundler`
 - Development: GDAL (<http://www.gdal.org/>). On OS X with homebrew install with `brew install gdal`.
-- Testing: Mocha, for running unit tests: `npm install -g mocha`
 
 ### Setup and running
 
 Run the following in the project directory:
 
 1. `npm install`
-2. `gulp` or `node ./node_modules/gulp/bin/gulp.js`
+2. `gulp` or `./node_modules/.bin/gulp`
 
 This project requires gulp 4.0, which is installed by `npm install` under `node_modules`. To be able to use the plain `gulp` command as above, make sure you have gulp-cli version 0.4 installed:
 ```shell
