@@ -22,36 +22,24 @@ This project uses a combination of [React](https://facebook.github.io/react/), [
 Run the following in the project directory:
 
 1. `npm install`
-2. `gulp` or `./node_modules/.bin/gulp`
-
-This project requires gulp 4.0, which is installed by `npm install` under `node_modules`. To be able to use the plain `gulp` command as above, make sure you have gulp-cli version 0.4 installed:
-```shell
-npm install gulpjs/gulp-cli#4.0 -g
-```
+2. `npm start`
 
 For development, run `bundle install` as well.
 
 To regenerate the data, run `./prepare.sh`.
 
-### Distribution build and publishing
+### Distribution build
 
-The project has been configured to build and deploy a distribution for the Lucify hosting environment. This can be changed by overriding some default settings in `lucify-opts.js`. Below is an example of how you might wish to modify `lucify-opts.js` to work with your environment:
+The project has been configured to build a distribution that
+assumes that it will be hosted in a public path of `embed/lucify-asylum-countries/`.
 
+You can change this by modifying the `assetContext` attribute
+in [lucify-opts.js](lucify-opts.js).
+
+Build a distribution to the folder `dist` with:
 ```js
-module.exports = {
-  paths: ['node_modules/lucify-commons'],
-  assetContext: 'stuff/asylum-countries/'
-  baseUrl: 'http://www.example.com/'
-  bucket: 'my-s3-bucket',
-  maxAge: 7200
-};
+npm run build
 ```
-
-With the above configuration, running the command `gulp dist` in the project root will prepare a distribution targeted to be published to `http://www.example.com/stuff/asylum-countries` in the `dist` folder.
-
-Running the command `npm run-script deploy` will build and deploy the distribution to the path `stuff/asylum-countries` in a S3 bucket called `my-bucket`. With the given configuration, it will set a `max-age` header of 7200 for all assets with content hashes.
-
-The deploy command will use credentials from the AWS credentials file (<http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html>). Thus you should make sure that proper credentials for deploying to the bucket are in place.
 
 ### Unit tests
 
