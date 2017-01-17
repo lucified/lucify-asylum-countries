@@ -4,11 +4,14 @@
   "description": "React components for visualising the amount of asylum seekers to European countries",
   "main": "gulpfile.js",
   "scripts": {
-    "prepublish": "./prepare.sh",
+    "upload": "atomic-s3 --verbose",
+    "build": "npm run clean && gulp dist",
+    "clean": "rm -rf dist",
+    "deploy": "lucify-notifier npm run deploy-plain",
+    "deploy-plain": "./prepare.sh && npm run build && npm run upload",
     "start": "gulp",
     "test": "mocha",
-    "dist": "gulp dist",
-    "deploy": "./prepare.sh && lucify-deploy"
+    "prepublish": "./prepare.sh"
   },
   "keywords": [
     "lucify",
@@ -45,10 +48,13 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "atomic-s3": "^0.1.5",
     "babelify": "^6.4.0",
     "gulp": "gulpjs/gulp#4.0",
     "handlebars": "^4.0.5",
     "lucify-component-builder": "^0.2.20",
+    "lucify-deploy-config": "^0.1.11",
+    "lucify-notifier": "^0.1.9",
     "mkpath": "^1.0.0",
     "mocha": "^2.4.5",
     "simplify-geojson": "^1.0.2"
