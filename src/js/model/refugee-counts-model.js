@@ -117,7 +117,7 @@ RefugeeCountsModel.prototype._calculateMissingData = function() {
     'FRA', 'GBR', 'GRC', 'HUN', 'ITA', 'NOR', 'NLD', 'SWE'
   ];
   var originCountriesToCheck = ['SYR', 'IRQ', 'UKR'];
-  var yearsToCheck = [2015, 2016]; // TODO: remove 2015 after the next data update if no missing countries
+  var yearsToCheck = [2016, 2017]; // TODO: remove 2016 once it has no missing countries
 
   for (var month = 0; month < 12; month++) {
     yearsToCheck.forEach(function(year) {
