@@ -35,7 +35,7 @@ describe('RefugeeCountsModel', function() {
         }).reduce(function(prev, val) {
           return prev + val.count;
         }, 0
-      ), 5511);
+      ), 4667);
     });
   });
 
@@ -48,29 +48,29 @@ describe('RefugeeCountsModel', function() {
   describe('getTotalDestinationCounts', function() {
     it('correct total for germany for jan 2012', function() {
       assert.equal(model.getTotalDestinationCounts(
-        'DEU', [startStamp, moment([2012, 0, 31]).unix()]).asylumApplications, 5511);
+        'DEU', [startStamp, moment([2012, 0, 31]).unix()]).asylumApplications, 4667);
     });
     it('correct total for germany by end of 2014', function() {
       assert.equal(model.getTotalDestinationCounts('DEU', [startStamp, moment([2014, 11, 31]).unix()])
-        .asylumApplications, 404898);
+        .asylumApplications, 347191);
     });
     it('correct total for finland by end of 2014', function() {
       assert.equal(model.getTotalDestinationCounts('FIN', [startStamp, moment([2014, 11, 31]).unix()])
-        .asylumApplications, 10083);
+        .asylumApplications, 9461);
     });
     it('correct total for finland for 2013', function() {
       assert.equal(model.getTotalDestinationCounts('FIN',
         [firstDayStamp(2013, 0), lastDayStamp(2013, 11)])
-        .asylumApplications, 3217);
+        .asylumApplications, 3022);
     });
   });
 
   describe('getGlobalArrivingFor', function() {
     it('correct total for Jan 2013 (only European destinations)', function() {
-      assert.equal(model.getGlobalArrivingFor(moment([2013, 0])).asylumApplications, 44900);
+      assert.equal(model.getGlobalArrivingFor(moment([2013, 0])).asylumApplications, 31092);
     });
     it('correct total for August 2015 (only European destinations)', function() {
-      assert.equal(model.getGlobalArrivingFor(moment([2015, 7])).asylumApplications, 221663);
+      assert.equal(model.getGlobalArrivingFor(moment([2015, 7])).asylumApplications, 147660);
     });
   });
 
@@ -78,15 +78,15 @@ describe('RefugeeCountsModel', function() {
     var germanyTotals = model.getGlobalArrivingPerMonthForCountry('DEU');
 
     it('correct total for germany for jan 2012', function() {
-      assert.equal(germanyTotals[0].asylumApplications, 5511);
+      assert.equal(germanyTotals[0].asylumApplications, 4667);
     });
 
     it('correct total for germany for jun 2014', function() {
-      assert.equal(germanyTotals[12*2 + 5].asylumApplications, 14082);
+      assert.equal(germanyTotals[12*2 + 5].asylumApplications, 12509);
     });
 
     it('correct total for germany for oct 2015', function() {
-      assert.equal(germanyTotals[12*3 + 9].asylumApplications, 61823);
+      assert.equal(germanyTotals[12*3 + 9].asylumApplications, 58133);
     });
   });
 
