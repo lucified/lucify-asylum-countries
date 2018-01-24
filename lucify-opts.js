@@ -4,6 +4,6 @@ module.exports = {
   publishFromFolder: 'dist',
   assetContext: process.env.MINARD ? '' : 'embed/lucify-asylum-countries/',
   pageDef: {
-    title: 'Asylum seekers in Europe'
+    title: 'Asylum seekers in Europe - Lucify'
   }
 };
