@@ -19,4 +19,4 @@ deployment:
   staging:
     branch: /^(?!nodeploy-).*$/
     commands:
-      - yarn run-script deploy
+      - yarn run deploy
