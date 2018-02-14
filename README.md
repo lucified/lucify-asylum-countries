@@ -12,7 +12,7 @@ This project uses a combination of [React](https://facebook.github.io/react/), [
 
 ### Dependencies
 
-- Node 4 + NPM
+- Node 8 + Yarn
 - Development: Ruby + [RubyGems](https://rubygems.org/pages/download)
 - Development: Bundler: `gem install bundler`
 - Development: GDAL (<http://www.gdal.org/>). On OS X with homebrew install with `brew install gdal`.
@@ -21,10 +21,9 @@ This project uses a combination of [React](https://facebook.github.io/react/), [
 
 Run the following in the project directory:
 
-1. `npm install`
-2. `npm start`
-
-For development, run `bundle install` as well.
+1. `bundle install`
+2. `yarn`
+3. `yarn start`
 
 To regenerate the data, run `./prepare.sh`.
 
@@ -38,7 +37,7 @@ in [lucify-opts.js](lucify-opts.js).
 
 Build a distribution to the folder `dist` with:
 ```js
-npm run build
+yarn build
 ```
 
 ### Unit tests
@@ -87,4 +86,4 @@ Have feedback? Contact us!
 
 ## Copyright and license
 
-Copyright 2016-2017 Lucify Ltd. Code released under [the MIT license](LICENSE).
+Copyright 2016-2018 Lucify Ltd. Code released under [the MIT license](LICENSE).
