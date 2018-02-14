@@ -138,7 +138,8 @@ var RefugeeMapTimeBarChart = React.createClass({
 
 
   ticks: function() {
-    return d3.range(2012, 2017).map(DataTools.firstMonthIndexOfYear);
+    const endYear = refugeeConstants.DATA_END_YEAR + (refugeeConstants.DATA_END_MONTH === 11 ? 2 : 1);
+    return d3.range(2012, endYear).map(DataTools.firstMonthIndexOfYear);
   },
 
 
